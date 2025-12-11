@@ -1,1 +1,1106 @@
-Hello
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ixeia Sánchez Périz</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23ffffff'/><path d='M20 85 L30 70 Q35 65 40 68 L45 72 Q50 75 55 70 L60 62 Q65 55 70 60 L78 68 Q82 72 85 68 L85 85 Z' fill='%2395c9c9' stroke='%232d3748' stroke-width='2'/><path d='M25 75 L32 65 Q37 58 42 62 L50 70 Q55 74 60 68 L68 58 Q72 53 77 58 L82 65 L82 85 L25 85 Z' fill='%23b8a8d8' opacity='0.7' stroke='%232d3748' stroke-width='2'/><path d='M35 50 L45 30 L50 35 L55 28 L65 45 L70 38 L80 55' fill='none' stroke='%237b9ab8' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/><ellipse cx='18' cy='25' rx='8' ry='5' fill='%23e8a89a' opacity='0.8'/><ellipse cx='25' cy='18' rx='7' ry='4' fill='%23e8a89a' opacity='0.6'/></svg>">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #7b9ab8;
+            --secondary-color: #5d7a99;
+            --accent-color: #9ab5ce;
+            --text-dark: #2d3748;
+            --text-light: #4a5568;
+            --bg-light: #f0f4f8;
+            --bg-white: #ffffff;
+            --border-color: #cbd5e0;
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #6b8fb0;      /* Navy blue */
+            --secondary-color: #7a9fc0;    /* Medium navy */
+            --accent-color: #b8a8d8;       /* Purple pastel */
+            --text-dark: #e2e8f0;          /* Light text */
+            --text-light: #cbd5e0;         /* Muted text */
+            --bg-light: #1a202c;           /* Dark background */
+            --bg-white: #2d3748;           /* Card background */
+            --border-color: #4a5568;       /* Border */
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-color: var(--bg-white);
+        }
+
+        /* Navigation */
+        nav {
+            background-color: var(--bg-white);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            transition: color 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        nav a:hover {
+            color: var(--primary-color);
+        }
+
+        nav a svg {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+        }
+
+        .dark-mode-toggle {
+            background: none;
+            border: none;
+            color: var(--text-dark);
+            cursor: pointer;
+            padding: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .dark-mode-toggle:hover {
+            background-color: var(--bg-light);
+            transform: scale(1.1);
+        }
+
+        .dark-mode-toggle svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Scrolling Name Bar */
+        .name-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--bg-white);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            z-index: 999;
+            transform: translateY(-100%);
+            transition: transform 0.3s ease;
+            padding: 0.75rem 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .name-bar.visible {
+            transform: translateY(0);
+        }
+
+        .name-bar h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin: 0;
+        }
+
+        /* Hero Section */
+        .hero {
+            margin-top: 70px;
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .hero-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .profile-picture {
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            object-fit: cover;
+            object-position: center 10%;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero-text {
+            text-align: left;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            color: white;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .social-link:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .social-link svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .hero .cta-button {
+            display: inline-block;
+            padding: 0.75rem 2rem;
+            background-color: white;
+            color: var(--primary-color);
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
+            margin: 0 0.5rem;
+        }
+
+        .hero .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        /* Section Styles */
+        section {
+            margin-bottom: 4rem;
+        }
+
+        section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: var(--text-dark);
+            text-align: center;
+        }
+
+        /* About Section */
+        .about-content {
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
+        .about-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1.75rem;
+            margin-top: 2rem;
+        }
+
+        .about-card {
+            background-color: var(--bg-white);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 2rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .about-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .about-card-icon {
+            width: 60px;
+            height: 60px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            border-radius: 12px;
+        }
+
+        .about-card-icon svg {
+            width: 32px;
+            height: 32px;
+            color: white;
+        }
+
+        .about-card-content {
+            flex: 1;
+        }
+
+        .about-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+            color: var(--text-dark);
+        }
+
+        .about-card p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 0.75rem;
+        }
+
+        .about-card ul {
+            list-style: none;
+            padding: 0;
+            margin-top: 0.5rem;
+        }
+
+        .about-card ul li {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            padding: 0.35rem 0;
+        }
+
+        .about-intro {
+            text-align: left;
+            color: var(--text-light);
+            font-size: 0.95rem;
+            line-height: 1.7;
+            margin-bottom: 2.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .about-card {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .about-card ul {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Blog Posts */
+        .posts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .post-card {
+            background-color: var(--bg-white);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .post-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .post-card .post-date {
+            color: var(--text-light);
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .post-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+
+        .post-card p {
+            color: var(--text-light);
+            margin-bottom: 1rem;
+        }
+
+        .post-card .read-more,
+        .project-card .read-more {
+            color: #8b7aa8;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .post-card .read-more:hover,
+        .project-card .read-more:hover {
+            color: #7a6997;
+        }
+
+        [data-theme="dark"] .post-card .read-more,
+        [data-theme="dark"] .project-card .read-more {
+            color: #e0d4f7;
+        }
+
+        [data-theme="dark"] .post-card .read-more:hover,
+        [data-theme="dark"] .project-card .read-more:hover {
+            color: #f0e8ff;
+        }
+
+        .talk-item .read-more {
+            color: #8b7aa8;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .talk-item .read-more:hover {
+            color: #7a6997;
+        }
+
+        [data-theme="dark"] .talk-item .read-more {
+            color: #e0d4f7;
+        }
+
+        [data-theme="dark"] .talk-item .read-more:hover {
+            color: #f0e8ff;
+        }
+
+        .talk-content a {
+            color: #8b7aa8;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .talk-content a:hover {
+            text-decoration: underline;
+        }
+
+        [data-theme="dark"] .talk-content a {
+            color: #e0d4f7;
+        }
+
+        [data-theme="dark"] .talk-content a:hover {
+            color: #f0e8ff;
+        }
+
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .tech-tag {
+            padding: 0.25rem 0.75rem;
+            background-color: var(--bg-light);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 0.75rem;
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        /* Project Cards - Full Width */
+        .projects-list {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .project-card {
+            background-color: var(--bg-white);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Awards - List Style */
+        .awards-list {
+            max-width: 650px;
+            margin: 0 auto;
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .award-item {
+            padding: 0.5rem 0 0.5rem 2rem;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .award-item:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            top: 0.6rem;
+            color: var(--primary-color);
+            font-weight: bold;
+            font-size: 1.2rem;
+            line-height: 1;
+        }
+
+        .award-item .post-date {
+            color: var(--text-light);
+            font-size: 0.875rem;
+            font-weight: 500;
+            display: inline-block;
+            margin-bottom: 0.25rem;
+        }
+
+        .award-item h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        .award-item h3::after {
+            font-weight: 400;
+        }
+
+        .award-item p {
+            display: none;
+        }
+
+        /* Talks - Card Style */
+        .talks-list {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .talk-item {
+            background-color: var(--bg-white);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .talk-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .talk-item .post-date {
+            color: var(--text-light);
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .talk-item h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        .talk-item p {
+            color: var(--text-light);
+            margin: 0;
+            font-size: 1rem;
+        }
+
+        /* Contact Section */
+        .contact-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .contact-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1.5rem 2rem;
+            background-color: var(--bg-white);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            text-decoration: none;
+            color: var(--text-dark);
+            transition: all 0.3s ease;
+            min-width: 180px;
+        }
+
+        .contact-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            border-color: var(--primary-color);
+        }
+
+        .contact-card svg {
+            color: var(--primary-color);
+            flex-shrink: 0;
+        }
+
+        .contact-card div {
+            text-align: center;
+        }
+
+        .contact-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.25rem;
+            color: var(--text-dark);
+        }
+
+        .contact-card p {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin: 0;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #2d3748;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        [data-theme="dark"] footer {
+            background-color: #1a202c;
+        }
+
+        footer a {
+            color: #9b8bb8;
+            text-decoration: none;
+        }
+
+        [data-theme="dark"] footer a {
+            color: #c9b8e8;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            nav ul {
+                gap: 1rem;
+                font-size: 0.875rem;
+            }
+
+            .hero-content {
+                flex-direction: column;
+                gap: 2rem;
+            }
+
+            .hero-text {
+                text-align: center;
+            }
+
+            .profile-picture {
+                width: 150px;
+                height: 150px;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .social-links {
+                justify-content: center;
+            }
+
+            .posts-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-links {
+                flex-direction: column;
+            }
+
+            .contact-card {
+                min-width: 100%;
+            }
+
+            section h2 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Scrolling Name Bar -->
+    <div class="name-bar" id="nameBar">
+        <h2>Ixeia Sánchez Périz</h2>
+    </div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <ul>
+                <li><a href="#about">About</a></li>
+                <li><a href="#work">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M20 6h-2.18c.11-.31.18-.65.18-1a2.996 2.996 0 0 0-5.5-1.65l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zM9 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm6 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM4 19V8h16v11H4z"/>
+                    </svg>
+                    Projects
+                </a></li>
+                <li><a href="assets/CV_IxeiaSP.pdf" download>
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
+                    </svg>
+                    CV
+                </a></li>
+                <li><a href="#awards">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94.63 1.5 1.98 2.63 3.61 2.96V19H7v2h10v-2h-4v-3.1c1.63-.33 2.98-1.46 3.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"/>
+                    </svg>
+                    Awards
+                </a></li>
+                <li><a href="#talks">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M21 6h-2v9H6v2c0 .55.45 1 1 1h11l4 4V7c0-.55-.45-1-1-1zm-4 6V3c0-.55-.45-1-1-1H3c-.55 0-1 .45-1 1v14l4-4h10c.55 0 1-.45 1-1z"/>
+                    </svg>
+                    Talks
+                </a></li>
+                <li><a href="#contact">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                    </svg>
+                    Contact
+                </a></li>
+            </ul>
+            <button id="darkModeToggle" class="dark-mode-toggle" aria-label="Toggle dark mode">
+                <svg class="sun-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="4" fill="currentColor"/>
+                    <path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32l1.41-1.41" fill="none"/>
+                </svg>
+                <svg class="moon-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" style="display: none;">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <img src="assets/profile_small.jpg" alt="Ixeia Sánchez Périz" class="profile-picture" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22150%22 height=%22150%22%3E%3Ccircle cx=%2275%22 cy=%2775%22 r=%2775%22 fill=%22%23cbd5e0%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 font-size=%2260%22 fill=%22%23fff%22%3EI%3C/text%3E%3C/svg%3E'">
+            <div class="hero-text">
+                <h1>Ixeia Sánchez Périz</h1>
+                <p style="margin-bottom: 0.5rem;">Data Eng • ML Systems • Cloud Infra</p>
+                <p style="display: inline-block; margin-top: 0.5rem; margin-bottom: 1rem; padding: 0.5rem 1rem; background-color: rgba(255, 255, 255, 0.2); border-radius: 8px; font-size: 0.95rem; backdrop-filter: blur(10px);">Zürich</p>
+                <div class="social-links">
+                    <a href="https://www.linkedin.com/in/ixeia-s-p/" target="_blank" class="social-link" title="LinkedIn">
+                        <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                            <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                        </svg>
+                    </a>
+                    <a href="https://github.com/ixsanpe" target="_blank" class="social-link" title="GitHub">
+                        <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                        </svg>
+                    </a>
+                    <a href="https://scholar.google.com/citations?user=iWlPeUYAAAAJ&hl=en" target="_blank" class="social-link" title="Google Scholar">
+                        <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                            <path d="M12 24a7 7 0 1 1 0-14 7 7 0 0 1 0 14zm0-24L0 9.5l4.838 3.94A8 8 0 0 1 12 9a8 8 0 0 1 7.162 4.44L24 9.5z"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about">
+        <div class="container">
+            <h2>
+                About Me
+            </h2>
+            <div class="about-content">
+                <p class="about-intro">
+                    Hi! I'm a Data & ML Engineer currently working at SWISS International Airlines, where I build scalable data pipelines for various business units and design cloud-based data platforms.
+                    I completed my MSc at ETH Zürich. In my Thesis, I developed a novel fault-tolerant framework for large-scale LLM training in dynamic environments.
+                    <br>
+                    <br>I love throwing myself into solving complex problems and building systems that create real-world impact. My current focus areas include agentic systems and MLOps for production environments.
+                    <br>
+                    <br>Beyond work, I enjoy mentoring students & contributing to diversity and inclusion initiatives. Outside of that, you'll usually find me in the mountains ⛰️ or discovering new places.
+                </p>
+                
+                <div class="about-grid">
+                    <div class="about-card">
+                        <div class="about-card-icon">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M20 6h-2.18c.11-.31.18-.65.18-1a2.996 2.996 0 0 0-5.5-1.65l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zM9 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm6 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM4 19V8h16v11H4z"/>
+                            </svg>
+                        </div>
+                        <div class="about-card-content">
+                            <h3>Work</h3>
+                            <p><strong>SWISS International Airlines</strong> • Cloud Data Engineer</p>
+                            <ul>
+                                <li>• Designing & productionizing TB-scale data pipelines with PySpark</li>
+                                <li>• Adopting AI Agents & ML models across Business Units</li>
+                                <li>• Building cloud-native data platforms</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="about-card">
+                        <div class="about-card-icon">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82zM12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/>
+                            </svg>
+                        </div>
+                        <div class="about-card-content">
+                            <h3>Education</h3>
+                            <ul>
+                                <li>• <strong>ETH Zürich</strong>:<br>MSc in Data Science</li>
+                                <li>• <strong>Universidad Politécnica de Valencia</strong>:
+                                    <br>Double BSc in Telecommunication Engineering & Business Administration (Ranked 1st in class)   
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="about-card">
+                        <div class="about-card-icon">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"/>
+                            </svg>
+                        </div>
+                        <div class="about-card-content">
+                            <h3>Interests & Expertise</h3>
+                            <ul>
+                                <li>• Scalable data pipelines & cloud platforms</li>
+                                <li>• MLOps & production ML systems</li>
+                                <li>• Agentic systems & AI integration</li>
+                                <li>• Large-scale LLM training</li>
+                            </ul>
+                            <!-- <p style="font-size: 0.85rem; margin-top: 1rem;">
+                                <strong>Key achievements:</strong> Reduced pipeline processing times from 6h to 30m • 6+ months zero downtime • LLM training systems for 1.5B+ parameters
+                            </p> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="work">
+        <div class="container">
+            <h2>Highlighted Projects</h2>
+            <div class="projects-list">
+                <article class="project-card">
+                    <div class="post-date">ETH Zürich • 2024</div>
+                    <h3 style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+                        Sailor: Automated ML Training System for the Cloud
+                        <a href="https://github.com/eth-easl/sailor" target="_blank" style="display: inline-flex; align-items: center; color: var(--text-light); transition: color 0.3s;" title="View on GitHub">
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                            </svg>
+                        </a>
+                    </h3>
+                    <p>
+                        System for automating large-scale ML training in dynamic cloud environments.
+                        Features elastic fault-tolerant mechanism with in-CPU checkpointing and fast reconfiguration,
+                        achieving 2.87× higher goodput compared to state-of-the-art.
+                        Includes optimal resource planner that explores search space 100× faster than naive approaches.
+                    </p>
+                    <div class="tech-tags">
+                        <span class="tech-tag">PyTorch</span>
+                        <span class="tech-tag">DeepSpeed</span>
+                        <span class="tech-tag">GKE</span>
+                    </div>
+                    <a href="projects/sailor-llm.html" class="read-more">Read More →</a>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Awards Section -->
+    <section id="awards">
+        <div class="container">
+            <h2>Awards & Recognition</h2>
+            <ul class="awards-list">
+                <li class="award-item">
+                    <h3>Commencement Speaker for BSc Graduation Ceremony <span style="font-weight: 400;">(May 2025)</span></h3>
+                    <p>Selected to deliver the commencement speech at the BSc Graduation Ceremony at Universidad Politécnica de Valencia, representing the graduating class and sharing insights on the journey from university to professional life.</p>
+                </li>
+
+                <li class="award-item">
+                    <h3>Best Student Award by Social Council at Universidad Politécnica de Valencia <span style="font-weight: 400;">(July 2022)</span></h3>
+                    <p>Awarded by the Social Council of Universidad Politécnica de Valencia for outstanding academic achievement and contribution to the university community throughout my degree program.</p>
+                </li>
+
+                <li class="award-item">
+                    <h3>Nova Top 111 University Talent in Spain <span style="font-weight: 400;">(March 2022)</span></h3>
+                    <p>Recognized as one of the top 111 university talents in Spain by Nova, highlighting exceptional academic performance and potential for future professional success.</p>
+                </li>
+
+                <li class="award-item">
+                    <h3>Award for 1st Rank amongst Double BSc Graduation Class <span style="font-weight: 400;">(November 2021)</span></h3>
+                    <p>Graduated with the highest GPA in my class from the double degree program in Telecommunication Engineering and Business Administration at Universidad Politécnica de Valencia.</p>
+                </li>
+
+                <li class="award-item">
+                    <h3>Santander Bank Fellow for Exchange Programme <span style="font-weight: 400;">(May 2019)</span></h3>
+                    <p>Selected as a Santander Bank Fellow for academic merit, receiving funding support for an international exchange program to broaden academic and cultural perspectives.</p>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Talks Section -->
+    <section id="talks">
+        <div class="container">
+            <h2>Talks</h2>
+            <div class="talks-list">
+                <div class="talk-item">
+                    <div class="post-date">UZH Career Night • November 2024</div>
+                    <h3>Career Tips for Fresh Graduates</h3>
+                    <div style="margin: 1rem 0;">
+                        <img src="assets/2024113_UZH_talk.jpg" alt="UZH Career Night Talk" style="width: 100%; max-width: 600px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                    </div>
+                    <p style="margin-bottom: 1rem;">I was invited to the UZH Career Night to share my experience as a fresh graduate on how to find a job
+                        and tips about transitioning from university to professional life. The talk covered five key principles for career development and job searching.</p>
+                    
+                    <div class="talk-preview">
+                        <p style="margin-bottom: 0.5rem; color: var(--text-light);"><strong>Key Topics:</strong> Finding your interests • Planning ahead • Understanding market trends • Learning from mistakes • Prioritizing wellbeing</p>
+                    </div>
+                    
+                    <a href="talks/uzh-career-night-2024.html" class="read-more">Read More →</a>
+                </div>
+
+                <div class="talk-item">
+                    <div class="post-date">Universidad Politécnica de Valencia • May 2025</div>
+                    <h3>Commencement Speech for BSc Graduation Ceremony</h3>
+                    <div style="margin: 1rem 0;">
+                        <a href="https://www.youtube.com/watch?v=Q9edBOO_sYo" target="_blank" style="display: block; position: relative; max-width: 350px;">
+                            <img src="assets/commencement_speech_thumbnail.jpg" alt="Commencement Speech" style="width: 100%; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22350%22 height=%22197%22%3E%3Crect width=%22350%22 height=%22197%22 fill=%22%23cbd5e0%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 font-size=%2216%22 fill=%22%234a5568%22%3ECommencement Speech%3C/text%3E%3C/svg%3E'">
+                            <svg viewBox="0 0 24 24" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 40px; height: 40px; fill: white; opacity: 0.9; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));">
+                                <path d="M8 5v14l11-7z"/>
+                            </svg>
+                        </a>
+                    </div>
+                    <p style="margin-bottom: 1rem;">I was honored to deliver the commencement speech for the Class of 2025 at my alma mater.
+                        It was a meaningful moment to share my journey with graduating students. The speech is available on YouTube in Spanish.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <div class="container" style="text-align: center;">
+            <h2>Get In Touch</h2>
+            <p style="color: var(--text-light); margin-bottom: 3rem; font-size: 1.1rem;">
+                Feel free to reach out!
+            </p>
+            <div class="contact-links">
+                <a href="https://github.com/ixsanpe" target="_blank" class="contact-card">
+                    <svg viewBox="0 0 24 24" width="32" height="32" fill="currentColor">
+                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                    </svg>
+                    <div>
+                        <h3>GitHub</h3>
+                        <p>Check out my code</p>
+                    </div>
+                </a>
+                <a href="https://www.linkedin.com/in/ixeia-s-p/" target="_blank" class="contact-card">
+                    <svg viewBox="0 0 24 24" width="32" height="32" fill="currentColor">
+                        <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                    </svg>
+                    <div>
+                        <h3>LinkedIn</h3>
+                        <p>Let's connect professionally</p>
+                    </div>
+                </a>
+                <a href="mailto:ixeiasp98@gmail.com" class="contact-card">
+                    <svg viewBox="0 0 24 24" width="32" height="32" fill="currentColor">
+                        <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                    </svg>
+                    <div>
+                        <h3>Email</h3>
+                        <p>Send me a message</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; <span id="currentYear"></span> Ixeia Sánchez Périz. All rights reserved. | Built together with 🤖 GitHub Copilot</p>
+        <p><a href="https://github.com/ixsanpe">GitHub</a> • <a href="https://www.linkedin.com/in/ixeia-s-p/">LinkedIn</a> • <a href="mailto:ixeiasp98@gmail.com">Email</a></p>
+        <p style="margin-top: 1rem; font-size: 0.875rem; opacity: 0.7;">Last updated: <span id="lastUpdated"></span></p>
+    </footer>
+
+    <script>
+        // Configuration - Update these URLs in one place
+        const SOCIAL_LINKS = {
+            linkedin: 'https://www.linkedin.com/in/ixeia-s-p/',
+            github: 'https://github.com/ixsanpe',
+            scholar: 'https://scholar.google.com/citations?user=iWlPeUYAAAAJ&hl=en',
+        };
+
+        // Set current year and last updated date
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+        document.getElementById('lastUpdated').textContent = new Date().toLocaleDateString('en-US', { 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+        });
+
+        // Update all social links
+        document.querySelectorAll('a[href*="linkedin"]').forEach(link => {
+            if (!link.href.includes('ixeia-s-p')) link.href = SOCIAL_LINKS.linkedin;
+        });
+        document.querySelectorAll('a[href*="github.com/ixsanpe"]').forEach(link => {
+            link.href = SOCIAL_LINKS.github;
+        });
+        document.querySelectorAll('a[href*="scholar.google.com"]').forEach(link => {
+            link.href = SOCIAL_LINKS.scholar;
+        });
+
+        // Dark mode toggle functionality
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const sunIcon = document.querySelector('.sun-icon');
+        const moonIcon = document.querySelector('.moon-icon');
+        const html = document.documentElement;
+
+        // Check for saved theme preference or default to light mode
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        html.setAttribute('data-theme', currentTheme);
+        updateIcons(currentTheme);
+
+        darkModeToggle.addEventListener('click', () => {
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateIcons(newTheme);
+        });
+
+        function updateIcons(theme) {
+            if (theme === 'dark') {
+                sunIcon.style.display = 'none';
+                moonIcon.style.display = 'block';
+            } else {
+                sunIcon.style.display = 'block';
+                moonIcon.style.display = 'none';
+            }
+        }
+
+        // Scrolling name bar functionality
+        const nameBar = document.getElementById('nameBar');
+        const hero = document.querySelector('.hero');
+        
+        window.addEventListener('scroll', () => {
+            const heroBottom = hero.offsetTop + hero.offsetHeight;
+            const scrollPosition = window.scrollY;
+            
+            if (scrollPosition > heroBottom) {
+                nameBar.classList.add('visible');
+            } else {
+                nameBar.classList.remove('visible');
+            }
+        });
+
+        // Toggle talk details
+        function toggleTalkDetails(event) {
+            event.preventDefault();
+            const talkItem = event.target.closest('.talk-item');
+            const details = talkItem.querySelector('.talk-details');
+            const preview = talkItem.querySelector('.talk-preview');
+            const readMoreLink = event.target;
+            
+            if (details.style.display === 'none') {
+                details.style.display = 'block';
+                preview.style.display = 'none';
+                readMoreLink.textContent = 'Read Less ↑';
+            } else {
+                details.style.display = 'none';
+                preview.style.display = 'block';
+                readMoreLink.textContent = 'Read More →';
+            }
+        }
+    </script>
+</body>
+</html>

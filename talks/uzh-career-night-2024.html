@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UZH Career Night 2024 - Ixeia Sánchez Périz</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23ffffff'/><path d='M20 85 L30 70 Q35 65 40 68 L45 72 Q50 75 55 70 L60 62 Q65 55 70 60 L78 68 Q82 72 85 68 L85 85 Z' fill='%2395c9c9' stroke='%232d3748' stroke-width='2'/><path d='M25 75 L32 65 Q37 58 42 62 L50 70 Q55 74 60 68 L68 58 Q72 53 77 58 L82 65 L82 85 L25 85 Z' fill='%23b8a8d8' opacity='0.7' stroke='%232d3748' stroke-width='2'/><path d='M35 50 L45 30 L50 35 L55 28 L65 45 L70 38 L80 55' fill='none' stroke='%237b9ab8' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/><ellipse cx='18' cy='25' rx='8' ry='5' fill='%23e8a89a' opacity='0.8'/><ellipse cx='25' cy='18' rx='7' ry='4' fill='%23e8a89a' opacity='0.6'/></svg>">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #7b9ab8;
+            --secondary-color: #5d7a99;
+            --accent-color: #9ab5ce;
+            --text-dark: #2d3748;
+            --text-light: #4a5568;
+            --bg-light: #f0f4f8;
+            --bg-white: #ffffff;
+            --border-color: #cbd5e0;
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #6b8fb0;
+            --secondary-color: #7a9fc0;
+            --accent-color: #b8a8d8;
+            --text-dark: #e2e8f0;
+            --text-light: #cbd5e0;
+            --bg-light: #1a202c;
+            --bg-white: #2d3748;
+            --border-color: #4a5568;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-color: var(--bg-white);
+        }
+
+        nav {
+            background-color: var(--bg-white);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        nav .back-link {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            transition: color 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        nav .back-link:hover {
+            color: var(--primary-color);
+        }
+
+        .dark-mode-toggle {
+            background: none;
+            border: none;
+            color: var(--text-dark);
+            cursor: pointer;
+            padding: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .dark-mode-toggle:hover {
+            background-color: var(--bg-light);
+            transform: scale(1.1);
+        }
+
+        .dark-mode-toggle svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 6rem 2rem 4rem;
+        }
+
+        .talk-header {
+            margin-bottom: 3rem;
+        }
+
+        .post-date {
+            color: var(--text-light);
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-dark);
+        }
+
+        .talk-image {
+            width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .talk-content {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .talk-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        .talk-content h2 {
+            font-size: 1.75rem;
+            margin: 2.5rem 0 1rem;
+            color: var(--text-dark);
+        }
+
+        .talk-content ul {
+            margin: 1.5rem 0 1.5rem 2rem;
+            list-style: none;
+        }
+
+        .talk-content ul li {
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .talk-content ul li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .talk-content strong {
+            color: var(--text-dark);
+        }
+
+        .diagram-container {
+            margin: 2.5rem 0;
+            text-align: center;
+        }
+
+        .diagram-container img {
+            width: 100%;
+            max-width: 700px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .diagram-caption {
+            font-size: 0.875rem;
+            color: var(--text-light);
+            margin-top: 0.75rem;
+            font-style: italic;
+        }
+        
+        .diagram-source {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin-top: 0.5rem;
+        }
+        
+        .diagram-source a {
+            color: #8b7aa8;
+            text-decoration: none;
+        }
+        
+        .diagram-source a:hover {
+            text-decoration: underline;
+            color: #7a6997;
+        }
+
+        [data-theme="dark"] .diagram-source a {
+            color: #e0d4f7;
+        }
+
+        [data-theme="dark"] .diagram-source a:hover {
+            color: #f0e8ff;
+        }
+
+        .talk-content a {
+            color: #8b7aa8;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .talk-content a:hover {
+            text-decoration: underline;
+            color: #7a6997;
+        }
+
+        [data-theme="dark"] .talk-content a {
+            color: #e0d4f7;
+        }
+
+        [data-theme="dark"] .talk-content a:hover {
+            color: #f0e8ff;
+        }
+
+        .closing-note {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background-color: var(--bg-light);
+            border-left: 4px solid var(--primary-color);
+            border-radius: 8px;
+            font-style: italic;
+        }
+
+        /* Lightbox for image zoom */
+        .lightbox {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            cursor: zoom-out;
+        }
+
+        .lightbox img {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 40px;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 10000;
+        }
+
+        .lightbox-close:hover {
+            color: #ccc;
+        }
+
+        .zoomable {
+            cursor: zoom-in;
+        }
+
+        footer {
+            background-color: #2d3748;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+        }
+
+        [data-theme="dark"] footer {
+            background-color: #1a202c;
+        }
+
+        footer a {
+            color: #9b8bb8;
+            text-decoration: none;
+        }
+
+        [data-theme="dark"] footer a {
+            color: #c9b8e8;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .talk-content {
+                font-size: 1rem;
+            }
+
+            .diagram-container img {
+                height: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Lightbox -->
+    <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+        <span class="lightbox-close">&times;</span>
+        <img id="lightbox-img" src="" alt="Zoomed image">
+    </div>
+
+    <nav>
+        <div class="container">
+            <a href="../index.html" class="logo">Ixeia Sánchez Périz</a>
+            <div style="display: flex; align-items: center; gap: 2rem;">
+                <a href="../index.html#talks" class="back-link">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                    Back to Home
+                </a>
+                <button id="darkModeToggle" class="dark-mode-toggle" aria-label="Toggle dark mode">
+                    <svg class="sun-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="4" fill="currentColor"/>
+                        <path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32l1.41-1.41" fill="none"/>
+                    </svg>
+                    <svg class="moon-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" style="display: none;">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="talk-header">
+            <div class="post-date">UZH Career Night • November 2024</div>
+            <h1>Career Tips for Fresh Graduates</h1>
+            <img src="../assets/2024113_UZH_talk.jpg" alt="UZH Career Night Talk" class="talk-image">
+        </div>
+
+        <div class="talk-content">
+            <p>On November 2024, I was invited to the <a href="https://uzhcareer.ch/en/lnoc/" target="_blank" rel="noopener noreferrer">Long Night of Careers</a> at University of Zurich to share my experience as a fresh graduate on how to find a job and tips about navigating the transition from university to professional life.</p>
+
+            <div style="position: relative; padding: 2rem 0;">
+                <span style="font-size: 4rem; color: var(--primary-color); opacity: 0.3; position: absolute; top: -1rem; left: -1.5rem;">&ldquo;</span>
+            <p>Just a few years back, in September 2021, I moved to Zurich to start my MSc in Data Science, and by April 2024, I graduated and soon after, in June, I started my full-time role as a Cloud Data Engineer at SWISS International Airlines in Zurich.</p>
+
+            <p>From the outside, that might sound like a smooth, linear path, but as you might expect, it was far from it. When I was preparing for this talk, I thought: <em>If I were sitting in this room three years ago, what would I have wanted to hear?</em> And from that reflection, I came up with five tips to help you think about your next steps.</p>
+
+            <div class="diagram-container">
+                <img src="../assets/life-paths-diagram.png" alt="Life Paths Diagram - Past and Future Opportunities">
+                <p class="diagram-source">Source: <a href="https://waitbutwhy.com/" target="_blank" rel="noopener noreferrer">Wait But Why</a></p>
+            </div>
+
+            <h2>Starting Your Career: Five Things I Wish I'd Known</h2>
+
+            <ul>
+                <li>
+                    <strong>Find What You're Interested In:</strong> The first tip might sound simple but is so powerful: find out what you're genuinely interested in. This includes exploring both the field you're drawn to and the kind of work that excites you. Are you captivated by deep problem-solving, or do you thrive in hands-on roles where you design and create solutions? Do you like collaborating in team discussions, or prefer diving into solo research? Take courses that intrigue you, explore different areas, and stay curious. What captures your attention? What triggers your concentration?
+                </li>
+                <li>
+                    <strong>Plan Ahead and Build the Skills You'll Need:</strong> It's useful to plan for the path you want to follow and gather the right tools along the way. If academia or research is your goal, prioritize publishing and connecting with people in your area of interest. For those eyeing industry roles, leverage resources like LinkedIn, ask for opinions from those in the field, or attend different events. If you feel you need to practice for tech interviews, save some time for that. Don't be afraid to take the extra time if it means gaining valuable experience: in my case, I took 5 semester instead of 4 semesters to finish my MSc because I wanted to do an internship.
+                </li>
+                <li>
+                    <strong>Understand the Job Market and its Trends:</strong> In fields like data science and AI, everything is constantly evolving. Take Generative AI, for instance, just a couple of years ago, it wasn't in the spotlight the way it is now. New roles are emerging, like prompt engineering, alongside growing needs in data governance, storage, and fine-tuning. Keep an eye on trends and adapt your skills to meet future demands.
+                </li>
+                <li>
+                    <strong>Learn from Mistakes:</strong> Mistakes will happen, but each one is a learning opportunity. After an interview, whether you get the job or not, ask for feedback. Reflect on what went well and what could have been improved. Feedback can sometimes be hard to hear (when you manage to receive it 😅), but it's incredibly valuable for growth. I take notes from previous interviews to check what I could do better, and I always ask for feedback if I get a rejection.
+                </li>
+                <li>
+                    <strong>Prioritize Yourself and Your Wellbeing:</strong> Finally, remember to take care of yourself. This journey isn't just about achieving career goals; it's about your personal growth and wellbeing too. It's easy to get caught up in grades or external achievements, but try to set realistic goals and allow yourself to enjoy the process. There's no need to compare yourself to others. Instead, compare today's version of yourself to yesterday's. Aim for steady progress, and be proud of every small step.
+                </li>
+            </ul>
+
+            <div class="closing-note">
+                <p><strong>Overall, your attitude plays a huge role. This is a long distance race.</strong> There is always a bit of "luck", but if you work hard in your career, I am sure you will be a bit luckier.</p>
+            </div>
+                <span style="font-size: 4rem; color: var(--primary-color); opacity: 0.3; position: absolute; bottom: -5rem; right: 0;">&rdquo;</span>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Ixeia Sánchez Périz. All rights reserved.</p>
+        <p><a href="../index.html">Back to Home</a></p>
+    </footer>
+
+    <script>
+        // Dark mode toggle functionality
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const sunIcon = document.querySelector('.sun-icon');
+        const moonIcon = document.querySelector('.moon-icon');
+        const html = document.documentElement;
+
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        html.setAttribute('data-theme', currentTheme);
+        updateIcons(currentTheme);
+
+        darkModeToggle.addEventListener('click', () => {
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateIcons(newTheme);
+        });
+
+        function updateIcons(theme) {
+            if (theme === 'dark') {
+                sunIcon.style.display = 'none';
+                moonIcon.style.display = 'block';
+            } else {
+                sunIcon.style.display = 'block';
+                moonIcon.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

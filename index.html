@@ -800,7 +800,7 @@
                     <br>
                     <br>I love throwing myself into solving complex problems and building systems that create real-world impact. My current focus areas include agentic systems and MLOps for production environments.
                     <br>
-                    <br>Beyond work, I enjoy mentoring students & contributing to diversity and inclusion initiatives. Outside of that, you'll usually find me in the mountains ⛰️ or discovering new places.
+                    <br>Beyond work, I enjoy mentoring students & contributing to diversity and inclusion initiatives. My hobbies include outdoor sports and travelling.
                 </p>
                 
                 <div class="about-grid">
@@ -1021,11 +1021,27 @@
 
         // Set current year and last updated date
         document.getElementById('currentYear').textContent = new Date().getFullYear();
-        document.getElementById('lastUpdated').textContent = new Date().toLocaleDateString('en-US', { 
-            year: 'numeric', 
-            month: 'long', 
-            day: 'numeric' 
-        });
+        
+        // Fetch last commit date from GitHub API
+        fetch('https://api.github.com/repos/ixsanpe/ixeiasp.github.io/commits/main')
+            .then(response => response.json())
+            .then(data => {
+                const lastCommitDate = new Date(data.commit.author.date);
+                document.getElementById('lastUpdated').textContent = lastCommitDate.toLocaleDateString('en-US', { 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching last commit date:', error);
+                // Fallback to current date if API fails
+                document.getElementById('lastUpdated').textContent = new Date().toLocaleDateString('en-US', { 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                });
+            });
 
         // Update all social links
         document.querySelectorAll('a[href*="linkedin"]').forEach(link => {

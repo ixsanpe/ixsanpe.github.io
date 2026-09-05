@@ -5,67 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ixeia Sánchez Périz</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23ffffff'/><path d='M20 85 L30 70 Q35 65 40 68 L45 72 Q50 75 55 70 L60 62 Q65 55 70 60 L78 68 Q82 72 85 68 L85 85 Z' fill='%2395c9c9' stroke='%232d3748' stroke-width='2'/><path d='M25 75 L32 65 Q37 58 42 62 L50 70 Q55 74 60 68 L68 58 Q72 53 77 58 L82 65 L82 85 L25 85 Z' fill='%23b8a8d8' opacity='0.7' stroke='%232d3748' stroke-width='2'/><path d='M35 50 L45 30 L50 35 L55 28 L65 45 L70 38 L80 55' fill='none' stroke='%237b9ab8' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/><ellipse cx='18' cy='25' rx='8' ry='5' fill='%23e8a89a' opacity='0.8'/><ellipse cx='25' cy='18' rx='7' ry='4' fill='%23e8a89a' opacity='0.6'/></svg>">
+    <link rel="stylesheet" href="style.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --primary-color: #7b9ab8;
-            --secondary-color: #5d7a99;
-            --accent-color: #9ab5ce;
-            --text-dark: #2d3748;
-            --text-light: #4a5568;
-            --bg-light: #f0f4f8;
-            --bg-white: #ffffff;
-            --border-color: #cbd5e0;
-        }
-
-        [data-theme="dark"] {
-            --primary-color: #6b8fb0;      /* Navy blue */
-            --secondary-color: #7a9fc0;    /* Medium navy */
-            --accent-color: #b8a8d8;       /* Purple pastel */
-            --text-dark: #e2e8f0;          /* Light text */
-            --text-light: #cbd5e0;         /* Muted text */
-            --bg-light: #1a202c;           /* Dark background */
-            --bg-white: #2d3748;           /* Card background */
-            --border-color: #4a5568;       /* Border */
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            line-height: 1.6;
-            color: var(--text-dark);
-            background-color: var(--bg-white);
-        }
-
-        /* Navigation */
-        nav {
-            background-color: var(--bg-white);
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-        }
-
-        nav .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        nav .logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--primary-color);
-        }
-
         nav ul {
             list-style: none;
             display: flex;
@@ -90,29 +31,6 @@
             width: 16px;
             height: 16px;
             flex-shrink: 0;
-        }
-
-        .dark-mode-toggle {
-            background: none;
-            border: none;
-            color: var(--text-dark);
-            cursor: pointer;
-            padding: 0.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 8px;
-            transition: background-color 0.3s, transform 0.2s;
-        }
-
-        .dark-mode-toggle:hover {
-            background-color: var(--bg-light);
-            transform: scale(1.1);
-        }
-
-        .dark-mode-toggle svg {
-            width: 20px;
-            height: 20px;
         }
 
         /* Scrolling Name Bar */
@@ -339,6 +257,7 @@
         @media (max-width: 768px) {
             .about-card {
                 flex-direction: column;
+                align-items: center;
                 text-align: center;
             }
 
@@ -532,7 +451,9 @@
         }
 
         .award-item p {
-            display: none;
+            color: var(--text-light);
+            font-size: 0.95rem;
+            line-height: 1.6;
         }
 
         /* Talks - Card Style */
@@ -629,30 +550,6 @@
         }
 
         /* Footer */
-        footer {
-            background-color: #2d3748;
-            color: white;
-            text-align: center;
-            padding: 2rem;
-        }
-
-        [data-theme="dark"] footer {
-            background-color: #1a202c;
-        }
-
-        footer a {
-            color: #9b8bb8;
-            text-decoration: none;
-        }
-
-        [data-theme="dark"] footer a {
-            color: #c9b8e8;
-        }
-
-        footer a:hover {
-            text-decoration: underline;
-        }
-
         /* Responsive Design */
         @media (max-width: 768px) {
             nav ul {
@@ -721,7 +618,7 @@
                     </svg>
                     Projects
                 </a></li>
-                <li><a href="assets/CV_Ixeia.pdf" download>
+                <li><a href="assets/CV_Ixeia.pdf" target="_blank" rel="noopener noreferrer">
                     <svg viewBox="0 0 24 24" fill="currentColor">
                         <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
                     </svg>
@@ -764,7 +661,7 @@
             <img src="assets/profile_small.jpg" alt="Ixeia Sánchez Périz" class="profile-picture" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22150%22 height=%22150%22%3E%3Ccircle cx=%2275%22 cy=%2775%22 r=%2775%22 fill=%22%23cbd5e0%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 font-size=%2260%22 fill=%22%23fff%22%3EI%3C/text%3E%3C/svg%3E'">
             <div class="hero-text">
                 <h1>Ixeia Sánchez Périz</h1>
-                <p style="margin-bottom: 0.5rem;">Data Eng • ML Systems • Cloud Infra</p>
+                <p style="margin-bottom: 0.5rem;">Data & AI at Scale</p>
                 <p style="display: inline-block; margin-top: 0.5rem; margin-bottom: 1rem; padding: 0.5rem 1rem; background-color: rgba(255, 255, 255, 0.2); border-radius: 8px; font-size: 0.95rem; backdrop-filter: blur(10px);">Zürich</p>
                 <div class="social-links">
                     <a href="https://www.linkedin.com/in/ixeia-s-p/" target="_blank" class="social-link" title="LinkedIn">
@@ -795,12 +692,10 @@
             </h2>
             <div class="about-content">
                 <p class="about-intro">
-                    Hi! I'm a Data & ML Engineer currently working at SWISS International Airlines, where I build scalable data pipelines for various business units and design cloud-based data platforms.
-                    I completed my MSc at ETH Zürich. In my Thesis, I developed a novel fault-tolerant framework for large-scale LLM training in dynamic environments.
+                    Hi! I'm a Senior Data & AI Engineer at SWISS International Airlines, where I build TB-scale pipelines and cutting-edge agentic platforms, with hands-on experience across text, tabular, audio, and video data.
+                    I hold an MSc in Data Science from ETH Zürich, where I gained experience as a research engineer on distributed LLM training and fault tolerance. This was published at SOSP '25.
                     <br>
-                    <br>I love throwing myself into solving complex problems and building systems that create real-world impact. My current focus areas include agentic systems and MLOps for production environments.
-                    <br>
-                    <br>Beyond work, I enjoy mentoring students & contributing to diversity and inclusion initiatives. My hobbies include outdoor sports and travelling.
+                    <br>Beyond work, I enjoy mentoring students, contributing to diversity & inclusion initiatives, and travelling.
                 </p>
                 
                 <div class="about-grid">
@@ -1098,25 +993,6 @@
                 nameBar.classList.remove('visible');
             }
         });
-
-        // Toggle talk details
-        function toggleTalkDetails(event) {
-            event.preventDefault();
-            const talkItem = event.target.closest('.talk-item');
-            const details = talkItem.querySelector('.talk-details');
-            const preview = talkItem.querySelector('.talk-preview');
-            const readMoreLink = event.target;
-            
-            if (details.style.display === 'none') {
-                details.style.display = 'block';
-                preview.style.display = 'none';
-                readMoreLink.textContent = 'Read Less ↑';
-            } else {
-                details.style.display = 'none';
-                preview.style.display = 'block';
-                readMoreLink.textContent = 'Read More →';
-            }
-        }
     </script>
 </body>
 </html>

@@ -1,9 +1,21 @@
+<!--
+    PROJECT PAGE TEMPLATE
+    =====================
+    How to use:
+    1. Copy this file to a new name, e.g. projects/my-new-project.html
+    2. Fill in every [PLACEHOLDER IN BRACKETS] below.
+    3. Delete the carousel section (and its matching JS block, marked below)
+       if this project doesn't need an image slideshow.
+    4. Delete the "External Link" button block if there's no GitHub repo/demo/paper to link to.
+    5. Add a matching project-card in ../index.html's "Highlighted Projects" section,
+       linking to your new file (see an existing card there for the markup).
+-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sailor: Automated ML Training System - Ixeia Sánchez Périz</title>
+    <title>[PROJECT TITLE] - Ixeia Sánchez Périz</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23ffffff'/><path d='M20 85 L30 70 Q35 65 40 68 L45 72 Q50 75 55 70 L60 62 Q65 55 70 60 L78 68 Q82 72 85 68 L85 85 Z' fill='%2395c9c9' stroke='%232d3748' stroke-width='2'/><path d='M25 75 L32 65 Q37 58 42 62 L50 70 Q55 74 60 68 L68 58 Q72 53 77 58 L82 65 L82 85 L25 85 Z' fill='%23b8a8d8' opacity='0.7' stroke='%232d3748' stroke-width='2'/><path d='M35 50 L45 30 L50 35 L55 28 L65 45 L70 38 L80 55' fill='none' stroke='%237b9ab8' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/><ellipse cx='18' cy='25' rx='8' ry='5' fill='%23e8a89a' opacity='0.8'/><ellipse cx='25' cy='18' rx='7' ry='4' fill='%23e8a89a' opacity='0.6'/></svg>">
     <link rel="stylesheet" href="../style.css">
     <style>
@@ -122,6 +134,8 @@
             color: #f0e8ff;
         }
 
+        /* --- Carousel (optional - delete this block along with the matching JS
+               further down if this project has no image slideshow) --- */
         .carousel-container {
             position: relative;
             max-width: 100%;
@@ -185,6 +199,7 @@
             from { opacity: 0; }
             to { opacity: 1; }
         }
+        /* --- end optional carousel --- */
 
         @media (max-width: 768px) {
             nav {
@@ -231,112 +246,82 @@
 
     <div class="container">
         <div class="project-header">
-            <div class="post-date">ETH Zürich Master's Thesis • 2024</div>
-            <h1>Sailor: Automated ML Training System for the Cloud</h1>
+            <div class="post-date">[CONTEXT, e.g. "Personal Project" or "Company Name"] • [YEAR]</div>
+            <h1>[PROJECT TITLE]</h1>
             <div class="tech-tags">
-                <span class="tech-tag">PyTorch</span>
-                <span class="tech-tag">DeepSpeed</span>
-                <span class="tech-tag">GKE</span>
-                <span class="tech-tag">Docker</span>
+                <span class="tech-tag">[TECH 1]</span>
+                <span class="tech-tag">[TECH 2]</span>
+                <span class="tech-tag">[TECH 3]</span>
             </div>
         </div>
 
         <div class="project-content">
             <h2>The Challenge</h2>
             <p>
-                Training large-scale LLMs in the cloud is expensive and complex. Loads of systems struggle with slow fault tolerance mechanisms. It is difficult to find optimal resource configurations, and adapt to node failures, especially when using cheaper preemptible instances.
+                [What problem was this project solving? 2-4 sentences of context.]
             </p>
 
-            <h2>Solution: Sailor System</h2>
+            <h2>Solution: [SOLUTION/SYSTEM NAME]</h2>
             <p>
-                Sailor introduces a comprehensive system for automating ML training in the cloud with two main innovations: elastic fault-tolerant mechanisms and an optimal resource planner.
+                [What did you build and how does it work at a high level?]
             </p>
 
+            <!-- Single image (optional - delete if not needed) -->
             <div style="display: flex; gap: 1rem; margin: 2rem 0; flex-wrap: wrap; justify-content: center;">
                 <div style="flex: 1; min-width: 300px; max-width: 500px;">
-                    <img src="../assets/sailor-sys1.jpg" alt="Sailor System Architecture - Multi-cluster coordination" style="width: 100%; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
-                    <p style="font-size: 0.875rem; color: var(--text-light); margin-top: 0.5rem; text-align: center; font-style: italic;">Multi-cluster coordination with master controller</p>
+                    <img src="../assets/[IMAGE_FILENAME].jpg" alt="[DESCRIPTIVE ALT TEXT]" style="width: 100%; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                    <p style="font-size: 0.875rem; color: var(--text-light); margin-top: 0.5rem; text-align: center; font-style: italic;">[IMAGE CAPTION]</p>
                 </div>
             </div>
 
-            <h3>1. Elastic Fault-Tolerant Mechanism</h3>
+            <h3>1. [KEY FEATURE OR COMPONENT]</h3>
             <p>
-                We developed a novel in-CPU checkpointing mechanism that enables fast recovery from failures and preemptions. Unlike traditional approaches that write checkpoints to disk or remote storage, our method:
+                [Description of this part of the solution.]
             </p>
             <ul>
-                <li>Stores checkpoints directly in CPU memory for instant access</li>
-                <li>Enables rapid reconfiguration when nodes are preempted or fail</li>
-                <li>Minimizes training interruption through elastic scaling</li>
-                <li>Adapts dynamically to changing resource availability</li>
+                <li>[Detail or capability]</li>
+                <li>[Detail or capability]</li>
+                <li>[Detail or capability]</li>
             </ul>
 
+            <!-- Image carousel (optional - delete this whole block if not needed,
+                 and remove the matching carousel JS at the bottom of the file) -->
             <div class="carousel-container">
                 <div class="carousel-slide active">
-                    <img src="../assets/sailor-elastic1.jpg" alt="Preemption detected">
-                    <div class="carousel-caption">Spot instance preemption detected (World size = 4 → 3)</div>
+                    <img src="../assets/[SLIDE1].jpg" alt="[ALT TEXT]">
+                    <div class="carousel-caption">[Caption for slide 1]</div>
                 </div>
                 <div class="carousel-slide">
-                    <img src="../assets/sailor-elastic2.jpg" alt="Step 1: Error caught">
-                    <div class="carousel-caption">Step 1: Controller catches error and kills all processes</div>
-                </div>
-                    <div class="carousel-slide">
-                    <img src="../assets/sailor-elastic3.jpg" alt="Step 5: New config requested">
-                    <div class="carousel-caption">Step 2: New configuration is shared to all nodes</div>
-                </div>
-                <div class="carousel-slide">
-                    <img src="../assets/sailor-elastic4.jpg" alt="Step 3: Checkpoint recovery">
-                    <div class="carousel-caption">Step 3: Recover from in-CPU checkpoint with new split</div>
-                </div>
-                <div class="carousel-slide">
-                    <img src="../assets/sailor-elastic5.jpg" alt="Step 4: Cleanup">
-                    <div class="carousel-caption">Step 4: Cleanup obsolete resources</div>
-                </div>
-                <div class="carousel-slide">
-                    <img src="../assets/sailor-elastic6.jpg" alt="Step 5: Training resumes">
-                    <div class="carousel-caption">Step 5: Training resumes with new world size</div>
+                    <img src="../assets/[SLIDE2].jpg" alt="[ALT TEXT]">
+                    <div class="carousel-caption">[Caption for slide 2]</div>
                 </div>
                 <div class="carousel-indicators">
                     <span class="carousel-dot active" onclick="currentSlide(0)"></span>
                     <span class="carousel-dot" onclick="currentSlide(1)"></span>
-                    <span class="carousel-dot" onclick="currentSlide(2)"></span>
-                    <span class="carousel-dot" onclick="currentSlide(3)"></span>
-                    <span class="carousel-dot" onclick="currentSlide(4)"></span>
-                    <span class="carousel-dot" onclick="currentSlide(5)"></span>
                 </div>
             </div>
 
-            <h3>2. Optimal Resource Planner</h3>
-            <p>
-                Our optimization algorithm intelligently navigates the cloud resource search space to find the most cost-effective training configurations.
-            </p>
             <h2>Results & Impact</h2>
             <p>
-                Our evaluation demonstrates significant improvements over existing approaches:
+                [Summary sentence introducing the outcomes.]
             </p>
             <ul>
-                <li><strong>2.87x higher goodput</strong> on preemptible VMs compared to state-of-the-art fault tolerance methods</li>
-                <li><strong>100× faster optimization</strong> for finding optimal training configurations</li>
-                <li><strong>Cost-efficient training</strong> of 1.5B+ parameter models using cheaper preemptible instances</li>
-                <li><strong>Minimal recovery overhead</strong> thanks to in-CPU checkpointing</li>
+                <li><strong>[METRIC/RESULT]</strong> [context for the metric]</li>
+                <li><strong>[METRIC/RESULT]</strong> [context for the metric]</li>
             </ul>
 
+            <!-- Callout box (optional - use for a "why this matters" takeaway) -->
             <div class="highlight-box">
-                <h3>Real-World Impact</h3>
+                <h3>[CALLOUT TITLE, e.g. "Real-World Impact"]</h3>
                 <p>
-                    Sailor enables researchers and organizations to train large language models at a fraction of the cost, making advanced ML capabilities more accessible. By efficiently leveraging preemptible VMs, which can be 60-90% cheaper than on-demand instances, the system democratizes access to large-scale ML training.
+                    [A short paragraph on the broader significance of this project.]
                 </p>
             </div>
 
-            <h2>Open Source</h2>
-            <p>
-                This work has been continued and expanded by the Efficient Architectures and Systems Lab at ETH Zürich. The project is now open source and available on GitHub:
-            </p>
+            <!-- External link button (optional - delete if there's no repo/demo/paper) -->
             <p style="text-align: center; margin: 2rem 0;">
-                <a href="https://github.com/eth-easl/sailor" target="_blank" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; transition: transform 0.3s, box-shadow 0.3s;">
-                    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
-                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                    </svg>
-                    View on GitHub
+                <a href="[URL]" target="_blank" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; transition: transform 0.3s, box-shadow 0.3s;">
+                    [View on GitHub / Try the Demo / Read the Paper]
                 </a>
             </p>
         </div>
@@ -365,7 +350,7 @@
         darkModeToggle.addEventListener('click', () => {
             const currentTheme = html.getAttribute('data-theme');
             const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-            
+
             html.setAttribute('data-theme', newTheme);
             localStorage.setItem('theme', newTheme);
             updateIcons(newTheme);
@@ -381,14 +366,14 @@
             }
         }
 
-        // Carousel functionality
+        // --- Carousel functionality (optional - delete if you removed the carousel above) ---
         let currentSlideIndex = 0;
         let carouselInterval;
 
         function showSlide(index) {
             const slides = document.querySelectorAll('.carousel-slide');
             const dots = document.querySelectorAll('.carousel-dot');
-            
+
             if (index >= slides.length) {
                 currentSlideIndex = 0;
             } else if (index < 0) {
@@ -396,10 +381,10 @@
             } else {
                 currentSlideIndex = index;
             }
-            
+
             slides.forEach(slide => slide.classList.remove('active'));
             dots.forEach(dot => dot.classList.remove('active'));
-            
+
             slides[currentSlideIndex].classList.add('active');
             dots[currentSlideIndex].classList.add('active');
         }
@@ -410,24 +395,22 @@
 
         function currentSlide(index) {
             showSlide(index);
-            // Reset the interval when user manually selects a slide
             clearInterval(carouselInterval);
             carouselInterval = setInterval(nextSlide, 4000);
         }
 
-        // Auto-advance carousel every 3 seconds
         carouselInterval = setInterval(nextSlide, 4000);
-        // Pause carousel on hover
         const carouselContainer = document.querySelector('.carousel-container');
         if (carouselContainer) {
             carouselContainer.addEventListener('mouseenter', () => {
                 clearInterval(carouselInterval);
             });
-            
+
             carouselContainer.addEventListener('mouseleave', () => {
                 carouselInterval = setInterval(nextSlide, 4000);
             });
         }
+        // --- end optional carousel functionality ---
     </script>
 </body>
 </html>

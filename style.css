@@ -1,4 +1,4 @@
-/* Shared styles for blog posts */
+/* Shared styles: reset, theme variables, nav, dark-mode toggle, footer */
 * {
     margin: 0;
     padding: 0;
@@ -14,6 +14,17 @@
     --bg-light: #f0f4f8;
     --bg-white: #ffffff;
     --border-color: #cbd5e0;
+}
+
+[data-theme="dark"] {
+    --primary-color: #6b8fb0;      /* Navy blue */
+    --secondary-color: #7a9fc0;    /* Medium navy */
+    --accent-color: #b8a8d8;       /* Purple pastel */
+    --text-dark: #e2e8f0;          /* Light text */
+    --text-light: #cbd5e0;         /* Muted text */
+    --bg-light: #1a202c;           /* Dark background */
+    --bg-white: #2d3748;           /* Card background */
+    --border-color: #4a5568;       /* Border */
 }
 
 body {
@@ -46,161 +57,75 @@ nav .logo {
     font-size: 1.5rem;
     font-weight: 700;
     color: var(--primary-color);
-}
-
-nav .logo a {
-    color: var(--primary-color);
     text-decoration: none;
 }
 
-nav ul {
-    list-style: none;
-    display: flex;
-    gap: 2rem;
-}
-
-nav a {
+nav .back-link {
     text-decoration: none;
     color: var(--text-dark);
     font-weight: 500;
     transition: color 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
-nav a:hover {
+nav .back-link:hover {
     color: var(--primary-color);
 }
 
-/* Blog Post Styles */
-.blog-post {
-    margin-top: 70px;
-    padding: 4rem 2rem;
-}
-
-.container {
-    max-width: 800px;
-    margin: 0 auto;
-}
-
-.post-header {
-    margin-bottom: 3rem;
-    text-align: center;
-}
-
-.post-header h1 {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
+/* Dark mode toggle */
+.dark-mode-toggle {
+    background: none;
+    border: none;
     color: var(--text-dark);
+    cursor: pointer;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    transition: background-color 0.3s, transform 0.2s;
 }
 
-.post-meta {
+.dark-mode-toggle:hover {
+    background-color: var(--bg-light);
+    transform: scale(1.1);
+}
+
+.dark-mode-toggle svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* Post/talk/award date label */
+.post-date {
     color: var(--text-light);
     font-size: 0.875rem;
-}
-
-.post-meta span {
-    margin: 0 0.5rem;
-}
-
-.post-content {
-    font-size: 1.125rem;
-    line-height: 1.8;
-}
-
-.post-content h2 {
-    font-size: 1.75rem;
-    margin-top: 2rem;
-    margin-bottom: 1rem;
-    color: var(--text-dark);
-}
-
-.post-content h3 {
-    font-size: 1.5rem;
-    margin-top: 1.5rem;
-    margin-bottom: 0.75rem;
-    color: var(--text-dark);
-}
-
-.post-content p {
-    margin-bottom: 1.5rem;
-    color: var(--text-dark);
-}
-
-.post-content ul, .post-content ol {
-    margin-bottom: 1.5rem;
-    margin-left: 2rem;
-}
-
-.post-content li {
     margin-bottom: 0.5rem;
-}
-
-.post-content code {
-    background-color: var(--bg-light);
-    padding: 0.2rem 0.4rem;
-    border-radius: 3px;
-    font-family: 'Courier New', monospace;
-    font-size: 0.9em;
-}
-
-.post-content pre {
-    background-color: var(--bg-light);
-    padding: 1rem;
-    border-radius: 8px;
-    overflow-x: auto;
-    margin-bottom: 1.5rem;
-}
-
-.post-content pre code {
-    background-color: transparent;
-    padding: 0;
-}
-
-.post-footer {
-    margin-top: 4rem;
-    padding-top: 2rem;
-    border-top: 1px solid var(--border-color);
-}
-
-.back-link {
-    color: var(--primary-color);
-    text-decoration: none;
-    font-weight: 600;
-}
-
-.back-link:hover {
-    color: var(--secondary-color);
 }
 
 /* Footer */
 footer {
-    background-color: var(--text-dark);
+    background-color: #2d3748;
     color: white;
     text-align: center;
     padding: 2rem;
-    margin-top: 4rem;
+}
+
+[data-theme="dark"] footer {
+    background-color: #1a202c;
 }
 
 footer a {
-    color: var(--accent-color);
+    color: #9b8bb8;
     text-decoration: none;
+}
+
+[data-theme="dark"] footer a {
+    color: #c9b8e8;
 }
 
 footer a:hover {
     text-decoration: underline;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    nav ul {
-        gap: 1rem;
-        font-size: 0.875rem;
-    }
-
-    .post-header h1 {
-        font-size: 2rem;
-    }
-
-    .post-content {
-        font-size: 1rem;
-    }
 }

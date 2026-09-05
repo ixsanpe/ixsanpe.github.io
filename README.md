@@ -7,12 +7,17 @@ Personal portfolio site showcasing tech projects & initiatives.
 ```
 .
 ├── index.html             # Main page
-├── style.css              # Shared styles
+├── style.css              # Shared styles (theme vars, nav, dark-mode toggle, footer)
 ├── assets/                # Images & files
-├── blog/                  # Blog posts
 ├── projects/              # Project pages
 └── talks/                 # Talk pages
 ```
+
+## Adding a New Project
+
+1. Copy `projects/_template.html` to `projects/your-project-name.html`.
+2. Fill in the `[PLACEHOLDER]` text and image paths (comments in the file explain each section, including which blocks are optional).
+3. Add a matching project card to the "Highlighted Projects" section in `index.html`, linking to your new file.
 
 ## Local Development
 

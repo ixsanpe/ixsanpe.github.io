@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sailor: Automated ML Training System - Ixeia Sánchez Périz</title>
+    <title>Sailor: automating LLM training in the Cloud - Ixeia Sánchez Périz</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23ffffff'/><path d='M20 85 L30 70 Q35 65 40 68 L45 72 Q50 75 55 70 L60 62 Q65 55 70 60 L78 68 Q82 72 85 68 L85 85 Z' fill='%2395c9c9' stroke='%232d3748' stroke-width='2'/><path d='M25 75 L32 65 Q37 58 42 62 L50 70 Q55 74 60 68 L68 58 Q72 53 77 58 L82 65 L82 85 L25 85 Z' fill='%23b8a8d8' opacity='0.7' stroke='%232d3748' stroke-width='2'/><path d='M35 50 L45 30 L50 35 L55 28 L65 45 L70 38 L80 55' fill='none' stroke='%237b9ab8' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/><ellipse cx='18' cy='25' rx='8' ry='5' fill='%23e8a89a' opacity='0.8'/><ellipse cx='25' cy='18' rx='7' ry='4' fill='%23e8a89a' opacity='0.6'/></svg>">
     <link rel="stylesheet" href="../style.css">
     <style>
@@ -122,68 +122,68 @@
             color: var(--link-hover);
         }
 
-        .carousel-container {
-            position: relative;
-            max-width: 100%;
-            margin: 2rem auto;
-            overflow: hidden;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        .figure {
+            margin: 2rem 0 2.5rem;
         }
 
-        .carousel-slide {
-            display: none;
-            animation: fadeIn 0.5s;
-            min-height: 500px;
-        }
-
-        .carousel-slide.active {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .carousel-slide img {
-            width: 100%;
-            height: 500px;
-            object-fit: contain;
-            object-position: center;
-            background-color: var(--bg-white);
+        .figure video,
+        .figure .arch {
             display: block;
+            width: 100%;
+            height: auto;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-white);
         }
 
-        .carousel-caption {
-            text-align: center;
-            padding: 1rem;
-            background-color: var(--bg-light);
+        .figure .arch {
+            font-family: var(--font-body);
+        }
+
+        .figure figcaption {
+            margin-top: 0.6rem;
             font-size: 0.875rem;
             color: var(--text-light);
+            text-align: center;
             font-style: italic;
         }
 
-        .carousel-indicators {
-            text-align: center;
-            padding: 0.5rem;
-            background-color: var(--bg-light);
+        .project-content ol {
+            margin: 1.5rem 0 1.5rem 1.5rem;
         }
 
-        .carousel-dot {
-            display: inline-block;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background-color: var(--border-color);
-            margin: 0 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
+        .project-content ol li {
+            margin-bottom: 0.75rem;
+            padding-left: 0.25rem;
         }
 
-        .carousel-dot.active {
-            background-color: var(--primary-color);
+        .link-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        .project-content .link-buttons a {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--primary-color);
+            color: var(--bg-white);
+            border-radius: var(--radius-pill);
+            font-weight: 600;
+        }
+
+        .project-content .link-buttons a:hover {
+            text-decoration: none;
+            background: var(--secondary-color);
+            color: var(--bg-white);
+        }
+
+        [data-theme="dark"] .project-content .link-buttons a:hover {
+            background: var(--link-hover);
         }
 
         @media (max-width: 768px) {
@@ -231,114 +231,186 @@
 
     <div class="container">
         <div class="project-header">
-            <div class="post-date">ETH Zürich Master's Thesis • 2024</div>
-            <h1>Sailor: Automated ML Training System for the Cloud</h1>
+            <div class="post-date">ETH Zürich · Master's thesis · 2024 · Published at SOSP '25</div>
+            <h1>Sailor: automating LLM training in the Cloud</h1>
             <div class="tech-tags">
                 <span class="tech-tag">PyTorch</span>
                 <span class="tech-tag">DeepSpeed</span>
                 <span class="tech-tag">GKE</span>
                 <span class="tech-tag">Docker</span>
+                <span class="tech-tag">Spot instances</span>
             </div>
         </div>
 
         <div class="project-content">
-            <h2>The Challenge</h2>
+            <h2>The problem</h2>
             <p>
-                Training large-scale LLMs in the cloud is expensive and complex. Loads of systems struggle with slow fault tolerance mechanisms. It is difficult to find optimal resource configurations, and adapt to node failures, especially when using cheaper preemptible instances.
+                Training large language models in the Cloud is expensive. The cheapest GPUs are spot (preemptible) instances, often 60–90% cheaper than on-demand ones, but the provider can reclaim them at any moment. Most training systems handle that badly: losing one node crashes the whole job, and recovery means restarting from a checkpoint in remote storage.
             </p>
 
-            <h2>Solution: Sailor System</h2>
+            <h2>What Sailor does</h2>
             <p>
-                Sailor introduces a comprehensive system for automating ML training in the cloud with two main innovations: elastic fault-tolerant mechanisms and an optimal resource planner.
+                Sailor automates ML training in the Cloud. Its core is an <strong>elastic, fault-tolerant runtime</strong> that keeps training going as nodes come and go: a master controller keeps track of every cluster, and when the set of nodes changes it pushes a new topology to each one.
             </p>
 
-            <div style="display: flex; gap: 1rem; margin: 2rem 0; flex-wrap: wrap; justify-content: center;">
-                <div style="flex: 1; min-width: 300px; max-width: 500px;">
-                    <img src="../assets/sailor-sys1.jpg" alt="Sailor System Architecture - Multi-cluster coordination" style="width: 100%; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
-                    <p style="font-size: 0.875rem; color: var(--text-light); margin-top: 0.5rem; text-align: center; font-style: italic;">Multi-cluster coordination with master controller</p>
-                </div>
-            </div>
+            <figure class="figure">
+                <svg class="arch" viewBox="0 0 1200 740" role="img" aria-labelledby="arch-title" xmlns="http://www.w3.org/2000/svg">
+                <title id="arch-title">Sailor architecture: a master controller in us-west1 sends topology updates to the cluster controllers of two GKE clusters (us-west1 and eu-west1) and receives heartbeats from them. Each cluster controller passes topology updates to its worker pods, and the worker pods in both clusters exchange gradients, activations and parameters through DeepSpeed. The master controller also talks to a GCP client.</title>
+                <defs>
+                    <pattern id="arch-dots" width="24" height="24" patternUnits="userSpaceOnUse"><rect x="11" y="11" width="2" height="2" fill="#1F2D24" opacity="0.07"/></pattern>
+                    <filter id="arch-shadow" x="-10%" y="-10%" width="120%" height="125%"><feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#1F2D24" flood-opacity="0.10"/></filter>
+                    <marker id="arch-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#1F2D24"/></marker>
+                    <marker id="arch-arrow-sage" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#5D7560"/></marker>
+                    <marker id="arch-arrow-muted" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#56635A"/></marker>
+                </defs>
+                <rect width="1200" height="740" fill="#F1ECE4"/>
+                <rect width="1200" height="740" fill="url(#arch-dots)"/>
 
-            <h3>1. Elastic Fault-Tolerant Mechanism</h3>
+                <!-- master controller -->
+                <g filter="url(#arch-shadow)"><rect x="430" y="40" width="340" height="130" rx="16" fill="#5D7560"/></g>
+                <path d="M430 126 v-70 a16 16 0 0 1 16 -16 h308 a16 16 0 0 1 16 16 v70 z" fill="#2F4637"/>
+                <text x="600" y="84" font-size="26" font-weight="700" fill="#FFFFFF" text-anchor="middle">Master controller</text>
+                <text x="600" y="110" font-size="17" fill="#D3DCCF" text-anchor="middle">us-west1</text>
+                <text x="600" y="155" font-size="17" fill="#FFFFFF" text-anchor="middle">gRPC endpoint</text>
+
+                <!-- GCP client -->
+                <line x1="776" y1="105" x2="944" y2="105" stroke="#56635A" stroke-width="2.5" stroke-dasharray="9 7" marker-end="url(#arch-arrow-muted)"/>
+                <g filter="url(#arch-shadow)"><rect x="950" y="62" width="200" height="86" rx="14" fill="#FCFAF6"/></g>
+                <rect x="950" y="62" width="200" height="86" rx="14" fill="none" stroke="#DDD5C8" stroke-width="2"/>
+                <text x="1050" y="112" font-size="21" font-weight="700" fill="#1F2D24" text-anchor="middle">GCP client</text>
+
+                <!-- master <-> clusters -->
+                <line x1="455" y1="178" x2="292" y2="288" stroke="#1F2D24" stroke-width="3" marker-end="url(#arch-arrow)"/>
+                <line x1="330" y1="292" x2="493" y2="182" stroke="#5D7560" stroke-width="3" stroke-dasharray="8 6" marker-end="url(#arch-arrow-sage)"/>
+                <text x="340" y="222" font-size="17" font-weight="700" fill="#1F2D24" text-anchor="end">Topology updates</text>
+                <text x="436" y="262" font-size="17" font-weight="700" fill="#5D7560">Heartbeat</text>
+                <line x1="745" y1="178" x2="908" y2="288" stroke="#1F2D24" stroke-width="3" marker-end="url(#arch-arrow)"/>
+                <line x1="870" y1="292" x2="707" y2="182" stroke="#5D7560" stroke-width="3" stroke-dasharray="8 6" marker-end="url(#arch-arrow-sage)"/>
+                <text x="860" y="222" font-size="17" font-weight="700" fill="#1F2D24">Topology updates</text>
+                <text x="764" y="262" font-size="17" font-weight="700" fill="#5D7560" text-anchor="end">Heartbeat</text>
+
+                <g filter="url(#arch-shadow)">
+                    <rect x="40" y="300" width="440" height="405" rx="20" fill="#FCFAF6"/>
+                </g>
+                <path d="M40 356 v-36 a20 20 0 0 1 20 -20 h400 a20 20 0 0 1 20 20 v36 z" fill="#D3DCCF"/>
+                <rect x="40" y="300" width="440" height="405" rx="20" fill="none" stroke="#2F4637" stroke-width="2.5"/>
+                <circle cx="66" cy="328" r="7" fill="#2F4637"/>
+                <text x="82" y="336" font-size="22" font-weight="700" fill="#1F2D24">GKE cluster <tspan font-weight="400" fill="#56635A">· us-west1</tspan></text>
+                <rect x="70" y="382" width="380" height="76" rx="12" fill="#2F4637"/>
+                <text x="260" y="416" font-size="21" font-weight="700" fill="#FFFFFF" text-anchor="middle">Cluster controller</text>
+                <text x="260" y="440" font-size="16" fill="#D3DCCF" text-anchor="middle">K8s service</text>
+                <line x1="260" y1="460" x2="260" y2="512" stroke="#1F2D24" stroke-width="3" marker-end="url(#arch-arrow)"/>
+                <text x="276" y="492" font-size="17" fill="#56635A">Topology updates</text>
+                <rect x="70" y="522" width="380" height="160" rx="12" fill="#FCFAF6" stroke="#B07258" stroke-width="2.5"/>
+                <text x="90" y="556" font-size="20" font-weight="700" fill="#1F2D24">Worker pods</text>
+                <text x="430" y="556" font-size="16" fill="#56635A" text-anchor="end">replica set</text>
+                    <rect x="118" y="574" width="64" height="40" rx="8" fill="#EAD9CC" stroke="#B07258" stroke-width="2"/>
+                    <text x="150" y="600" font-size="15" font-weight="700" fill="#B07258" text-anchor="middle">pod</text>
+                    <line x1="150" y1="614" x2="150" y2="626" stroke="#B9B2A6" stroke-width="2"/>
+                    <path d="M126 632 v24 a24 7 0 0 0 48 0 v-24" fill="#E6DFD3" stroke="#B9B2A6" stroke-width="2"/>
+                    <ellipse cx="150" cy="632" rx="24" ry="7" fill="#FCFAF6" stroke="#B9B2A6" stroke-width="2"/>
+                    <rect x="228" y="574" width="64" height="40" rx="8" fill="#EAD9CC" stroke="#B07258" stroke-width="2"/>
+                    <text x="260" y="600" font-size="15" font-weight="700" fill="#B07258" text-anchor="middle">pod</text>
+                    <line x1="260" y1="614" x2="260" y2="626" stroke="#B9B2A6" stroke-width="2"/>
+                    <path d="M236 632 v24 a24 7 0 0 0 48 0 v-24" fill="#E6DFD3" stroke="#B9B2A6" stroke-width="2"/>
+                    <ellipse cx="260" cy="632" rx="24" ry="7" fill="#FCFAF6" stroke="#B9B2A6" stroke-width="2"/>
+                    <rect x="338" y="574" width="64" height="40" rx="8" fill="#EAD9CC" stroke="#B07258" stroke-width="2"/>
+                    <text x="370" y="600" font-size="15" font-weight="700" fill="#B07258" text-anchor="middle">pod</text>
+                    <line x1="370" y1="614" x2="370" y2="626" stroke="#B9B2A6" stroke-width="2"/>
+                    <path d="M346 632 v24 a24 7 0 0 0 48 0 v-24" fill="#E6DFD3" stroke="#B9B2A6" stroke-width="2"/>
+                    <ellipse cx="370" cy="632" rx="24" ry="7" fill="#FCFAF6" stroke="#B9B2A6" stroke-width="2"/>
+
+                <g filter="url(#arch-shadow)">
+                    <rect x="720" y="300" width="440" height="405" rx="20" fill="#FCFAF6"/>
+                </g>
+                <path d="M720 356 v-36 a20 20 0 0 1 20 -20 h400 a20 20 0 0 1 20 20 v36 z" fill="#D3DCCF"/>
+                <rect x="720" y="300" width="440" height="405" rx="20" fill="none" stroke="#2F4637" stroke-width="2.5"/>
+                <circle cx="746" cy="328" r="7" fill="#2F4637"/>
+                <text x="762" y="336" font-size="22" font-weight="700" fill="#1F2D24">GKE cluster <tspan font-weight="400" fill="#56635A">· eu-west1</tspan></text>
+                <rect x="750" y="382" width="380" height="76" rx="12" fill="#2F4637"/>
+                <text x="940" y="416" font-size="21" font-weight="700" fill="#FFFFFF" text-anchor="middle">Cluster controller</text>
+                <text x="940" y="440" font-size="16" fill="#D3DCCF" text-anchor="middle">K8s service</text>
+                <line x1="940" y1="460" x2="940" y2="512" stroke="#1F2D24" stroke-width="3" marker-end="url(#arch-arrow)"/>
+                <text x="956" y="492" font-size="17" fill="#56635A">Topology updates</text>
+                <rect x="750" y="522" width="380" height="160" rx="12" fill="#FCFAF6" stroke="#B07258" stroke-width="2.5"/>
+                <text x="770" y="556" font-size="20" font-weight="700" fill="#1F2D24">Worker pods</text>
+                <text x="1110" y="556" font-size="16" fill="#56635A" text-anchor="end">replica set</text>
+                    <rect x="798" y="574" width="64" height="40" rx="8" fill="#EAD9CC" stroke="#B07258" stroke-width="2"/>
+                    <text x="830" y="600" font-size="15" font-weight="700" fill="#B07258" text-anchor="middle">pod</text>
+                    <line x1="830" y1="614" x2="830" y2="626" stroke="#B9B2A6" stroke-width="2"/>
+                    <path d="M806 632 v24 a24 7 0 0 0 48 0 v-24" fill="#E6DFD3" stroke="#B9B2A6" stroke-width="2"/>
+                    <ellipse cx="830" cy="632" rx="24" ry="7" fill="#FCFAF6" stroke="#B9B2A6" stroke-width="2"/>
+                    <rect x="908" y="574" width="64" height="40" rx="8" fill="#EAD9CC" stroke="#B07258" stroke-width="2"/>
+                    <text x="940" y="600" font-size="15" font-weight="700" fill="#B07258" text-anchor="middle">pod</text>
+                    <line x1="940" y1="614" x2="940" y2="626" stroke="#B9B2A6" stroke-width="2"/>
+                    <path d="M916 632 v24 a24 7 0 0 0 48 0 v-24" fill="#E6DFD3" stroke="#B9B2A6" stroke-width="2"/>
+                    <ellipse cx="940" cy="632" rx="24" ry="7" fill="#FCFAF6" stroke="#B9B2A6" stroke-width="2"/>
+                    <rect x="1018" y="574" width="64" height="40" rx="8" fill="#EAD9CC" stroke="#B07258" stroke-width="2"/>
+                    <text x="1050" y="600" font-size="15" font-weight="700" fill="#B07258" text-anchor="middle">pod</text>
+                    <line x1="1050" y1="614" x2="1050" y2="626" stroke="#B9B2A6" stroke-width="2"/>
+                    <path d="M1026 632 v24 a24 7 0 0 0 48 0 v-24" fill="#E6DFD3" stroke="#B9B2A6" stroke-width="2"/>
+                    <ellipse cx="1050" cy="632" rx="24" ry="7" fill="#FCFAF6" stroke="#B9B2A6" stroke-width="2"/>
+
+                <!-- DeepSpeed traffic -->
+                <line x1="458" y1="606" x2="742" y2="606" stroke="#1F2D24" stroke-width="3" marker-start="url(#arch-arrow)" marker-end="url(#arch-arrow)"/>
+                <text x="600" y="566" font-size="16" fill="#56635A" text-anchor="middle">Gradients, activations,</text>
+                <text x="600" y="588" font-size="16" fill="#56635A" text-anchor="middle">parameters</text>
+                <rect x="546" y="620" width="108" height="30" rx="15" fill="#1F2D24"/>
+                <text x="600" y="641" font-size="15" font-weight="700" fill="#FFFFFF" text-anchor="middle">DeepSpeed</text>
+            </svg>
+                <figcaption>One master controller coordinates training across GKE clusters in different regions</figcaption>
+            </figure>
+
+            <h2>Recovering from a preemption</h2>
             <p>
-                We developed a novel in-CPU checkpointing mechanism that enables fast recovery from failures and preemptions. Unlike traditional approaches that write checkpoints to disk or remote storage, our method:
+                Checkpoints live in CPU memory instead of on disk or remote storage, with a full copy on a reliable on-demand node. When a spot node is preempted, a controller reconfigures the surviving nodes in place instead of restarting the job. The video walks through one recovery.
             </p>
+
+            <figure class="figure">
+                <video controls playsinline preload="metadata" poster="../assets/sailor-elastic-recovery-poster.jpg">
+                    <source src="../assets/sailor-elastic-recovery.mp4" type="video/mp4">
+                    Your browser can't play this video. <a href="../assets/sailor-elastic-recovery.mp4">Download it (MP4, 3.8 MB)</a>.
+                </video>
+                <figcaption>How Sailor recovers when a spot node disappears, followed by measured results (56 s, no sound)</figcaption>
+            </figure>
+
+            <ol>
+                <li><strong>Catch the error.</strong> Instead of crashing, every surviving process catches the failure and pauses.</li>
+                <li><strong>Get the new config.</strong> The controller computes the new topology and tells every node its new rank and world size.</li>
+                <li><strong>Recover the checkpoint.</strong> Each node pulls its shard from the on-demand node's memory, not from remote storage.</li>
+                <li><strong>Clean up.</strong> Stale connections and error state from the old setup are cleared.</li>
+                <li><strong>Restart training.</strong> Training resumes on the remaining nodes from the recovered state.</li>
+            </ol>
+            <p>
+                For a 1.5B-parameter model on 8 nodes in one GCP region, training is running again <strong>52 seconds</strong> after a preemption: 10 s to re-initialise the distributed group, 26 s to restart DeepSpeed and 16 s to recover the snapshot.
+            </p>
+
+            <h2>Results</h2>
             <ul>
-                <li>Stores checkpoints directly in CPU memory for instant access</li>
-                <li>Enables rapid reconfiguration when nodes are preempted or fail</li>
-                <li>Minimizes training interruption through elastic scaling</li>
-                <li>Adapts dynamically to changing resource availability</li>
-            </ul>
-
-            <div class="carousel-container">
-                <div class="carousel-slide active">
-                    <img src="../assets/sailor-elastic1.jpg" alt="Preemption detected">
-                    <div class="carousel-caption">Spot instance preemption detected (World size = 4 → 3)</div>
-                </div>
-                <div class="carousel-slide">
-                    <img src="../assets/sailor-elastic2.jpg" alt="Step 1: Error caught">
-                    <div class="carousel-caption">Step 1: Controller catches error and kills all processes</div>
-                </div>
-                    <div class="carousel-slide">
-                    <img src="../assets/sailor-elastic3.jpg" alt="Step 5: New config requested">
-                    <div class="carousel-caption">Step 2: New configuration is shared to all nodes</div>
-                </div>
-                <div class="carousel-slide">
-                    <img src="../assets/sailor-elastic4.jpg" alt="Step 3: Checkpoint recovery">
-                    <div class="carousel-caption">Step 3: Recover from in-CPU checkpoint with new split</div>
-                </div>
-                <div class="carousel-slide">
-                    <img src="../assets/sailor-elastic5.jpg" alt="Step 4: Cleanup">
-                    <div class="carousel-caption">Step 4: Cleanup obsolete resources</div>
-                </div>
-                <div class="carousel-slide">
-                    <img src="../assets/sailor-elastic6.jpg" alt="Step 5: Training resumes">
-                    <div class="carousel-caption">Step 5: Training resumes with new world size</div>
-                </div>
-                <div class="carousel-indicators">
-                    <span class="carousel-dot active" onclick="currentSlide(0)"></span>
-                    <span class="carousel-dot" onclick="currentSlide(1)"></span>
-                    <span class="carousel-dot" onclick="currentSlide(2)"></span>
-                    <span class="carousel-dot" onclick="currentSlide(3)"></span>
-                    <span class="carousel-dot" onclick="currentSlide(4)"></span>
-                    <span class="carousel-dot" onclick="currentSlide(5)"></span>
-                </div>
-            </div>
-
-            <h3>2. Optimal Resource Planner</h3>
-            <p>
-                Our optimization algorithm intelligently navigates the cloud resource search space to find the most cost-effective training configurations.
-            </p>
-            <h2>Results & Impact</h2>
-            <p>
-                Our evaluation demonstrates significant improvements over existing approaches:
-            </p>
-            <ul>
-                <li><strong>2.87x higher goodput</strong> on preemptible VMs compared to state-of-the-art fault tolerance methods</li>
-                <li><strong>100× faster optimization</strong> for finding optimal training configurations</li>
-                <li><strong>Cost-efficient training</strong> of 1.5B+ parameter models using cheaper preemptible instances</li>
-                <li><strong>Minimal recovery overhead</strong> thanks to in-CPU checkpointing</li>
+                <li><strong>2.87× higher goodput</strong> on preemptible VMs than state-of-the-art fault-tolerance methods</li>
+                <li><strong>Back to training in under a minute</strong> after a preemption (52 s for a 1.5B-parameter model)</li>
             </ul>
 
             <div class="highlight-box">
-                <h3>Real-World Impact</h3>
+                <h3>Why it matters</h3>
                 <p>
-                    Sailor enables researchers and organizations to train large language models at a fraction of the cost, making advanced ML capabilities more accessible. By efficiently leveraging preemptible VMs, which can be 60-90% cheaper than on-demand instances, the system democratizes access to large-scale ML training.
+                    Spot instances are only a bargain if training survives losing them. Making recovery fast and automatic turns that discount into real savings, so the same budget trains larger models.
                 </p>
             </div>
 
-            <h2>Open Source</h2>
+            <h2>Paper and code</h2>
             <p>
-                This work has been continued and expanded by the Efficient Architectures and Systems Lab at ETH Zürich. The project is now open source and available on GitHub:
+                Sailor was published at SOSP '25. The work is continued by the Efficient Architectures and Systems Lab (EASL) at ETH Zürich, and the code is open source.
             </p>
-            <p style="text-align: center; margin: 2rem 0;">
-                <a href="https://github.com/eth-easl/sailor" target="_blank" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; transition: transform 0.3s, box-shadow 0.3s;">
-                    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+            <div class="link-buttons">
+                <a href="https://dl.acm.org/doi/10.1145/3731569.3764839" target="_blank" rel="noopener">Read the paper ↗</a>
+                <a href="https://github.com/eth-easl/sailor" target="_blank" rel="noopener">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
                         <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
                     </svg>
                     View on GitHub
                 </a>
-            </p>
+            </div>
         </div>
     </div>
 
@@ -379,54 +451,6 @@
                 sunIcon.style.display = 'block';
                 moonIcon.style.display = 'none';
             }
-        }
-
-        // Carousel functionality
-        let currentSlideIndex = 0;
-        let carouselInterval;
-
-        function showSlide(index) {
-            const slides = document.querySelectorAll('.carousel-slide');
-            const dots = document.querySelectorAll('.carousel-dot');
-            
-            if (index >= slides.length) {
-                currentSlideIndex = 0;
-            } else if (index < 0) {
-                currentSlideIndex = slides.length - 1;
-            } else {
-                currentSlideIndex = index;
-            }
-            
-            slides.forEach(slide => slide.classList.remove('active'));
-            dots.forEach(dot => dot.classList.remove('active'));
-            
-            slides[currentSlideIndex].classList.add('active');
-            dots[currentSlideIndex].classList.add('active');
-        }
-
-        function nextSlide() {
-            showSlide(currentSlideIndex + 1);
-        }
-
-        function currentSlide(index) {
-            showSlide(index);
-            // Reset the interval when user manually selects a slide
-            clearInterval(carouselInterval);
-            carouselInterval = setInterval(nextSlide, 4000);
-        }
-
-        // Auto-advance carousel every 3 seconds
-        carouselInterval = setInterval(nextSlide, 4000);
-        // Pause carousel on hover
-        const carouselContainer = document.querySelector('.carousel-container');
-        if (carouselContainer) {
-            carouselContainer.addEventListener('mouseenter', () => {
-                clearInterval(carouselInterval);
-            });
-            
-            carouselContainer.addEventListener('mouseleave', () => {
-                carouselInterval = setInterval(nextSlide, 4000);
-            });
         }
     </script>
 </body>

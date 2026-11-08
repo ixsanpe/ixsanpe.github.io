@@ -13,7 +13,8 @@ Personal portfolio of Ixeia Sánchez Périz — Senior SWE in Data & AI Systems.
 ├── DESIGN_SYSTEM.md       # Design system spec (incl. the extracted legacy system)
 ├── assets/                # Images
 ├── projects/              # Project detail pages (+ _template.html)
-└── talks/                 # Talk pages
+├── talks/                 # Talk pages
+└── tools/                 # Source for generated media (e.g. tools/sailor-video)
 ```
 
 ## Adding a project

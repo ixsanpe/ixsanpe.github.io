@@ -9,6 +9,7 @@ Personal portfolio site showcasing tech projects & initiatives.
 ├── index.html             # Main page
 ├── style.css              # Alpine Botanical design tokens + shared components
 ├── botanicals.js          # Line-art generator (ferns, leaf, edelweiss, pine, ridge)
+├── system.js / system.css  # Interactive 3D project system
 ├── design-system.html     # Visual style guide
 ├── DESIGN_SYSTEM.md       # Design system spec (incl. extracted legacy system)
 ├── assets/                # Images & files

@@ -113,3 +113,16 @@ route ahead; the solid line and its tip follow the point 62% down the viewport.
 
 - ≤1100px: margin blobs and botanicals hidden.
 - ≤860px: nav links hidden, portrait above the name, single column; the trail runs down the left edge with pins at x≈24px.
+
+## 8. The system (interactive project map)
+
+`system.css` + `system.js` render the projects as a small 3D "clay" system,
+following the hand-drawn guide: **Data (law docs) ⊂ End-to-end RAG + MLOps ⊂
+Systems: LLM training at scale + research (Sailor)**, with **Ray** plugged in
+for scale, all flowing into **Solutions** (personal: fitness RAG, assistant ·
+guide others: talks · learning: DSA).
+
+- Pure CSS 3D (`preserve-3d`), isometric camera (`rotateX 57° · rotateZ 40°`), clay palette classes `.c-sage/.c-sand/.c-cream/.c-wine/.c-forest`.
+- Click a block or legend chip → camera glides to it, others desaturate, panel shows details. "Start the tour" steps through parts in data-flow order.
+- Camera follows the mouse slightly and sways when idle; data packets flow along pipes.
+- Content lives in `PARTS`, geometry in `MODULES` / `BASES` / `PIPES` / `PACKETS` at the top of `system.js`. To add a project: add a `PARTS` entry, a `MODULES` entry (position + boxes) and its id in `TOUR`.

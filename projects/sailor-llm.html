@@ -4,6 +4,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sailor: automating LLM training in the Cloud - Ixeia Sánchez Périz</title>
+    <meta name="description" content="Sailor (ETH Zürich master's thesis, published at SOSP '25): an elastic, fault-tolerant runtime for LLM training on spot instances. In-memory checkpoints and in-place reconfiguration bring training back 52 s after a preemption, with 2.87× higher goodput than state-of-the-art fault tolerance.">
+    <link rel="canonical" href="https://ixsanpe.github.io/projects/sailor-llm.html">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Sailor: automating LLM training in the Cloud">
+    <meta property="og:description" content="Elastic, fault-tolerant LLM training on spot instances: back to training 52 s after a preemption, 2.87× higher goodput. Published at SOSP '25.">
+    <meta property="og:url" content="https://ixsanpe.github.io/projects/sailor-llm.html">
+    <meta property="og:image" content="https://ixsanpe.github.io/assets/sailor-elastic-recovery-poster.jpg">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Sailor: automating LLM training in the Cloud",
+        "description": "ETH Zürich master's thesis on elastic, fault-tolerant LLM training on spot (preemptible) instances. Checkpoints are kept in CPU memory and a controller reconfigures surviving nodes in place, so training resumes 52 seconds after a preemption for a 1.5B-parameter model, with 2.87x higher goodput than state-of-the-art fault-tolerance methods.",
+        "url": "https://ixsanpe.github.io/projects/sailor-llm.html",
+        "image": "https://ixsanpe.github.io/assets/sailor-elastic-recovery-poster.jpg",
+        "author": { "@type": "Person", "name": "Ixeia Sánchez Périz", "url": "https://ixsanpe.github.io/" },
+        "keywords": ["distributed training", "LLM training", "fault tolerance", "elastic training", "spot instances", "preemptible VMs", "DeepSpeed", "PyTorch", "GKE", "Kubernetes"],
+        "citation": {
+            "@type": "ScholarlyArticle",
+            "name": "Sailor (SOSP '25)",
+            "url": "https://dl.acm.org/doi/10.1145/3731569.3764839",
+            "sameAs": "https://doi.org/10.1145/3731569.3764839"
+        },
+        "codeRepository": "https://github.com/eth-easl/sailor",
+        "video": {
+            "@type": "VideoObject",
+            "name": "How Sailor recovers when a spot node disappears",
+            "description": "A spot node is preempted; surviving processes catch the error, the controller sends a new topology, nodes recover their checkpoint shards from an on-demand node's memory, stale state is cleared and training resumes.",
+            "contentUrl": "https://ixsanpe.github.io/assets/sailor-elastic-recovery.mp4",
+            "thumbnailUrl": "https://ixsanpe.github.io/assets/sailor-elastic-recovery-poster.jpg",
+            "duration": "PT56S"
+        }
+    }
+    </script>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23ffffff'/><path d='M20 85 L30 70 Q35 65 40 68 L45 72 Q50 75 55 70 L60 62 Q65 55 70 60 L78 68 Q82 72 85 68 L85 85 Z' fill='%2395c9c9' stroke='%232d3748' stroke-width='2'/><path d='M25 75 L32 65 Q37 58 42 62 L50 70 Q55 74 60 68 L68 58 Q72 53 77 58 L82 65 L82 85 L25 85 Z' fill='%23b8a8d8' opacity='0.7' stroke='%232d3748' stroke-width='2'/><path d='M35 50 L45 30 L50 35 L55 28 L65 45 L70 38 L80 55' fill='none' stroke='%237b9ab8' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/><ellipse cx='18' cy='25' rx='8' ry='5' fill='%23e8a89a' opacity='0.8'/><ellipse cx='25' cy='18' rx='7' ry='4' fill='%23e8a89a' opacity='0.6'/></svg>">
     <link rel="stylesheet" href="../style.css">
     <style>
@@ -210,7 +244,7 @@
         <div class="container">
             <a href="../index.html" class="logo">Ixeia Sánchez Périz</a>
             <div style="display: flex; align-items: center; gap: 2rem;">
-                <a href="../index.html#sailor" class="back-link">
+                <a href="../index.html#portfolio" class="back-link">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M19 12H5M12 19l-7-7 7-7"/>
                     </svg>
@@ -251,6 +285,11 @@
             <h2>What Sailor does</h2>
             <p>
                 Sailor automates ML training in the Cloud. Its core is an <strong>elastic, fault-tolerant runtime</strong> that keeps training going as nodes come and go: a master controller keeps track of every cluster, and when the set of nodes changes it pushes a new topology to each one.
+            </p>
+
+            <h2>My role</h2>
+            <p>
+                For my master's thesis I designed and built Sailor's elastic, fault-tolerant runtime: everything on this page, from in-memory checkpoints to recovering from a preemption. I also worked on Sailor's resource planner, which chooses a cost-effective cluster setup for a training job; this page focuses on the runtime.
             </p>
 
             <figure class="figure">
@@ -415,7 +454,7 @@
     </div>
 
     <footer>
-        <p>&copy; <span id="currentYear"></span> Ixeia Sánchez Périz. All rights reserved.</p>
+        <p>&copy; <span id="currentYear">2026</span> Ixeia Sánchez Périz. All rights reserved.</p>
         <p><a href="../index.html">← Back to Portfolio</a></p>
     </footer>
 

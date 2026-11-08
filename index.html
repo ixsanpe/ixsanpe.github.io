@@ -15,6 +15,27 @@
             document.documentElement.classList.add('js');
         })();
     </script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Ixeia Sánchez Périz",
+        "url": "https://ixsanpe.github.io/",
+        "jobTitle": "Senior Software Engineer, Data & AI Systems",
+        "worksFor": { "@type": "Organization", "name": "SWISS International Air Lines" },
+        "address": { "@type": "PostalAddress", "addressLocality": "Zürich", "addressCountry": "CH" },
+        "alumniOf": [
+            { "@type": "CollegeOrUniversity", "name": "ETH Zürich" },
+            { "@type": "CollegeOrUniversity", "name": "Universitat Politècnica de València" }
+        ],
+        "knowsAbout": ["LLM agents", "RAG", "Evals", "MLOps", "Distributed LLM training", "PySpark", "PyTorch", "DeepSpeed", "Ray", "Kubernetes", "GCP"],
+        "sameAs": [
+            "https://www.linkedin.com/in/ixeia-s-p/",
+            "https://github.com/ixsanpe",
+            "https://scholar.google.com/citations?user=iWlPeUYAAAAJ"
+        ]
+    }
+    </script>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="system.css">
     <style>
@@ -188,6 +209,17 @@
         }
 
         .stage .eyebrow { display: inline-block; margin-bottom: 0.4rem; }
+
+        .stage .stage-sub {
+            display: table;
+            margin: 0.75rem auto 0;
+            padding: 0 0.75rem;
+            background: var(--bg);
+            position: relative;
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            font-weight: 300;
+        }
 
         .stage h2 {
             display: table;
@@ -790,6 +822,7 @@
             .stage { text-align: left; padding: 3.5rem 0 1.25rem 3.25rem; }
             .stage .pin { position: absolute; left: 24px; top: 3.95rem; margin: 0; transform: translateX(-50%); }
             .stage h2 { margin: 0; }
+            .stage .stage-sub { margin: 0.5rem 0 0; padding: 0; }
             .stage .eyebrow, .stage h2 { padding: 0; }
 
             .waypoint { grid-template-columns: 1fr; padding-left: 3.25rem; margin: 0.75rem 0 1.25rem; }
@@ -971,22 +1004,61 @@
             <span class="pin marker"></span>
             <p class="eyebrow">03</p>
             <h2>Portfolio</h2>
+            <p class="stage-sub">My portfolio, presented as an AI system.</p>
         </header>
 
         <section class="sys" id="system" aria-label="Interactive portfolio of my projects">
             <div class="sys-stage">
-                <p class="eyebrow sys-hint">Click a part · or take the tour</p>
+                <p class="eyebrow sys-hint">Click any part</p>
                 <div class="sys-scene"></div>
             </div>
             <div class="sys-panel" aria-live="polite">
                 <div class="sys-panel-body"></div>
-                <div class="sys-tour">
-                    <button type="button" class="sys-btn" data-tour="prev">Back</button>
-                    <button type="button" class="sys-btn primary" data-tour="next">Start the tour</button>
-                    <span class="sys-step"></span>
-                </div>
             </div>
             <ul class="sys-legend" aria-label="Parts of the system"></ul>
+
+            <!-- Plain-HTML version of the portfolio. Shown when JavaScript is off and read by
+                 crawlers / LLM agents; hidden once system.js draws the interactive view.
+                 Keep in sync with PARTS in system.js. -->
+            <div class="sys-static">
+                <article>
+                    <p class="eyebrow">Overview</p>
+                    <h3>How my work fits together</h3>
+                    <p>I work across the whole AI stack, from data to infrastructure to the products people use, so my projects are drawn as one AI system: unstructured data feeds the systems (RAG + MLOps, and Sailor for LLM training), which run on infrastructure (Ray, GPUs and cloud) and power a solution (Fitness RAG). Underneath is me: I build the systems, give talks, and keep learning through ongoing projects.</p>
+                </article>
+                <article>
+                    <p class="eyebrow">Research · SOSP '25</p>
+                    <h3>Sailor: LLM training at scale</h3>
+                    <p>ETH Zürich master's thesis: I designed and built Sailor's elastic, fault-tolerant runtime, which keeps training going on spot instances with in-CPU checkpoints (back to training 52 s after a preemption, 2.87× higher goodput than state of the art). I also worked on its resource planner.</p>
+                    <p class="tags">PyTorch · DeepSpeed · GKE · Distributed training</p>
+                    <p class="card-links"><a class="read-more" href="projects/sailor-llm.html">Case study →</a> <a class="read-more" href="https://dl.acm.org/doi/10.1145/3731569.3764839">Paper (SOSP '25) ↗</a> <a class="read-more" href="https://github.com/eth-easl/sailor">Code ↗</a></p>
+                </article>
+                <article>
+                    <p class="eyebrow">Side project · 2025–2026</p>
+                    <h3>RAG for fitness exercises</h3>
+                    <p>A retrieval system over 873 exercises: hybrid BM25 + dense retrieval fused with RRF, contrastive fine-tuning of the embedder (Recall@10 0.36 → 0.81), MLflow tracking, Milvus Lite and a local LLM for grounded answers, all measured with a 69-query labelled eval set.</p>
+                    <p class="tags">RAG · Hybrid search · Embeddings · MLflow · Ollama</p>
+                    <p class="card-links"><a class="read-more" href="projects/fitness-rag.html">Case study →</a> <a class="read-more" href="https://github.com/ixsanpe/fitness-ai-assistant">Code ↗</a></p>
+                </article>
+                <article>
+                    <p class="eyebrow">Talks</p>
+                    <h3>Talks</h3>
+                    <ul>
+                        <li><a href="talks/uzh-career-night-2024.html">Career Tips for Fresh Graduates</a> · UZH Career Night, Nov 2024</li>
+                        <li><a href="https://www.youtube.com/watch?v=Q9edBOO_sYo">Commencement Speech, Class of 2025</a> · UPV Valencia, May 2025 (in Spanish)</li>
+                    </ul>
+                </article>
+                <article>
+                    <p class="eyebrow">In progress</p>
+                    <h3>Ongoing projects</h3>
+                    <ul>
+                        <li><strong>Unstructured data processing:</strong> turning raw text into data that RAG systems can use.</li>
+                        <li><strong>Ray Data &amp; distributed GPU training:</strong> scaling out data processing and training.</li>
+                        <li><strong>Second brain:</strong> using AI to organise my notes and knowledge.</li>
+                        <li><strong>Coding harness:</strong> my AI development setup.</li>
+                    </ul>
+                </article>
+            </div>
         </section>
 
         <!-- ===== Recognition ===== -->

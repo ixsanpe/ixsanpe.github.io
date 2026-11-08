@@ -1,0 +1,18 @@
+name: Check site content is in sync
+
+# Fails when the interactive portfolio, the plain-HTML list, llms.txt and the
+# JSON-LD drift apart. See README.md, "Humans and LLM agents".
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python3 tools/check_site_sync.py

@@ -51,8 +51,9 @@
             eyebrow: 'Solutions · Personal',
             title: 'RAG for fitness exercises',
             status: 'Side project',
-            body: `<p>A personal assistant for training: ask in natural language and get exercise recommendations and explanations grounded in a curated exercise knowledge base.</p>`,
-            tags: ['RAG', 'Embeddings', 'LLMs']
+            body: `<p>Ask in natural language and get exercises grounded in a real exercise dataset. It uses hybrid BM25 + dense retrieval with RRF, contrastive fine-tuning of the embedder (Recall@10 0.36 → 0.81) and a local LLM for the answers, all measured with a labelled eval harness.</p>`,
+            tags: ['RAG', 'Hybrid search', 'Embeddings', 'Ollama'],
+            links: [['projects/fitness-rag.html', `Case study ${ARROW}`], ['https://github.com/ixsanpe/fitness-ai-assistant', 'Code ↗', true]]
         },
         assistant: {
             eyebrow: 'Solutions · Personal',

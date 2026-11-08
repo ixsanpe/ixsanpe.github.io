@@ -4,995 +4,1332 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ixeia Sánchez Périz</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23ffffff'/><path d='M20 85 L30 70 Q35 65 40 68 L45 72 Q50 75 55 70 L60 62 Q65 55 70 60 L78 68 Q82 72 85 68 L85 85 Z' fill='%2395c9c9' stroke='%232d3748' stroke-width='2'/><path d='M25 75 L32 65 Q37 58 42 62 L50 70 Q55 74 60 68 L68 58 Q72 53 77 58 L82 65 L82 85 L25 85 Z' fill='%23b8a8d8' opacity='0.7' stroke='%232d3748' stroke-width='2'/><path d='M35 50 L45 30 L50 35 L55 28 L65 45 L70 38 L80 55' fill='none' stroke='%237b9ab8' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/><ellipse cx='18' cy='25' rx='8' ry='5' fill='%23e8a89a' opacity='0.8'/><ellipse cx='25' cy='18' rx='7' ry='4' fill='%23e8a89a' opacity='0.6'/></svg>">
+    <meta name="description" content="Ixeia Sánchez Périz — Data & AI at Scale. A summer hike through my projects, talks and awards.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23cfe8f5'/><circle cx='74' cy='28' r='11' fill='%23f6c431'/><path d='M8 82 L36 34 L50 54 L62 40 L92 82 Z' fill='%232f6b4f'/><path d='M36 34 L44 48 L38 46 L32 50 Z' fill='%23ffffff'/><path d='M0 100 V80 Q30 70 50 82 T100 78 V100 Z' fill='%237fb04f'/></svg>">
+    <script>
+        // Set theme before paint to avoid a flash
+        (function () {
+            var t = null;
+            try { t = localStorage.getItem('theme'); } catch (e) {}
+            if (!t) t = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', t);
+            document.documentElement.classList.add('js');
+        })();
+    </script>
     <link rel="stylesheet" href="style.css">
     <style>
+        /* ---------------- Zone tokens (vegetation belts as you climb) ---------------- */
+        :root {
+            --zone-meadow: #edf5dc;
+            --zone-forest: #e4efe2;
+            --zone-rock: #eceeec;
+            --zone-snow: #f6f9fb;
+        }
+        [data-theme="dark"] {
+            --zone-meadow: #16291f;
+            --zone-forest: #11231b;
+            --zone-rock: #182224;
+            --zone-snow: #1c2630;
+        }
+
+        /* ---------------- Nav ---------------- */
         nav ul {
             list-style: none;
             display: flex;
-            gap: 2rem;
+            gap: 1.5rem;
         }
 
-        nav a {
+        nav ul a {
             text-decoration: none;
-            color: var(--text-dark);
+            color: var(--text);
             font-weight: 500;
+            font-size: 0.95rem;
             transition: color 0.3s;
+        }
+
+        nav ul a:hover {
+            color: var(--brand);
+        }
+
+        nav .logo {
             display: inline-flex;
             align-items: center;
-            gap: 0.4rem;
+            gap: 0.5rem;
         }
 
-        nav a:hover {
-            color: var(--primary-color);
+        nav .logo svg {
+            width: 28px;
+            height: 28px;
         }
 
-        nav a svg {
-            width: 16px;
-            height: 16px;
-            flex-shrink: 0;
-        }
-
-        /* Scrolling Name Bar */
-        .name-bar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background-color: var(--bg-white);
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            z-index: 999;
-            transform: translateY(-100%);
-            transition: transform 0.3s ease;
-            padding: 0.75rem 2rem;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .name-bar.visible {
-            transform: translateY(0);
-        }
-
-        .name-bar h2 {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: var(--text-dark);
-            margin: 0;
-        }
-
-        /* Hero Section */
+        /* ---------------- Hero: the valley ---------------- */
         .hero {
-            margin-top: 70px;
-            padding: 4rem 2rem;
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-            color: white;
-            text-align: center;
+            position: relative;
+            min-height: max(640px, min(100vh, 860px));
+            overflow: hidden;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            color: var(--text);
+        }
+
+        .landscape {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .landscape .stars {
+            opacity: 0;
+            transition: opacity 0.6s;
+        }
+
+        [data-theme="dark"] .landscape .stars {
+            opacity: 1;
+        }
+
+        .landscape .cloud {
+            animation: drift 60s linear infinite;
+        }
+
+        .landscape .cloud.c2 {
+            animation-duration: 85s;
+            animation-delay: -30s;
+        }
+
+        [data-theme="dark"] .landscape .cloud {
+            opacity: 0.15;
+        }
+
+        @keyframes drift {
+            from { transform: translateX(-300px); }
+            to { transform: translateX(1700px); }
         }
 
         .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 1100px;
+            width: 100%;
+            padding: 8.5rem 2rem 0;
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 3rem;
-            max-width: 1200px;
-            margin: 0 auto;
+            gap: 2.5rem;
         }
 
         .profile-picture {
-            width: 220px;
-            height: 220px;
+            width: 168px;
+            height: 168px;
             border-radius: 50%;
             object-fit: cover;
             object-position: center 10%;
-            border: 5px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            border: 6px solid var(--surface);
+            box-shadow: var(--shadow-md);
+            flex-shrink: 0;
         }
 
-        .hero-text {
-            text-align: left;
+        .hero-eyebrow {
+            margin-bottom: 0.75rem;
         }
 
         .hero h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            font-weight: 700;
+            font-size: clamp(2.4rem, 5vw, 3.75rem);
+            margin-bottom: 0.4rem;
         }
 
-        .hero p {
+        .hero .tagline {
             font-size: 1.25rem;
-            margin-bottom: 2rem;
-            opacity: 0.95;
+            color: var(--text-muted);
+            margin-bottom: 1.25rem;
         }
 
-        .social-links {
+        .hero-meta {
             display: flex;
-            gap: 1.5rem;
-            margin-top: 2rem;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.35rem 0.9rem;
+            border-radius: var(--radius-pill);
+            background: color-mix(in srgb, var(--surface) 75%, transparent);
+            border: 1px solid var(--border);
+            font-size: 0.9rem;
+            font-weight: 500;
+            backdrop-filter: blur(6px);
+        }
+
+        .chip svg {
+            width: 15px;
+            height: 15px;
         }
 
         .social-link {
-            display: flex;
+            width: 40px;
+            height: 40px;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 48px;
-            height: 48px;
-            background-color: rgba(255, 255, 255, 0.2);
             border-radius: 50%;
-            color: white;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
+            background: color-mix(in srgb, var(--surface) 75%, transparent);
+            border: 1px solid var(--border);
+            color: var(--text);
+            transition: transform 0.3s var(--ease-trail), background-color 0.3s;
+            backdrop-filter: blur(6px);
         }
 
         .social-link:hover {
-            background-color: rgba(255, 255, 255, 0.3);
+            color: var(--accent-ink);
+            background: var(--accent);
             transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
 
         .social-link svg {
-            width: 24px;
-            height: 24px;
+            width: 18px;
+            height: 18px;
         }
 
-        .hero .cta-button {
-            display: inline-block;
-            padding: 0.75rem 2rem;
-            background-color: white;
-            color: var(--primary-color);
+        .start-hike {
+            position: absolute;
+            z-index: 2;
+            left: 50%;
+            bottom: 2.25rem;
+            transform: translateX(-50%);
             text-decoration: none;
-            border-radius: 8px;
-            font-weight: 600;
-            transition: transform 0.3s, box-shadow 0.3s;
-            margin: 0 0.5rem;
-        }
-
-        .hero .cta-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-        }
-
-        /* Container */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 4rem 2rem;
-        }
-
-        /* Section Styles */
-        section {
-            margin-bottom: 4rem;
-        }
-
-        section h2 {
-            font-size: 2.5rem;
-            margin-bottom: 2rem;
-            color: var(--text-dark);
-            text-align: center;
-        }
-
-        /* About Section */
-        .about-content {
-            max-width: 850px;
-            margin: 0 auto;
-        }
-
-        .about-grid {
             display: flex;
             flex-direction: column;
-            gap: 1.75rem;
-            margin-top: 2rem;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        .about-card {
-            background-color: var(--bg-white);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 2rem;
-            display: flex;
-            align-items: flex-start;
-            gap: 2rem;
-            transition: transform 0.3s, box-shadow 0.3s;
+        .start-hike .signpost {
+            transition: transform 0.3s var(--ease-trail);
         }
 
-        .about-card:hover {
-            transform: translateX(5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        .start-hike:hover .signpost {
+            transform: translateX(4px);
         }
 
-        .about-card-icon {
-            width: 60px;
-            height: 60px;
-            flex-shrink: 0;
+        .start-hike .arrow {
+            color: #fff;
+            animation: bob 2s ease-in-out infinite;
+            filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+        }
+
+        @keyframes bob {
+            50% { transform: translateY(6px); }
+        }
+
+        /* ---------------- The trail ---------------- */
+        .trail-zone {
+            position: relative;
+            background: linear-gradient(to bottom,
+                var(--mtn-meadow) 0,
+                var(--zone-meadow) 140px,
+                var(--zone-forest) 38%,
+                var(--zone-rock) 78%,
+                var(--zone-snow) 100%);
+            padding-bottom: 4rem;
+        }
+
+        .trail {
+            position: relative;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 1rem 2rem 0;
+        }
+
+        .trail-svg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: visible;
+            z-index: 0;
+        }
+
+        .trail-bed {
+            fill: none;
+            stroke: var(--trail);
+            stroke-opacity: 0.22;
+            stroke-width: 18;
+            stroke-linecap: round;
+        }
+
+        .trail-dash {
+            fill: none;
+            stroke: var(--trail);
+            stroke-opacity: 0.7;
+            stroke-width: 3;
+            stroke-dasharray: 7 11;
+            stroke-linecap: round;
+        }
+
+        .trail-walked {
+            fill: none;
+            stroke: var(--trail-walked);
+            stroke-width: 4;
+            stroke-linecap: round;
+        }
+
+        .hiker {
+            transition: transform 0.12s linear;
+        }
+
+        .hiker circle {
+            fill: var(--accent);
+            stroke: var(--pine-900);
+            stroke-width: 2;
+        }
+
+        .hiker path {
+            fill: none;
+            stroke: var(--pine-900);
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* Waypoint markers on the path */
+        .marker {
+            position: absolute;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: var(--surface);
+            border: 4px solid var(--trail);
+            transform: translate(-50%, -50%);
+            z-index: 2;
+            transition: border-color 0.4s, background-color 0.4s, transform 0.4s var(--ease-trail);
+        }
+
+        .marker.reached {
+            border-color: var(--trail-walked);
+            background: var(--accent);
+            transform: translate(-50%, -50%) scale(1.15);
+        }
+
+        .marker::after {
+            content: attr(data-alt) " m";
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            white-space: nowrap;
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            color: var(--text-subtle);
+        }
+
+        /* Stage = signpost on the path */
+        .stage {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: 1fr 64px 1fr;
+            align-items: center;
+            padding: 5rem 0 2rem;
+        }
+
+        .stage .marker {
+            left: 50%;
+            top: calc(5rem + 50% - 3.5rem);
+            width: 14px;
+            height: 44px;
+            border-radius: 4px;
+            background: var(--earth-700);
+            border: none;
+        }
+
+        .stage .marker.reached {
+            background: var(--earth-700);
+            transform: translate(-50%, -50%);
+        }
+
+        .stage .marker::after {
+            display: none;
+        }
+
+        .stage h2 {
+            grid-column: 1;
+            text-align: right;
+            font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+        }
+
+        .stage .signpost {
+            grid-column: 3;
+            justify-self: start;
+        }
+
+        .stage-sub {
+            grid-column: 1;
+            text-align: right;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-top: 0.35rem;
+        }
+
+        /* Waypoints */
+        .waypoint {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            column-gap: 140px;
+            margin: 2.25rem 0;
+        }
+
+        .waypoint .marker {
+            top: 2.4rem;
+            left: calc(50% - 38px);
+        }
+
+        .waypoint .marker::after {
+            left: calc(100% + 10px);
+        }
+
+        .waypoint.right .marker {
+            left: calc(50% + 38px);
+        }
+
+        .waypoint.right .marker::after {
+            left: auto;
+            right: calc(100% + 10px);
+        }
+
+        .waypoint .card {
+            grid-column: 1;
+        }
+
+        .waypoint.right .card {
+            grid-column: 2;
+        }
+
+        .card {
+            position: relative;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1.75rem;
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.4s var(--ease-trail), box-shadow 0.4s, opacity 0.6s var(--ease-trail);
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .js .waypoint .card {
+            opacity: 0;
+            transform: translateY(24px);
+        }
+
+        .js .waypoint.in-view .card {
+            opacity: 1;
+            transform: none;
+        }
+
+        .js .waypoint.in-view .card:hover {
+            transform: translateY(-4px);
+        }
+
+        .card-kind {
             display: flex;
             align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-            border-radius: 12px;
+            gap: 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--brand);
+            margin-bottom: 0.6rem;
         }
 
-        .about-card-icon svg {
-            width: 32px;
-            height: 32px;
-            color: white;
+        .card-kind svg {
+            width: 16px;
+            height: 16px;
         }
 
-        .about-card-content {
-            flex: 1;
+        .card h3 {
+            font-size: 1.35rem;
+            margin-bottom: 0.6rem;
         }
 
-        .about-card h3 {
-            font-size: 1.25rem;
-            margin-bottom: 0.75rem;
-            color: var(--text-dark);
+        .card p {
+            color: var(--text-muted);
+            font-size: 0.97rem;
         }
 
-        .about-card p {
-            color: var(--text-light);
-            font-size: 0.95rem;
-            line-height: 1.6;
-            margin-bottom: 0.75rem;
+        .card p + p {
+            margin-top: 0.75rem;
         }
 
-        .about-card ul {
+        .card ul {
             list-style: none;
-            padding: 0;
             margin-top: 0.5rem;
         }
 
-        .about-card ul li {
-            color: var(--text-light);
-            font-size: 0.9rem;
-            padding: 0.35rem 0;
-        }
-
-        .about-intro {
-            text-align: left;
-            color: var(--text-light);
+        .card ul li {
+            position: relative;
+            padding: 0.3rem 0 0.3rem 1.25rem;
+            color: var(--text-muted);
             font-size: 0.95rem;
-            line-height: 1.7;
-            margin-bottom: 2.5rem;
         }
 
-        @media (max-width: 768px) {
-            .about-card {
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
-            }
-
-            .about-card ul {
-                grid-template-columns: 1fr;
-            }
+        .card ul li::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0.85rem;
+            width: 7px;
+            height: 7px;
+            background: var(--accent);
+            transform: rotate(45deg);
         }
 
-        /* Blog Posts */
-        .posts-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
+        .card strong {
+            color: var(--text);
         }
 
-        .post-card {
-            background-color: var(--bg-white);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 2rem;
-            transition: transform 0.3s, box-shadow 0.3s;
+        .card img {
+            display: block;
+            border-radius: var(--radius-md);
+            margin: 0.5rem 0 1rem;
         }
 
-        .post-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        .card.feature {
+            border-top: 6px solid var(--accent);
         }
 
-        .post-card .post-date {
-            color: var(--text-light);
-            font-size: 0.875rem;
-            margin-bottom: 0.5rem;
+        .card.cairn {
+            padding: 1.25rem 1.5rem;
         }
 
-        .post-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: var(--text-dark);
+        .card.cairn h3 {
+            font-size: 1.1rem;
         }
 
-        .post-card p {
-            color: var(--text-light);
-            margin-bottom: 1rem;
-        }
-
-        .post-card .read-more,
-        .project-card .read-more {
-            color: #8b7aa8;
-            text-decoration: none;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-        }
-
-        .post-card .read-more:hover,
-        .project-card .read-more:hover {
-            color: #7a6997;
-        }
-
-        [data-theme="dark"] .post-card .read-more,
-        [data-theme="dark"] .project-card .read-more {
-            color: #e0d4f7;
-        }
-
-        [data-theme="dark"] .post-card .read-more:hover,
-        [data-theme="dark"] .project-card .read-more:hover {
-            color: #f0e8ff;
-        }
-
-        .talk-item .read-more {
-            color: #8b7aa8;
-            text-decoration: none;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-        }
-
-        .talk-item .read-more:hover {
-            color: #7a6997;
-        }
-
-        [data-theme="dark"] .talk-item .read-more {
-            color: #e0d4f7;
-        }
-
-        [data-theme="dark"] .talk-item .read-more:hover {
-            color: #f0e8ff;
-        }
-
-        .talk-content a {
-            color: #8b7aa8;
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        .talk-content a:hover {
-            text-decoration: underline;
-        }
-
-        [data-theme="dark"] .talk-content a {
-            color: #e0d4f7;
-        }
-
-        [data-theme="dark"] .talk-content a:hover {
-            color: #f0e8ff;
+        .card.cairn p {
+            font-size: 0.92rem;
         }
 
         .tech-tags {
             display: flex;
             flex-wrap: wrap;
             gap: 0.5rem;
-            margin-top: 1rem;
-            margin-bottom: 1rem;
+            margin: 1rem 0;
         }
 
         .tech-tag {
-            padding: 0.25rem 0.75rem;
-            background-color: var(--bg-light);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            font-size: 0.75rem;
-            color: var(--text-dark);
+            padding: 0.2rem 0.75rem;
+            font-size: 0.78rem;
             font-weight: 500;
         }
 
-        /* Project Cards - Full Width */
-        .projects-list {
-            max-width: 900px;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
+        .read-more {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            font-weight: 600;
+            text-decoration: none;
+            color: var(--link);
         }
 
-        .project-card {
-            background-color: var(--bg-white);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 2rem;
-            transition: transform 0.3s, box-shadow 0.3s;
+        .read-more:hover {
+            gap: 0.6rem;
         }
 
-        .project-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        .read-more {
+            transition: gap 0.3s var(--ease-trail);
         }
 
-        /* Awards - List Style */
-        .awards-list {
-            max-width: 650px;
-            margin: 0 auto;
-            list-style: none;
-            padding-left: 0;
+        .gh-link {
+            color: var(--text-subtle);
+            display: inline-flex;
+            vertical-align: middle;
+            margin-left: 0.35rem;
         }
 
-        .award-item {
-            padding: 0.5rem 0 0.5rem 2rem;
-            margin-bottom: 1rem;
+        .gh-link:hover {
+            color: var(--text);
+        }
+
+        .video-thumb {
             position: relative;
+            display: block;
+            max-width: 360px;
         }
 
-        .award-item:before {
-            content: "•";
+        .video-thumb svg {
             position: absolute;
-            left: 0;
-            top: 0.6rem;
-            color: var(--primary-color);
-            font-weight: bold;
-            font-size: 1.2rem;
-            line-height: 1;
+            top: 50%;
+            left: 50%;
+            width: 56px;
+            height: 56px;
+            transform: translate(-50%, -60%);
+            filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.35));
         }
 
-        .award-item .post-date {
-            color: var(--text-light);
-            font-size: 0.875rem;
-            font-weight: 500;
-            display: inline-block;
-            margin-bottom: 0.25rem;
+        /* Decorations in the margins */
+        .deco {
+            position: absolute;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.85;
         }
 
-        .award-item h3 {
-            font-size: 1.1rem;
-            margin-bottom: 0.5rem;
-            color: var(--text-dark);
-            font-weight: 600;
+        /* ---------------- Summit ---------------- */
+        .summit {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding-top: 5rem;
         }
 
-        .award-item h3::after {
-            font-weight: 400;
-        }
-
-        .award-item p {
-            color: var(--text-light);
-            font-size: 0.95rem;
-            line-height: 1.6;
-        }
-
-        /* Talks - Card Style */
-        .talks-list {
-            max-width: 800px;
+        .summit-cross {
+            position: relative;
+            width: 90px;
             margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
         }
 
-        .talk-item {
-            background-color: var(--bg-white);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 2rem;
-            transition: transform 0.3s, box-shadow 0.3s;
+        .summit-cross svg {
+            display: block;
+            width: 90px;
+            height: 120px;
         }
 
-        .talk-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        .summit .marker {
+            left: 50%;
+            top: calc(5rem + 120px);
+            width: 30px;
+            height: 30px;
         }
 
-        .talk-item .post-date {
-            color: var(--text-light);
-            font-size: 0.875rem;
-            margin-bottom: 0.5rem;
+        .summit .marker::after {
+            display: none;
         }
 
-        .talk-item h3 {
-            font-size: 1.25rem;
-            margin-bottom: 0.5rem;
-            color: var(--text-dark);
-            font-weight: 600;
+        .summit h2 {
+            font-size: clamp(2rem, 4vw, 2.75rem);
+            margin-top: 2rem;
         }
 
-        .talk-item p {
-            color: var(--text-light);
-            margin: 0;
-            font-size: 1rem;
+        .summit .lead {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            margin: 0.5rem auto 2.5rem;
+            max-width: 520px;
         }
 
-        /* Contact Section */
         .contact-links {
             display: flex;
             justify-content: center;
-            gap: 1.5rem;
+            gap: 1.25rem;
             flex-wrap: wrap;
-            max-width: 1000px;
-            margin: 0 auto;
         }
 
         .contact-card {
             display: flex;
-            flex-direction: column;
             align-items: center;
-            gap: 0.75rem;
-            padding: 1.5rem 2rem;
-            background-color: var(--bg-white);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
+            gap: 0.9rem;
+            padding: 1rem 1.5rem;
+            min-width: 220px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
             text-decoration: none;
-            color: var(--text-dark);
-            transition: all 0.3s ease;
-            min-width: 180px;
+            color: var(--text);
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.3s var(--ease-trail), border-color 0.3s, box-shadow 0.3s;
+            text-align: left;
         }
 
         .contact-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            border-color: var(--primary-color);
+            color: var(--text);
+            transform: translateY(-4px);
+            border-color: var(--accent);
+            box-shadow: var(--shadow-md);
         }
 
         .contact-card svg {
-            color: var(--primary-color);
+            width: 26px;
+            height: 26px;
+            color: var(--brand);
             flex-shrink: 0;
         }
 
-        .contact-card div {
-            text-align: center;
-        }
-
         .contact-card h3 {
-            font-size: 1.1rem;
-            margin-bottom: 0.25rem;
-            color: var(--text-dark);
+            font-size: 1.05rem;
         }
 
         .contact-card p {
-            font-size: 0.8rem;
-            color: var(--text-light);
-            margin: 0;
+            font-size: 0.82rem;
+            color: var(--text-muted);
         }
 
-        /* Footer */
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            nav ul {
-                gap: 1rem;
-                font-size: 0.875rem;
-            }
+        /* Altimeter */
+        .altimeter {
+            position: fixed;
+            left: 1.25rem;
+            bottom: 1.25rem;
+            z-index: 900;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.5rem 1rem 0.5rem 0.6rem;
+            border-radius: var(--radius-pill);
+            background: color-mix(in srgb, var(--surface) 88%, transparent);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-md);
+            backdrop-filter: blur(8px);
+            font-size: 0.85rem;
+            opacity: 0;
+            transform: translateY(12px);
+            transition: opacity 0.4s, transform 0.4s var(--ease-trail);
+            pointer-events: none;
+        }
+
+        .altimeter.visible {
+            opacity: 1;
+            transform: none;
+        }
+
+        .altimeter .alt-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: var(--accent-ink);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .altimeter .alt-icon svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .altimeter strong {
+            font-variant-numeric: tabular-nums;
+        }
+
+        .altimeter .alt-stage {
+            color: var(--text-muted);
+        }
+
+        /* ---------------- Responsive ---------------- */
+        @media (max-width: 1080px) {
+            .deco { display: none; }
+        }
+
+        @media (max-width: 820px) {
+            nav .logo span { display: none; }
+            nav ul { gap: 1rem; }
+            nav ul a { font-size: 0.88rem; }
 
             .hero-content {
                 flex-direction: column;
-                gap: 2rem;
-            }
-
-            .hero-text {
                 text-align: center;
+                padding: 6.5rem 1rem 0;
+                gap: 1.25rem;
             }
 
             .profile-picture {
-                width: 150px;
-                height: 150px;
+                width: 124px;
+                height: 124px;
             }
 
-            .hero h1 {
-                font-size: 2rem;
+            .hero .tagline {
+                font-size: 1.05rem;
             }
 
-            .hero p {
-                font-size: 1rem;
-            }
-
-            .social-links {
+            .hero-meta {
                 justify-content: center;
             }
 
-            .posts-grid {
-                grid-template-columns: 1fr;
+            .trail {
+                padding: 1rem 1rem 0 0;
             }
 
-            .contact-links {
-                flex-direction: column;
+            .stage {
+                grid-template-columns: 56px 1fr;
+                padding: 3.5rem 0 1rem;
+            }
+
+            .stage .marker {
+                left: 28px;
+                top: calc(3.5rem + 50% - 2.25rem);
+            }
+
+            .stage h2,
+            .stage-sub,
+            .stage .signpost {
+                grid-column: 2;
+                text-align: left;
+            }
+
+            .stage .signpost {
+                grid-row: 1;
+                margin-bottom: 0.5rem;
+            }
+
+            .waypoint {
+                grid-template-columns: 1fr;
+                padding-left: 56px;
+                margin: 1.5rem 0;
+            }
+
+            .waypoint .card,
+            .waypoint.right .card {
+                grid-column: 1;
+            }
+
+            .waypoint .marker {
+                left: 22px;
+            }
+
+            .waypoint.right .marker {
+                left: 34px;
+            }
+
+            .waypoint .marker::after {
+                display: none;
+            }
+
+            .card {
+                padding: 1.35rem;
+            }
+
+            .summit {
+                padding-left: 1rem;
             }
 
             .contact-card {
-                min-width: 100%;
+                width: 100%;
             }
 
-            section h2 {
-                font-size: 2rem;
+            .altimeter {
+                left: 50%;
+                transform: translate(-50%, 12px);
             }
+
+            .altimeter.visible {
+                transform: translate(-50%, 0);
+            }
+        }
+
+        @media (max-width: 520px) {
+            nav .container { padding: 0.75rem 1rem; }
+            nav ul { gap: 0.75rem; }
+            nav ul li.opt { display: none; }
         }
     </style>
 </head>
 <body>
-    <!-- Scrolling Name Bar -->
-    <div class="name-bar" id="nameBar">
-        <h2>Ixeia Sánchez Périz</h2>
-    </div>
-
     <!-- Navigation -->
     <nav>
         <div class="container">
+            <a href="#top" class="logo" aria-label="Back to the valley">
+                <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="24" cy="9" r="4" fill="var(--accent)"/><path d="M2 27 L12 11 L17 18 L21 13 L30 27 Z" fill="var(--brand)"/><path d="M12 11 L15 16 L12.5 15 L10 17 Z" fill="var(--snowcap)"/></svg>
+                <span>Ixeia Sánchez Périz</span>
+            </a>
             <ul>
                 <li><a href="#about">About</a></li>
-                <li><a href="#work">
-                    <svg viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M20 6h-2.18c.11-.31.18-.65.18-1a2.996 2.996 0 0 0-5.5-1.65l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zM9 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm6 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM4 19V8h16v11H4z"/>
-                    </svg>
-                    Projects
-                </a></li>
-                <li><a href="assets/CV_Ixeia.pdf" target="_blank" rel="noopener noreferrer">
-                    <svg viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
-                    </svg>
-                    CV
-                </a></li>
-                <li><a href="#awards">
-                    <svg viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94.63 1.5 1.98 2.63 3.61 2.96V19H7v2h10v-2h-4v-3.1c1.63-.33 2.98-1.46 3.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"/>
-                    </svg>
-                    Awards
-                </a></li>
-                <li><a href="#talks">
-                    <svg viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M21 6h-2v9H6v2c0 .55.45 1 1 1h11l4 4V7c0-.55-.45-1-1-1zm-4 6V3c0-.55-.45-1-1-1H3c-.55 0-1 .45-1 1v14l4-4h10c.55 0 1-.45 1-1z"/>
-                    </svg>
-                    Talks
-                </a></li>
-                <li><a href="#contact">
-                    <svg viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
-                    </svg>
-                    Contact
-                </a></li>
+                <li><a href="#work">Projects</a></li>
+                <li><a href="#talks">Talks</a></li>
+                <li class="opt"><a href="#awards">Awards</a></li>
             </ul>
             <button id="darkModeToggle" class="dark-mode-toggle" aria-label="Toggle dark mode">
-                <svg class="sun-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg class="sun-icon" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="12" r="4" fill="currentColor"/>
                     <path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32l1.41-1.41" fill="none"/>
                 </svg>
-                <svg class="moon-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" style="display: none;">
+                <svg class="moon-icon" viewBox="0 0 24 24" fill="currentColor" style="display: none;">
                     <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
                 </svg>
             </button>
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section class="hero">
+    <!-- Hero: the valley -->
+    <header class="hero" id="top">
+        <svg class="landscape" viewBox="0 0 1440 860" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+            <defs>
+                <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0" style="stop-color: var(--sky-top)"/>
+                    <stop offset="1" style="stop-color: var(--sky-bottom)"/>
+                </linearGradient>
+                <radialGradient id="glow">
+                    <stop offset="0" style="stop-color: var(--sun-disc); stop-opacity: 0.55"/>
+                    <stop offset="1" style="stop-color: var(--sun-disc); stop-opacity: 0"/>
+                </radialGradient>
+            </defs>
+            <rect width="1440" height="860" fill="url(#sky)"/>
+            <g class="stars" fill="#fff">
+                <circle cx="120" cy="80" r="1.4"/><circle cx="260" cy="150" r="1"/><circle cx="380" cy="60" r="1.6"/>
+                <circle cx="520" cy="130" r="1"/><circle cx="660" cy="70" r="1.3"/><circle cx="800" cy="160" r="1"/>
+                <circle cx="900" cy="50" r="1.5"/><circle cx="1010" cy="120" r="1"/><circle cx="1290" cy="90" r="1.4"/>
+                <circle cx="1380" cy="190" r="1"/><circle cx="60" cy="230" r="1"/><circle cx="1220" cy="240" r="1.2"/>
+                <circle cx="720" cy="230" r="0.9"/><circle cx="450" cy="250" r="1.1"/>
+            </g>
+            <circle cx="1150" cy="200" r="160" fill="url(#glow)"/>
+            <circle cx="1150" cy="200" r="58" style="fill: var(--sun-disc)"/>
+            <g class="cloud" fill="#fff" opacity="0.85">
+                <ellipse cx="200" cy="260" rx="70" ry="22"/><ellipse cx="240" cy="245" rx="45" ry="26"/><ellipse cx="170" cy="250" rx="35" ry="20"/>
+            </g>
+            <g class="cloud c2" fill="#fff" opacity="0.7">
+                <ellipse cx="0" cy="170" rx="55" ry="16"/><ellipse cx="30" cy="158" rx="36" ry="20"/>
+            </g>
+            <!-- far range -->
+            <path d="M0 560 L120 470 L210 510 L330 380 L420 450 L520 340 L610 420 L700 360 L790 430 L900 300 L1010 410 L1100 370 L1210 450 L1320 390 L1440 470 L1440 860 L0 860 Z" style="fill: var(--mtn-far)"/>
+            <path d="M330 380 L362 405 L348 408 L338 420 L322 410 L305 398 Z M520 340 L556 372 L540 370 L528 384 L512 372 L494 366 Z M900 300 L940 340 L922 338 L910 352 L895 340 L872 330 Z M1320 390 L1350 412 L1334 414 L1322 424 L1305 404 Z" style="fill: var(--snowcap)"/>
+            <!-- mid ridge -->
+            <path d="M0 640 L140 560 L260 600 L400 520 L520 580 L640 510 L760 570 L880 500 L1000 575 L1130 520 L1260 590 L1440 540 L1440 860 L0 860 Z" style="fill: var(--mtn-mid)"/>
+            <!-- pines on the ridge -->
+            <g style="fill: var(--mtn-near)">
+                <path d="M180 610 l12 -34 l12 34z M205 615 l10 -28 l10 28z M1090 590 l12 -36 l12 36z M1115 596 l10 -28 l10 28z M1145 600 l8 -22 l8 22z M300 618 l9 -24 l9 24z"/>
+            </g>
+            <!-- near hills -->
+            <path d="M0 720 Q240 640 480 700 T960 690 T1440 660 L1440 860 L0 860 Z" style="fill: var(--mtn-near)"/>
+            <path d="M0 790 Q360 730 720 780 T1440 760 L1440 860 L0 860 Z" style="fill: var(--mtn-meadow)"/>
+            <!-- flowers -->
+            <g>
+                <circle cx="160" cy="800" r="4" fill="var(--alpenrose)"/><circle cx="178" cy="812" r="3" fill="var(--sun-500)"/>
+                <circle cx="1240" cy="790" r="4" fill="var(--gentian)"/><circle cx="1262" cy="800" r="3" fill="var(--alpenrose)"/>
+                <circle cx="420" cy="815" r="3" fill="var(--snow)"/><circle cx="1010" cy="810" r="3" fill="var(--sun-500)"/>
+            </g>
+            <!-- trail leaving the valley, continues into the page -->
+            <path d="M720 860 C720 820 640 800 660 760 C680 720 820 720 780 690" fill="none" style="stroke: var(--trail)" stroke-opacity="0.7" stroke-width="3" stroke-dasharray="7 11" stroke-linecap="round"/>
+        </svg>
+
         <div class="hero-content">
-            <img src="assets/profile_small.jpg" alt="Ixeia Sánchez Périz" class="profile-picture" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22150%22 height=%22150%22%3E%3Ccircle cx=%2275%22 cy=%2775%22 r=%2775%22 fill=%22%23cbd5e0%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 font-size=%2260%22 fill=%22%23fff%22%3EI%3C/text%3E%3C/svg%3E'">
+            <img src="assets/profile_small.jpg" alt="Ixeia Sánchez Périz" class="profile-picture">
             <div class="hero-text">
+                <div class="hero-eyebrow"><span class="blaze" aria-hidden="true"></span>&nbsp; <span class="post-date" style="display:inline">Portfolio trail</span></div>
                 <h1>Ixeia Sánchez Périz</h1>
-                <p style="margin-bottom: 0.5rem;">Data & AI at Scale</p>
-                <p style="display: inline-block; margin-top: 0.5rem; margin-bottom: 1rem; padding: 0.5rem 1rem; background-color: rgba(255, 255, 255, 0.2); border-radius: 8px; font-size: 0.95rem; backdrop-filter: blur(10px);">Zürich</p>
-                <div class="social-links">
-                    <a href="https://www.linkedin.com/in/ixeia-s-p/" target="_blank" class="social-link" title="LinkedIn">
-                        <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-                            <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
-                        </svg>
+                <p class="tagline">Data &amp; AI at Scale</p>
+                <div class="hero-meta">
+                    <span class="chip">
+                        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>
+                        Zürich · 408 m
+                    </span>
+                    <a href="https://www.linkedin.com/in/ixeia-s-p/" target="_blank" rel="noopener" class="social-link" title="LinkedIn" aria-label="LinkedIn">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.750-.79-1.750-1.764s.784-1.764 1.750-1.764 1.750.79 1.750 1.764-.783 1.764-1.750 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
                     </a>
-                    <a href="https://github.com/ixsanpe" target="_blank" class="social-link" title="GitHub">
-                        <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                        </svg>
+                    <a href="https://github.com/ixsanpe" target="_blank" rel="noopener" class="social-link" title="GitHub" aria-label="GitHub">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
                     </a>
-                    <a href="https://scholar.google.com/citations?user=iWlPeUYAAAAJ&hl=en" target="_blank" class="social-link" title="Google Scholar">
-                        <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-                            <path d="M12 24a7 7 0 1 1 0-14 7 7 0 0 1 0 14zm0-24L0 9.5l4.838 3.94A8 8 0 0 1 12 9a8 8 0 0 1 7.162 4.44L24 9.5z"/>
-                        </svg>
+                    <a href="https://scholar.google.com/citations?user=iWlPeUYAAAAJ&hl=en" target="_blank" rel="noopener" class="social-link" title="Google Scholar" aria-label="Google Scholar">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 24a7 7 0 1 1 0-14 7 7 0 0 1 0 14zm0-24L0 9.5l4.838 3.94A8 8 0 0 1 12 9a8 8 0 0 1 7.162 4.44L24 9.5z"/></svg>
                     </a>
                 </div>
             </div>
         </div>
-    </section>
 
-    <!-- About Section -->
-    <section id="about">
-        <div class="container">
-            <h2>
-                About Me
-            </h2>
-            <div class="about-content">
-                <p class="about-intro">
-                    Hi! I'm a Senior Data & AI Engineer at SWISS International Airlines, where I build TB-scale pipelines and cutting-edge agentic platforms, with hands-on experience across text, tabular, audio, and video data.
-                    I hold an MSc in Data Science from ETH Zürich, where I gained experience as a research engineer on distributed LLM training and fault tolerance. This was published at SOSP '25.
-                    <br>
-                    <br>Beyond work, I enjoy mentoring students, contributing to diversity & inclusion initiatives, and travelling.
-                </p>
-                
-                <div class="about-grid">
-                    <div class="about-card">
-                        <div class="about-card-icon">
-                            <svg viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M20 6h-2.18c.11-.31.18-.65.18-1a2.996 2.996 0 0 0-5.5-1.65l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zM9 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm6 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM4 19V8h16v11H4z"/>
-                            </svg>
-                        </div>
-                        <div class="about-card-content">
-                            <h3>Work</h3>
-                            <p><strong>SWISS International Airlines</strong> • Cloud Data Engineer</p>
-                            <ul>
-                                <li>• Designing & productionizing TB-scale data pipelines with PySpark</li>
-                                <li>• Adopting AI Agents & ML models across Business Units</li>
-                                <li>• Building cloud-native data platforms</li>
-                            </ul>
-                        </div>
-                    </div>
+        <a href="#about" class="start-hike">
+            <span class="signpost">Start the hike <span class="time">≈ 5 min</span></span>
+            <svg class="arrow" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+        </a>
+    </header>
 
-                    <div class="about-card">
-                        <div class="about-card-icon">
-                            <svg viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82zM12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/>
-                            </svg>
-                        </div>
-                        <div class="about-card-content">
-                            <h3>Education</h3>
-                            <ul>
-                                <li>• <strong>ETH Zürich</strong>:<br>MSc in Data Science</li>
-                                <li>• <strong>Universidad Politécnica de Valencia</strong>:
-                                    <br>Double BSc in Telecommunication Engineering & Business Administration (Ranked 1st in class)   
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+    <main class="trail-zone">
+        <div class="trail" id="trail">
+            <svg class="trail-svg" aria-hidden="true">
+                <path class="trail-bed"/>
+                <path class="trail-dash"/>
+                <path class="trail-walked"/>
+                <g class="hiker">
+                    <circle r="15"/>
+                    <path d="M1 -8 a2.4 2.4 0 1 1 0.01 0 M0 -4 L-1 3 L-4 9 M-1 3 L2 9 M0 -2 L4 1 M-1 -3 L-5 0 M6 -4 L4 10"/>
+                </g>
+            </svg>
 
-                    <div class="about-card">
-                        <div class="about-card-icon">
-                            <svg viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"/>
-                            </svg>
-                        </div>
-                        <div class="about-card-content">
-                            <h3>Interests & Expertise</h3>
-                            <ul>
-                                <li>• Scalable data pipelines & cloud platforms</li>
-                                <li>• MLOps & production ML systems</li>
-                                <li>• Agentic systems & AI integration</li>
-                                <li>• Large-scale LLM training</li>
-                            </ul>
-                            <!-- <p style="font-size: 0.85rem; margin-top: 1rem;">
-                                <strong>Key achievements:</strong> Reduced pipeline processing times from 6h to 30m • 6+ months zero downtime • LLM training systems for 1.5B+ parameters
-                            </p> -->
-                        </div>
-                    </div>
+            <!-- decorations -->
+            <svg class="deco" style="left:-40px; top:120px" width="90" height="110" viewBox="0 0 90 110" aria-hidden="true"><g fill="var(--pine-500)"><path d="M30 100 L45 20 L60 100Z"/><path d="M55 104 L66 50 L77 104Z" opacity="0.8"/><path d="M10 104 L20 60 L30 104Z" opacity="0.7"/></g></svg>
+            <svg class="deco" style="right:-30px; top:22%" width="80" height="100" viewBox="0 0 80 100" aria-hidden="true"><g fill="var(--pine-700)"><path d="M20 96 L36 18 L52 96Z"/><path d="M48 98 L60 50 L72 98Z" opacity="0.75"/></g></svg>
+            <svg class="deco" style="left:-20px; top:44%" width="70" height="40" viewBox="0 0 70 40" aria-hidden="true"><circle cx="10" cy="30" r="5" fill="var(--alpenrose)"/><circle cx="26" cy="22" r="4" fill="var(--gentian)"/><circle cx="40" cy="32" r="5" fill="var(--sun-500)"/><circle cx="56" cy="24" r="4" fill="var(--alpenrose)"/></svg>
+            <svg class="deco" style="right:-10px; top:62%" width="90" height="50" viewBox="0 0 90 50" aria-hidden="true"><path d="M5 48 Q15 20 35 24 Q50 10 65 26 Q85 28 88 48Z" fill="var(--granite-500)" opacity="0.55"/></svg>
+            <svg class="deco" style="left:-30px; top:80%" width="70" height="70" viewBox="0 0 70 70" aria-hidden="true"><g fill="var(--granite-500)" opacity="0.6"><ellipse cx="35" cy="62" rx="26" ry="8"/><ellipse cx="35" cy="48" rx="18" ry="7"/><ellipse cx="35" cy="36" rx="12" ry="6"/><ellipse cx="35" cy="26" rx="7" ry="5"/></g></svg>
+
+            <!-- ============ STAGE 1: TRAILHEAD / ABOUT ============ -->
+            <header class="stage" id="about">
+                <span class="marker" data-alt="450" data-stage="Trailhead"></span>
+                <div>
+                    <h2>Trailhead</h2>
+                    <p class="stage-sub">About me</p>
                 </div>
-            </div>
-        </div>
-    </section>
+                <span class="signpost">About <span class="time">0:15 h</span></span>
+            </header>
 
-    <!-- Projects Section -->
-    <section id="work">
-        <div class="container">
-            <h2>Highlighted Projects</h2>
-            <div class="projects-list">
-                <article class="project-card">
-                    <div class="post-date">ETH Zürich • 2024</div>
-                    <h3 style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
-                        Sailor: Automated ML Training System for the Cloud
-                        <a href="https://github.com/eth-easl/sailor" target="_blank" style="display: inline-flex; align-items: center; color: var(--text-light); transition: color 0.3s;" title="View on GitHub">
-                            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
-                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                            </svg>
+            <div class="waypoint left">
+                <span class="marker" data-alt="620" data-stage="About"></span>
+                <article class="card feature">
+                    <div class="card-kind">
+                        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                        Hi there
+                    </div>
+                    <h3>Before we set off</h3>
+                    <p>I'm a Senior Data &amp; AI Engineer at SWISS International Airlines, where I build TB-scale pipelines and cutting-edge agentic platforms, with hands-on experience across text, tabular, audio, and video data.</p>
+                    <p>I hold an MSc in Data Science from ETH Zürich, where I gained experience as a research engineer on distributed LLM training and fault tolerance. This was published at SOSP '25.</p>
+                    <p>Beyond work, I enjoy mentoring students, contributing to diversity &amp; inclusion initiatives, and travelling.</p>
+                </article>
+            </div>
+
+            <div class="waypoint right">
+                <span class="marker" data-alt="780" data-stage="Work"></span>
+                <article class="card">
+                    <div class="card-kind">
+                        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20 6h-4V4c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v2H4c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-6 0h-4V4h4v2z"/></svg>
+                        Waypoint · Work
+                    </div>
+                    <h3>SWISS International Airlines</h3>
+                    <p>Cloud Data Engineer</p>
+                    <ul>
+                        <li>Designing &amp; productionizing TB-scale data pipelines with PySpark</li>
+                        <li>Adopting AI Agents &amp; ML models across Business Units</li>
+                        <li>Building cloud-native data platforms</li>
+                    </ul>
+                </article>
+            </div>
+
+            <div class="waypoint left">
+                <span class="marker" data-alt="940" data-stage="Education"></span>
+                <article class="card">
+                    <div class="card-kind">
+                        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82zM12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/></svg>
+                        Waypoint · Education
+                    </div>
+                    <h3>Where I trained</h3>
+                    <ul>
+                        <li><strong>ETH Zürich</strong><br>MSc in Data Science</li>
+                        <li><strong>Universidad Politécnica de Valencia</strong><br>Double BSc in Telecommunication Engineering &amp; Business Administration (Ranked 1st in class)</li>
+                    </ul>
+                </article>
+            </div>
+
+            <div class="waypoint right">
+                <span class="marker" data-alt="1120" data-stage="Interests"></span>
+                <article class="card">
+                    <div class="card-kind">
+                        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"/></svg>
+                        Waypoint · Interests
+                    </div>
+                    <h3>What's in my backpack</h3>
+                    <ul>
+                        <li>Scalable data pipelines &amp; cloud platforms</li>
+                        <li>MLOps &amp; production ML systems</li>
+                        <li>Agentic systems &amp; AI integration</li>
+                        <li>Large-scale LLM training</li>
+                    </ul>
+                </article>
+            </div>
+
+            <!-- ============ STAGE 2: PROJECTS ============ -->
+            <header class="stage" id="work">
+                <span class="marker" data-alt="1350" data-stage="Projects"></span>
+                <div>
+                    <h2>Projects</h2>
+                    <p class="stage-sub">Highlighted climbs</p>
+                </div>
+                <span class="signpost">Projects <span class="time">1:20 h</span></span>
+            </header>
+
+            <div class="waypoint left">
+                <span class="marker" data-alt="1690" data-stage="Sailor"></span>
+                <article class="card feature">
+                    <div class="post-date">ETH Zürich · 2024</div>
+                    <h3>Sailor: Automated ML Training System for the Cloud
+                        <a href="https://github.com/eth-easl/sailor" target="_blank" rel="noopener" class="gh-link" title="View on GitHub" aria-label="Sailor on GitHub">
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.230 3.297-1.230.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
                         </a>
                     </h3>
-                    <p>
-                        System for automating large-scale ML training in dynamic cloud environments.
-                        Features elastic fault-tolerant mechanism with in-CPU checkpointing and fast reconfiguration,
-                        achieving 2.87× higher goodput compared to state-of-the-art.
-                        Includes optimal resource planner that explores search space 100× faster than naive approaches.
-                    </p>
+                    <p>System for automating large-scale ML training in dynamic cloud environments. Features elastic fault-tolerant mechanism with in-CPU checkpointing and fast reconfiguration, achieving 2.87× higher goodput compared to state-of-the-art. Includes optimal resource planner that explores search space 100× faster than naive approaches.</p>
                     <div class="tech-tags">
                         <span class="tech-tag">PyTorch</span>
                         <span class="tech-tag">DeepSpeed</span>
                         <span class="tech-tag">GKE</span>
                     </div>
-                    <a href="projects/sailor-llm.html" class="read-more">Read More →</a>
+                    <a href="projects/sailor-llm.html" class="read-more">Explore this climb <span aria-hidden="true">→</span></a>
                 </article>
             </div>
-        </div>
-    </section>
 
-    <!-- Awards Section -->
-    <section id="awards">
-        <div class="container">
-            <h2>Awards & Recognition</h2>
-            <ul class="awards-list">
-                <li class="award-item">
-                    <h3>Commencement Speaker for BSc Graduation Ceremony <span style="font-weight: 400;">(May 2025)</span></h3>
-                    <p>Selected to deliver the commencement speech at the BSc Graduation Ceremony at Universidad Politécnica de Valencia, representing the graduating class and sharing insights on the journey from university to professional life.</p>
-                </li>
-
-                <li class="award-item">
-                    <h3>Best Student Award by Social Council at Universidad Politécnica de Valencia <span style="font-weight: 400;">(July 2022)</span></h3>
-                    <p>Awarded by the Social Council of Universidad Politécnica de Valencia for outstanding academic achievement and contribution to the university community throughout my degree program.</p>
-                </li>
-
-                <li class="award-item">
-                    <h3>Nova Top 111 University Talent in Spain <span style="font-weight: 400;">(March 2022)</span></h3>
-                    <p>Recognized as one of the top 111 university talents in Spain by Nova, highlighting exceptional academic performance and potential for future professional success.</p>
-                </li>
-
-                <li class="award-item">
-                    <h3>Award for 1st Rank amongst Double BSc Graduation Class <span style="font-weight: 400;">(November 2021)</span></h3>
-                    <p>Graduated with the highest GPA in my class from the double degree program in Telecommunication Engineering and Business Administration at Universidad Politécnica de Valencia.</p>
-                </li>
-
-                <li class="award-item">
-                    <h3>Santander Bank Fellow for Exchange Programme <span style="font-weight: 400;">(May 2019)</span></h3>
-                    <p>Selected as a Santander Bank Fellow for academic merit, receiving funding support for an international exchange program to broaden academic and cultural perspectives.</p>
-                </li>
-            </ul>
-        </div>
-    </section>
-
-    <!-- Talks Section -->
-    <section id="talks">
-        <div class="container">
-            <h2>Talks</h2>
-            <div class="talks-list">
-                <div class="talk-item">
-                    <div class="post-date">UZH Career Night • November 2024</div>
-                    <h3>Career Tips for Fresh Graduates</h3>
-                    <div style="margin: 1rem 0;">
-                        <img src="assets/2024113_UZH_talk.jpg" alt="UZH Career Night Talk" style="width: 100%; max-width: 600px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
-                    </div>
-                    <p style="margin-bottom: 1rem;">I was invited to the UZH Career Night to share my experience as a fresh graduate on how to find a job
-                        and tips about transitioning from university to professional life. The talk covered five key principles for career development and job searching.</p>
-                    
-                    <div class="talk-preview">
-                        <p style="margin-bottom: 0.5rem; color: var(--text-light);"><strong>Key Topics:</strong> Finding your interests • Planning ahead • Understanding market trends • Learning from mistakes • Prioritizing wellbeing</p>
-                    </div>
-                    
-                    <a href="talks/uzh-career-night-2024.html" class="read-more">Read More →</a>
+            <!-- ============ STAGE 3: TALKS ============ -->
+            <header class="stage" id="talks">
+                <span class="marker" data-alt="1900" data-stage="Viewpoints"></span>
+                <div>
+                    <h2>Viewpoints</h2>
+                    <p class="stage-sub">Talks</p>
                 </div>
+                <span class="signpost">Talks <span class="time">2:10 h</span></span>
+            </header>
 
-                <div class="talk-item">
-                    <div class="post-date">Universidad Politécnica de Valencia • May 2025</div>
+            <div class="waypoint right">
+                <span class="marker" data-alt="2060" data-stage="UZH Career Night"></span>
+                <article class="card">
+                    <div class="post-date">UZH Career Night · November 2024</div>
+                    <h3>Career Tips for Fresh Graduates</h3>
+                    <img src="assets/2024113_UZH_talk.jpg" alt="Speaking at the UZH Career Night" loading="lazy">
+                    <p>I was invited to the UZH Career Night to share my experience as a fresh graduate on how to find a job and tips about transitioning from university to professional life. The talk covered five key principles for career development and job searching.</p>
+                    <p><strong>Key topics:</strong> Finding your interests · Planning ahead · Understanding market trends · Learning from mistakes · Prioritizing wellbeing</p>
+                    <p style="margin-top:1rem"><a href="talks/uzh-career-night-2024.html" class="read-more">Read more <span aria-hidden="true">→</span></a></p>
+                </article>
+            </div>
+
+            <div class="waypoint left">
+                <span class="marker" data-alt="2210" data-stage="Commencement Speech"></span>
+                <article class="card">
+                    <div class="post-date">Universidad Politécnica de Valencia · May 2025</div>
                     <h3>Commencement Speech for BSc Graduation Ceremony</h3>
-                    <div style="margin: 1rem 0;">
-                        <a href="https://www.youtube.com/watch?v=Q9edBOO_sYo" target="_blank" style="display: block; position: relative; max-width: 350px;">
-                            <img src="assets/commencement_speech_thumbnail.jpg" alt="Commencement Speech" style="width: 100%; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22350%22 height=%22197%22%3E%3Crect width=%22350%22 height=%22197%22 fill=%22%23cbd5e0%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 font-size=%2216%22 fill=%22%234a5568%22%3ECommencement Speech%3C/text%3E%3C/svg%3E'">
-                            <svg viewBox="0 0 24 24" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 40px; height: 40px; fill: white; opacity: 0.9; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));">
-                                <path d="M8 5v14l11-7z"/>
-                            </svg>
-                        </a>
-                    </div>
-                    <p style="margin-bottom: 1rem;">I was honored to deliver the commencement speech for the Class of 2025 at my alma mater.
-                        It was a meaningful moment to share my journey with graduating students. The speech is available on YouTube in Spanish.</p>
+                    <a href="https://www.youtube.com/watch?v=Q9edBOO_sYo" target="_blank" rel="noopener" class="video-thumb" aria-label="Watch the commencement speech on YouTube">
+                        <img src="assets/commencement_speech_thumbnail.jpg" alt="Commencement speech thumbnail" loading="lazy">
+                        <svg viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+                    </a>
+                    <p>I was honored to deliver the commencement speech for the Class of 2025 at my alma mater. It was a meaningful moment to share my journey with graduating students. The speech is available on YouTube in Spanish.</p>
+                </article>
             </div>
-        </div>
-    </section>
 
-    <!-- Contact Section -->
-    <section id="contact">
-        <div class="container" style="text-align: center;">
-            <h2>Get In Touch</h2>
-            <p style="color: var(--text-light); margin-bottom: 3rem; font-size: 1.1rem;">
-                Feel free to reach out!
-            </p>
-            <div class="contact-links">
-                <a href="https://github.com/ixsanpe" target="_blank" class="contact-card">
-                    <svg viewBox="0 0 24 24" width="32" height="32" fill="currentColor">
-                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                    </svg>
-                    <div>
-                        <h3>GitHub</h3>
-                        <p>Check out my code</p>
-                    </div>
-                </a>
-                <a href="https://www.linkedin.com/in/ixeia-s-p/" target="_blank" class="contact-card">
-                    <svg viewBox="0 0 24 24" width="32" height="32" fill="currentColor">
-                        <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
-                    </svg>
-                    <div>
-                        <h3>LinkedIn</h3>
-                        <p>Let's connect professionally</p>
-                    </div>
-                </a>
-                <a href="mailto:ixeiasp98@gmail.com" class="contact-card">
-                    <svg viewBox="0 0 24 24" width="32" height="32" fill="currentColor">
-                        <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
-                    </svg>
-                    <div>
-                        <h3>Email</h3>
-                        <p>Send me a message</p>
-                    </div>
-                </a>
+            <!-- ============ STAGE 4: AWARDS ============ -->
+            <header class="stage" id="awards">
+                <span class="marker" data-alt="2390" data-stage="Summit log"></span>
+                <div>
+                    <h2>Summit log</h2>
+                    <p class="stage-sub">Awards &amp; recognition</p>
+                </div>
+                <span class="signpost">Awards <span class="time">2:45 h</span></span>
+            </header>
+
+            <div class="waypoint right">
+                <span class="marker" data-alt="2480" data-stage="Summit log"></span>
+                <article class="card cairn">
+                    <div class="post-date">May 2025</div>
+                    <h3>Commencement Speaker for BSc Graduation Ceremony</h3>
+                    <p>Selected to deliver the commencement speech at the BSc Graduation Ceremony at Universidad Politécnica de Valencia, representing the graduating class and sharing insights on the journey from university to professional life.</p>
+                </article>
             </div>
-        </div>
-    </section>
 
-    <!-- Footer -->
+            <div class="waypoint left">
+                <span class="marker" data-alt="2570" data-stage="Summit log"></span>
+                <article class="card cairn">
+                    <div class="post-date">July 2022</div>
+                    <h3>Best Student Award by Social Council at Universidad Politécnica de Valencia</h3>
+                    <p>Awarded by the Social Council of Universidad Politécnica de Valencia for outstanding academic achievement and contribution to the university community throughout my degree program.</p>
+                </article>
+            </div>
+
+            <div class="waypoint right">
+                <span class="marker" data-alt="2660" data-stage="Summit log"></span>
+                <article class="card cairn">
+                    <div class="post-date">March 2022</div>
+                    <h3>Nova Top 111 University Talent in Spain</h3>
+                    <p>Recognized as one of the top 111 university talents in Spain by Nova, highlighting exceptional academic performance and potential for future professional success.</p>
+                </article>
+            </div>
+
+            <div class="waypoint left">
+                <span class="marker" data-alt="2750" data-stage="Summit log"></span>
+                <article class="card cairn">
+                    <div class="post-date">November 2021</div>
+                    <h3>Award for 1st Rank amongst Double BSc Graduation Class</h3>
+                    <p>Graduated with the highest GPA in my class from the double degree program in Telecommunication Engineering and Business Administration at Universidad Politécnica de Valencia.</p>
+                </article>
+            </div>
+
+            <div class="waypoint right">
+                <span class="marker" data-alt="2840" data-stage="Summit log"></span>
+                <article class="card cairn">
+                    <div class="post-date">May 2019</div>
+                    <h3>Santander Bank Fellow for Exchange Programme</h3>
+                    <p>Selected as a Santander Bank Fellow for academic merit, receiving funding support for an international exchange program to broaden academic and cultural perspectives.</p>
+                </article>
+            </div>
+
+            <!-- ============ SUMMIT: CONTACT ============ -->
+            <section class="summit" id="contact">
+                <div class="summit-cross">
+                    <svg viewBox="0 0 90 120" aria-hidden="true">
+                        <rect x="41" y="10" width="8" height="110" rx="2" fill="var(--earth-700)"/>
+                        <rect x="20" y="32" width="50" height="8" rx="2" fill="var(--earth-700)"/>
+                        <path d="M49 14 L80 22 L49 30 Z" fill="var(--trail-red)"/>
+                    </svg>
+                </div>
+                <span class="marker" data-alt="3020" data-stage="Summit"></span>
+                <h2>You reached the summit</h2>
+                <p class="lead">Thanks for hiking along. Enjoy the view — and feel free to reach out!</p>
+                <div class="contact-links">
+                    <a href="https://github.com/ixsanpe" target="_blank" rel="noopener" class="contact-card">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                        <div><h3>GitHub</h3><p>Check out my code</p></div>
+                    </a>
+                    <a href="https://www.linkedin.com/in/ixeia-s-p/" target="_blank" rel="noopener" class="contact-card">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                        <div><h3>LinkedIn</h3><p>Let's connect professionally</p></div>
+                    </a>
+                    <a href="mailto:ixeiasp98@gmail.com" class="contact-card">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                        <div><h3>Email</h3><p>Send me a message</p></div>
+                    </a>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Altimeter -->
+    <div class="altimeter" id="altimeter" aria-hidden="true">
+        <span class="alt-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 6l-3.75 5 2.85 3.8-1.6 1.2C9.81 13.75 7 10 7 10l-6 8h22L14 6z"/></svg></span>
+        <strong id="altValue">450 m</strong>
+        <span class="alt-stage" id="altStage">Trailhead</span>
+    </div>
+
     <footer>
-        <p>&copy; <span id="currentYear"></span> Ixeia Sánchez Périz. All rights reserved. | Built together with 🤖 GitHub Copilot</p>
-        <p><a href="https://github.com/ixsanpe">GitHub</a> • <a href="https://www.linkedin.com/in/ixeia-s-p/">LinkedIn</a> • <a href="mailto:ixeiasp98@gmail.com">Email</a></p>
-        <p style="margin-top: 1rem; font-size: 0.875rem; opacity: 0.7;">Last updated: <span id="lastUpdated"></span></p>
+        <p>&copy; <span id="currentYear"></span> Ixeia Sánchez Périz · Built together with 🤖 GitHub Copilot &amp; Claude</p>
+        <p><a href="https://github.com/ixsanpe">GitHub</a> • <a href="https://www.linkedin.com/in/ixeia-s-p/">LinkedIn</a> • <a href="mailto:ixeiasp98@gmail.com">Email</a> • <a href="design-system.html">Design system</a></p>
+        <p style="margin-top: 1rem; font-size: 0.85rem; opacity: 0.7;">Last updated: <span id="lastUpdated"></span></p>
     </footer>
 
     <script>
-        // Configuration - Update these URLs in one place
-        const SOCIAL_LINKS = {
-            linkedin: 'https://www.linkedin.com/in/ixeia-s-p/',
-            github: 'https://github.com/ixsanpe',
-            scholar: 'https://scholar.google.com/citations?user=iWlPeUYAAAAJ&hl=en',
-        };
-
-        // Set current year and last updated date
+        // ---------- Footer dates ----------
         document.getElementById('currentYear').textContent = new Date().getFullYear();
-        
-        // Fetch last commit date from GitHub API
-        fetch('https://api.github.com/repos/ixsanpe/ixeiasp.github.io/commits/main')
-            .then(response => response.json())
-            .then(data => {
-                const lastCommitDate = new Date(data.commit.author.date);
-                document.getElementById('lastUpdated').textContent = lastCommitDate.toLocaleDateString('en-US', { 
-                    year: 'numeric', 
-                    month: 'long', 
-                    day: 'numeric' 
-                });
-            })
-            .catch(error => {
-                console.error('Error fetching last commit date:', error);
-                // Fallback to current date if API fails
-                document.getElementById('lastUpdated').textContent = new Date().toLocaleDateString('en-US', { 
-                    year: 'numeric', 
-                    month: 'long', 
-                    day: 'numeric' 
-                });
-            });
+        const fmt = d => d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+        fetch('https://api.github.com/repos/ixsanpe/ixsanpe.github.io/commits/main')
+            .then(r => r.json())
+            .then(data => { document.getElementById('lastUpdated').textContent = fmt(new Date(data.commit.author.date)); })
+            .catch(() => { document.getElementById('lastUpdated').textContent = fmt(new Date()); });
 
-        // Update all social links
-        document.querySelectorAll('a[href*="linkedin"]').forEach(link => {
-            if (!link.href.includes('ixeia-s-p')) link.href = SOCIAL_LINKS.linkedin;
-        });
-        document.querySelectorAll('a[href*="github.com/ixsanpe"]').forEach(link => {
-            link.href = SOCIAL_LINKS.github;
-        });
-        document.querySelectorAll('a[href*="scholar.google.com"]').forEach(link => {
-            link.href = SOCIAL_LINKS.scholar;
-        });
-
-        // Dark mode toggle functionality
-        const darkModeToggle = document.getElementById('darkModeToggle');
+        // ---------- Theme toggle ----------
+        const html = document.documentElement;
         const sunIcon = document.querySelector('.sun-icon');
         const moonIcon = document.querySelector('.moon-icon');
-        const html = document.documentElement;
-
-        // Check for saved theme preference or default to light mode
-        const currentTheme = localStorage.getItem('theme') || 'light';
-        html.setAttribute('data-theme', currentTheme);
-        updateIcons(currentTheme);
-
-        darkModeToggle.addEventListener('click', () => {
-            const currentTheme = html.getAttribute('data-theme');
-            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-            
-            html.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-            updateIcons(newTheme);
+        function updateIcons(theme) {
+            sunIcon.style.display = theme === 'dark' ? 'none' : 'block';
+            moonIcon.style.display = theme === 'dark' ? 'block' : 'none';
+        }
+        updateIcons(html.getAttribute('data-theme'));
+        document.getElementById('darkModeToggle').addEventListener('click', () => {
+            const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', next);
+            try { localStorage.setItem('theme', next); } catch (e) {}
+            updateIcons(next);
         });
 
-        function updateIcons(theme) {
-            if (theme === 'dark') {
-                sunIcon.style.display = 'none';
-                moonIcon.style.display = 'block';
-            } else {
-                sunIcon.style.display = 'block';
-                moonIcon.style.display = 'none';
+        // ---------- The trail ----------
+        const trail = document.getElementById('trail');
+        const svg = trail.querySelector('.trail-svg');
+        const bed = svg.querySelector('.trail-bed');
+        const dash = svg.querySelector('.trail-dash');
+        const walked = svg.querySelector('.trail-walked');
+        const hiker = svg.querySelector('.hiker');
+        const markers = [...trail.querySelectorAll('.marker')];
+        const altimeter = document.getElementById('altimeter');
+        const altValue = document.getElementById('altValue');
+        const altStage = document.getElementById('altStage');
+
+        let samples = [];      // {l, x, y}
+        let stops = [];        // {l, alt, stage, el}
+        let totalLen = 0;
+
+        function buildTrail() {
+            const box = trail.getBoundingClientRect();
+            const pts = markers.map(m => {
+                const r = m.getBoundingClientRect();
+                return { x: r.left + r.width / 2 - box.left, y: r.top + r.height / 2 - box.top, el: m };
+            });
+            if (!pts.length) return;
+
+            svg.setAttribute('viewBox', `0 0 ${box.width} ${box.height}`);
+            let prev = { x: box.width / 2, y: 0 };
+            let d = `M ${prev.x} ${prev.y}`;
+            pts.forEach(p => {
+                const dy = (p.y - prev.y) * 0.55;
+                d += ` C ${prev.x} ${prev.y + dy}, ${p.x} ${p.y - dy}, ${p.x} ${p.y}`;
+                prev = p;
+            });
+            [bed, dash, walked].forEach(p => p.setAttribute('d', d));
+
+            totalLen = walked.getTotalLength();
+            walked.style.strokeDasharray = totalLen;
+            samples = [];
+            for (let l = 0; l <= totalLen; l += 6) {
+                const pt = walked.getPointAtLength(l);
+                samples.push({ l, x: pt.x, y: pt.y });
             }
+            stops = pts.map(p => {
+                const s = samples.reduce((a, b) => Math.abs(b.y - p.y) + Math.abs(b.x - p.x) < Math.abs(a.y - p.y) + Math.abs(a.x - p.x) ? b : a);
+                return { l: s.l, alt: +p.el.dataset.alt, stage: p.el.dataset.stage, el: p.el };
+            });
+            onScroll();
         }
 
-        // Scrolling name bar functionality
-        const nameBar = document.getElementById('nameBar');
-        const hero = document.querySelector('.hero');
-        
-        window.addEventListener('scroll', () => {
-            const heroBottom = hero.offsetTop + hero.offsetHeight;
-            const scrollPosition = window.scrollY;
-            
-            if (scrollPosition > heroBottom) {
-                nameBar.classList.add('visible');
-            } else {
-                nameBar.classList.remove('visible');
+        function sampleAtY(y) {
+            let lo = 0, hi = samples.length - 1;
+            while (lo < hi) {
+                const mid = (lo + hi) >> 1;
+                if (samples[mid].y < y) lo = mid + 1; else hi = mid;
             }
-        });
+            return samples[lo];
+        }
+
+        function onScroll() {
+            if (!samples.length) return;
+            const box = trail.getBoundingClientRect();
+            const targetY = window.innerHeight * 0.6 - box.top;
+            const s = targetY <= 0 ? samples[0] : sampleAtY(targetY);
+            walked.style.strokeDashoffset = totalLen - s.l;
+            hiker.style.transform = `translate(${s.x}px, ${s.y}px)`;
+
+            // markers reached + altimeter
+            let alt = 408, stage = 'Valley';
+            stops.forEach((st, i) => {
+                const reached = s.l >= st.l - 2;
+                st.el.classList.toggle('reached', reached);
+                if (reached) {
+                    stage = st.stage;
+                    const next = stops[i + 1];
+                    alt = next && s.l > st.l
+                        ? st.alt + (next.alt - st.alt) * Math.min(1, (s.l - st.l) / (next.l - st.l))
+                        : st.alt;
+                }
+            });
+            if (s.l < (stops[0] ? stops[0].l : 0)) {
+                alt = 408 + (stops[0].alt - 408) * (s.l / stops[0].l);
+            }
+            altValue.textContent = Math.round(alt / 10) * 10 >= 1000
+                ? (Math.round(alt / 10) * 10).toLocaleString('en-US') + ' m'
+                : Math.round(alt / 10) * 10 + ' m';
+            altStage.textContent = stage;
+            altimeter.classList.toggle('visible', box.top < window.innerHeight * 0.5 && box.bottom > window.innerHeight * 0.4);
+        }
+
+        let ticking = false;
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                requestAnimationFrame(() => { onScroll(); ticking = false; });
+                ticking = true;
+            }
+        }, { passive: true });
+
+        new ResizeObserver(() => requestAnimationFrame(buildTrail)).observe(trail);
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(buildTrail);
+        window.addEventListener('load', buildTrail);
+        buildTrail();
+
+        // ---------- Reveal waypoints ----------
+        const io = new IntersectionObserver(entries => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    e.target.classList.add('in-view');
+                    io.unobserve(e.target);
+                }
+            });
+        }, { rootMargin: '0px 0px -10% 0px' });
+        document.querySelectorAll('.waypoint').forEach(w => io.observe(w));
     </script>
 </body>
 </html>

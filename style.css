@@ -1,43 +1,194 @@
-/* Shared styles: reset, theme variables, nav, dark-mode toggle, footer */
+/* =====================================================================
+   SUMMER TRAIL — design system
+   A summer hike in the Alps: meadow, pine, granite, sky, sun & the
+   yellow Swiss trail signs. See DESIGN_SYSTEM.md for the full spec.
+   ===================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap');
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+/* ---------- 1. Primitive palette ---------- */
 :root {
-    --primary-color: #7b9ab8;
-    --secondary-color: #5d7a99;
-    --accent-color: #9ab5ce;
-    --text-dark: #2d3748;
-    --text-light: #4a5568;
-    --bg-light: #f0f4f8;
-    --bg-white: #ffffff;
-    --border-color: #cbd5e0;
+    --sky-100: #eaf5fb;
+    --sky-200: #cfe8f5;
+    --sky-400: #7fbfe0;
+    --sky-600: #3d8ab3;
+
+    --snow: #fbfdfc;
+    --granite-300: #c9ccd1;
+    --granite-500: #8b919b;
+    --granite-700: #4d5560;
+
+    --meadow-100: #eef5dd;
+    --meadow-300: #b9d98a;
+    --meadow-500: #7fb04f;
+    --meadow-700: #4f7d2e;
+
+    --pine-500: #2f6b4f;
+    --pine-700: #1f4a37;
+    --pine-900: #12291f;
+
+    --earth-300: #e3cba4;
+    --earth-500: #b08452;
+    --earth-700: #7a5530;
+
+    --sun-300: #ffe48a;
+    --sun-500: #f6c431;     /* Swiss hiking-sign yellow */
+    --sun-700: #c99400;
+
+    --gentian: #3b5bdb;     /* alpine flower blue */
+    --alpenrose: #d9486b;   /* alpine flower pink */
+    --trail-red: #d23a2f;   /* white-red-white mountain-trail marker */
 }
 
+/* ---------- 2. Semantic tokens: summer day ---------- */
+:root {
+    --bg: #fbfaf4;              /* sun-bleached paper */
+    --bg-sunken: var(--meadow-100);
+    --surface: #ffffff;
+    --surface-raised: #ffffff;
+    --text: var(--pine-900);
+    --text-muted: #4c5a52;
+    --text-subtle: #6f7b74;
+    --border: #dfe3d3;
+    --border-strong: var(--earth-300);
+
+    --brand: var(--pine-500);
+    --brand-strong: var(--pine-700);
+    --accent: var(--sun-500);
+    --accent-ink: #3a2c00;
+    --link: #2f6b4f;
+    --link-hover: #1f4a37;
+    --trail: var(--earth-500);
+    --trail-walked: var(--trail-red);
+
+    --sky-top: #9fd3ef;
+    --sky-bottom: #eaf6fb;
+    --mtn-far: #a9c4d6;
+    --mtn-mid: #6f9a83;
+    --mtn-near: #4f7d2e;
+    --mtn-meadow: #8cbf5a;
+    --snowcap: #ffffff;
+    --sun-disc: #ffd75a;
+
+    --shadow-sm: 0 1px 2px rgba(18, 41, 31, 0.06), 0 1px 3px rgba(18, 41, 31, 0.08);
+    --shadow-md: 0 4px 10px rgba(18, 41, 31, 0.08), 0 12px 28px rgba(18, 41, 31, 0.08);
+
+    /* Type */
+    --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+    --font-body: 'Work Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+    /* Spacing scale (4px base) */
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-6: 1.5rem;
+    --space-8: 2rem;
+    --space-12: 3rem;
+    --space-16: 4rem;
+
+    --radius-sm: 6px;
+    --radius-md: 12px;
+    --radius-lg: 20px;
+    --radius-pill: 999px;
+
+    --ease-trail: cubic-bezier(0.22, 1, 0.36, 1);
+
+    /* Legacy aliases — keep older pages working */
+    --primary-color: var(--brand);
+    --secondary-color: var(--brand-strong);
+    --accent-color: var(--accent);
+    --text-dark: var(--text);
+    --text-light: var(--text-muted);
+    --bg-light: var(--bg-sunken);
+    --bg-white: var(--surface);
+    --border-color: var(--border);
+}
+
+/* ---------- 3. Semantic tokens: summer night ---------- */
 [data-theme="dark"] {
-    --primary-color: #6b8fb0;      /* Navy blue */
-    --secondary-color: #7a9fc0;    /* Medium navy */
-    --accent-color: #b8a8d8;       /* Purple pastel */
-    --text-dark: #e2e8f0;          /* Light text */
-    --text-light: #cbd5e0;         /* Muted text */
-    --bg-light: #1a202c;           /* Dark background */
-    --bg-white: #2d3748;           /* Card background */
-    --border-color: #4a5568;       /* Border */
+    --bg: #0f1d18;
+    --bg-sunken: #16271f;
+    --surface: #1a2e25;
+    --surface-raised: #213a2f;
+    --text: #eef3ea;
+    --text-muted: #b9c7bd;
+    --text-subtle: #8fa196;
+    --border: #2d4a3c;
+    --border-strong: #5a4a33;
+
+    --brand: #8cc79f;
+    --brand-strong: #b4e0c0;
+    --accent: var(--sun-500);
+    --link: #a8dcb8;
+    --link-hover: #d6f2df;
+    --trail: #a07d55;
+    --trail-walked: #ff7a6b;
+
+    --sky-top: #0b1530;
+    --sky-bottom: #2a3a5c;
+    --mtn-far: #34476a;
+    --mtn-mid: #24423a;
+    --mtn-near: #17332a;
+    --mtn-meadow: #1c3b2e;
+    --snowcap: #d8e2f0;
+    --sun-disc: #f3efd8;     /* the moon */
+
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+/* ---------- 4. Base ---------- */
+html {
+    scroll-behavior: smooth;
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    line-height: 1.6;
-    color: var(--text-dark);
-    background-color: var(--bg-white);
+    font-family: var(--font-body);
+    line-height: 1.65;
+    color: var(--text);
+    background-color: var(--bg);
+    -webkit-font-smoothing: antialiased;
+    transition: background-color 0.4s, color 0.4s;
 }
 
-/* Navigation */
+h1, h2, h3 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+}
+
+a {
+    color: var(--link);
+}
+
+a:hover {
+    color: var(--link-hover);
+}
+
+:focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+img {
+    max-width: 100%;
+}
+
+/* ---------- 5. Navigation ---------- */
 nav {
-    background-color: var(--bg-white);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    background-color: color-mix(in srgb, var(--bg) 85%, transparent);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
     position: fixed;
     width: 100%;
     top: 0;
@@ -47,22 +198,24 @@ nav {
 nav .container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 1rem 2rem;
+    padding: 0.85rem 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 1rem;
 }
 
 nav .logo {
-    font-size: 1.5rem;
+    font-family: var(--font-display);
+    font-size: 1.35rem;
     font-weight: 700;
-    color: var(--primary-color);
+    color: var(--text);
     text-decoration: none;
 }
 
 nav .back-link {
     text-decoration: none;
-    color: var(--text-dark);
+    color: var(--text);
     font-weight: 500;
     transition: color 0.3s;
     display: inline-flex;
@@ -71,61 +224,160 @@ nav .back-link {
 }
 
 nav .back-link:hover {
-    color: var(--primary-color);
+    color: var(--brand);
 }
 
 /* Dark mode toggle */
 .dark-mode-toggle {
     background: none;
-    border: none;
-    color: var(--text-dark);
+    border: 1px solid var(--border);
+    color: var(--text);
     cursor: pointer;
-    padding: 0.5rem;
+    width: 38px;
+    height: 38px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 8px;
-    transition: background-color 0.3s, transform 0.2s;
+    border-radius: 50%;
+    transition: background-color 0.3s, transform 0.3s var(--ease-trail);
 }
 
 .dark-mode-toggle:hover {
-    background-color: var(--bg-light);
-    transform: scale(1.1);
+    background-color: var(--bg-sunken);
+    transform: rotate(-15deg);
 }
 
 .dark-mode-toggle svg {
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
 }
 
-/* Post/talk/award date label */
+/* ---------- 6. Shared components ---------- */
+
+/* Eyebrow / date label */
 .post-date {
-    color: var(--text-light);
-    font-size: 0.875rem;
+    color: var(--text-subtle);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
     margin-bottom: 0.5rem;
 }
 
-/* Footer */
+/* Trail-blaze tag (tech tags) */
+.tech-tag {
+    border-radius: var(--radius-pill) !important;
+    background-color: var(--bg-sunken) !important;
+    border: 1px solid var(--border) !important;
+    color: var(--text) !important;
+}
+
+/* Swiss trail sign: yellow signpost with arrow */
+.signpost {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: var(--sun-500);
+    color: var(--accent-ink);
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 0.45rem 1.6rem 0.45rem 0.9rem;
+    clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 50%, calc(100% - 14px) 100%, 0 100%);
+    box-shadow: var(--shadow-sm);
+}
+
+.signpost .time {
+    font-weight: 500;
+    opacity: 0.8;
+}
+
+/* Mountain-trail marker (white–red–white) */
+.blaze {
+    display: inline-block;
+    width: 22px;
+    height: 12px;
+    background: linear-gradient(#fff 0 33%, var(--trail-red) 33% 67%, #fff 67%);
+    border: 1px solid var(--granite-300);
+    border-radius: 2px;
+    vertical-align: middle;
+}
+
+/* Field-note callout */
+.highlight-box {
+    background-color: var(--bg-sunken) !important;
+    border-left: 4px solid var(--accent) !important;
+    border-radius: var(--radius-md) !important;
+}
+
+/* Subpage header ridge */
+body.subpage {
+    background:
+        linear-gradient(to bottom, var(--sky-bottom), var(--bg) 260px) no-repeat,
+        var(--bg);
+}
+
+body.subpage::before {
+    content: "";
+    position: absolute;
+    top: 58px;
+    left: 0;
+    right: 0;
+    height: 140px;
+    pointer-events: none;
+    background:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 140' preserveAspectRatio='none'%3E%3Cpath d='M0 140 L0 90 L140 40 L230 80 L360 20 L470 75 L600 35 L720 85 L850 30 L980 80 L1100 45 L1200 70 L1200 140Z' fill='%237f9db0' opacity='0.18'/%3E%3C/svg%3E") bottom / 100% 100% no-repeat;
+    z-index: -1;
+}
+
+/* ---------- 7. Footer: trail's end ---------- */
 footer {
-    background-color: #2d3748;
-    color: white;
+    position: relative;
+    background-color: var(--pine-700);
+    color: #e7efe9;
     text-align: center;
-    padding: 2rem;
+    padding: 5rem 2rem 2rem;
+    font-size: 0.95rem;
+}
+
+footer::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -1px;
+    height: 60px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 60' preserveAspectRatio='none'%3E%3Cpath d='M0 0 H1200 V18 L1120 40 L1040 22 L960 48 L860 20 L760 44 L660 16 L560 46 L460 24 L360 50 L260 22 L160 42 L80 20 L0 38 Z' fill='%23fbfaf4'/%3E%3C/svg%3E") top / 100% 100% no-repeat;
 }
 
 [data-theme="dark"] footer {
-    background-color: #1a202c;
+    background-color: #08130f;
+}
+
+[data-theme="dark"] footer::before {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 60' preserveAspectRatio='none'%3E%3Cpath d='M0 0 H1200 V18 L1120 40 L1040 22 L960 48 L860 20 L760 44 L660 16 L560 46 L460 24 L360 50 L260 22 L160 42 L80 20 L0 38 Z' fill='%230f1d18'/%3E%3C/svg%3E");
+}
+
+footer p + p {
+    margin-top: 0.5rem;
 }
 
 footer a {
-    color: #9b8bb8;
+    color: var(--sun-300);
     text-decoration: none;
 }
 
-[data-theme="dark"] footer a {
-    color: #c9b8e8;
+footer a:hover {
+    color: var(--sun-500);
+    text-decoration: underline;
 }
 
-footer a:hover {
-    text-decoration: underline;
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+        scroll-behavior: auto !important;
+    }
 }

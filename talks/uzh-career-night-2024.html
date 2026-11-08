@@ -99,40 +99,40 @@
         }
         
         .diagram-source a {
-            color: #8b7aa8;
+            color: var(--link);
             text-decoration: none;
         }
         
         .diagram-source a:hover {
             text-decoration: underline;
-            color: #7a6997;
+            color: var(--link-hover);
         }
 
         [data-theme="dark"] .diagram-source a {
-            color: #e0d4f7;
+            color: var(--link);
         }
 
         [data-theme="dark"] .diagram-source a:hover {
-            color: #f0e8ff;
+            color: var(--link-hover);
         }
 
         .talk-content a {
-            color: #8b7aa8;
+            color: var(--link);
             text-decoration: none;
             font-weight: 500;
         }
 
         .talk-content a:hover {
             text-decoration: underline;
-            color: #7a6997;
+            color: var(--link-hover);
         }
 
         [data-theme="dark"] .talk-content a {
-            color: #e0d4f7;
+            color: var(--link);
         }
 
         [data-theme="dark"] .talk-content a:hover {
-            color: #f0e8ff;
+            color: var(--link-hover);
         }
 
         .closing-note {
@@ -209,7 +209,7 @@
         }
     </style>
 </head>
-<body>
+<body class="subpage">
     <!-- Lightbox -->
     <div id="lightbox" class="lightbox" onclick="closeLightbox()">
         <span class="lightbox-close">&times;</span>
@@ -300,7 +300,7 @@
         const moonIcon = document.querySelector('.moon-icon');
         const html = document.documentElement;
 
-        const currentTheme = localStorage.getItem('theme') || 'light';
+        const currentTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
         html.setAttribute('data-theme', currentTheme);
         updateIcons(currentTheme);
 

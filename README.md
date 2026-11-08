@@ -7,7 +7,9 @@ Personal portfolio site showcasing tech projects & initiatives.
 ```
 .
 ├── index.html             # Main page
-├── style.css              # Shared styles (theme vars, nav, dark-mode toggle, footer)
+├── style.css              # Summer Trail design system tokens + shared components
+├── design-system.html     # Visual style guide
+├── DESIGN_SYSTEM.md       # Design system spec (incl. extracted legacy system)
 ├── assets/                # Images & files
 ├── projects/              # Project pages
 └── talks/                 # Talk pages
@@ -17,7 +19,7 @@ Personal portfolio site showcasing tech projects & initiatives.
 
 1. Copy `projects/_template.html` to `projects/your-project-name.html`.
 2. Fill in the `[PLACEHOLDER]` text and image paths (comments in the file explain each section, including which blocks are optional).
-3. Add a matching project card to the "Highlighted Projects" section in `index.html`, linking to your new file.
+3. Add a `.waypoint` block to the Projects stage in `index.html` (see DESIGN_SYSTEM.md §6), linking to your new file.
 
 ## Local Development
 

@@ -1,15 +1,16 @@
-# Design System — "Alpine Botanical"
+# Design System — "Topo"
 
-The portfolio is a quiet walk up a mountain. A single fine line — the trail —
-draws itself as you scroll and links every project, talk and award, ending at
-the summit (contact). The look is editorial and calm: cream paper, sage & sand
-organic shapes, fine burgundy line-art of alpine plants, and a refined serif.
+The portfolio is a mountain route rendered like a GPS / topographic map. An
+animated contour map opens the page; a sticky route HUD (stage, elevation,
+distance, elevation profile) tracks your progress while a signal-orange route
+line draws itself through every project, talk and award up to the summit
+(contact). Technical and calm: paper or night background, monospace data
+labels, tight grotesk headlines with one italic serif accent.
 
-Tokens live in `style.css`, the line art in `botanicals.js`, the live style
-guide in `design-system.html`.
+Tokens: `style.css` · contour engine: `topo.js` · style guide: `design-system.html`.
 
-> v1 "Summer Trail" (cartoon landscape, yellow signposts, hiker icon) was
-> retired for feeling too playful; this replaces it.
+> History: v1 "Summer Trail" (cartoon landscape) and v2 "Alpine Botanical"
+> (line-art plants) were explored and replaced by this more technical direction.
 
 ---
 
@@ -43,66 +44,70 @@ existing subpages keep working.
 
 ## 1. Principles
 
-1. **Paper, not screen.** Warm cream backgrounds, no drop shadows, no gradients.
-2. **One line.** The trail is the only strong line on the page; everything else is soft shape.
-3. **Organic, not cute.** Blobs and botanicals are decoration in the margins, never behind body text.
-4. **The hike is implied.** Altitude and stage names live in small eyebrows, not in illustrations.
+1. **Map, not illustration.** Mountains appear as data: contours, coordinates, elevation.
+2. **One signal colour.** Orange (`--accent`) marks only the route, live status and key emphasis.
+3. **Movement with purpose.** Everything that moves tells you where you are (route, HUD, counters) or responds to you (contours under the cursor, card spotlight).
+4. **Respect the reader.** `prefers-reduced-motion` stops all animation; content is readable with JS off.
 
 ## 2. Colour
 
 | Token | Day | Night | Use |
 |---|---|---|---|
-| `--bg` | cream-100 `#f1ece4` | `#161d19` | page |
-| `--surface` | cream-50 `#f8f5ef` | `#1f2923` | cards |
-| `--text` | forest-900 `#1f2d24` | `#ece6dc` | headings, body |
-| `--text-muted` | `#56635a` | `#b4b2a8` | paragraphs |
-| `--text-subtle` | `#7d877f` | `#8c8f86` | eyebrows, meta |
-| `--accent` / `--line` / `--link` | wine-700 `#6b1f2a` | rose `#d9a29b` | trail, line art, links, italic accents |
-| `--shape-sage` | sage-300 `#b9c7b4` | `#34473a` | blobs, reached pins |
-| `--shape-sand` | sand-300 `#dcc3b1` | `#4a3a32` | blobs, pins |
-| `--border` | `#ddd5c8` | `#2f3b33` | hairlines |
-
-Primitives: `--cream-*`, `--sage-*`, `--sand-*`, `--forest-*`, `--wine-*`.
+| `--bg` | `#f4f3ee` paper | `#0b100d` | page |
+| `--surface` / `--surface-2` | `#fbfaf7` / `#ecebe4` | `#111814` / `#17201b` | cards / tags |
+| `--text` | `#0e1611` | `#e9ede6` | headings, body |
+| `--text-muted` / `--text-subtle` | `#4b5650` / `#7a837d` | `#a3ada6` / `#6f7a73` | paragraphs / labels |
+| `--border` | `#dcdbd2` | `#222d27` | hairlines |
+| `--brand` | forest `#1f4d3a` | moss `#8fd1a8` | status dots |
+| `--accent` / `--route` | signal `#d9481f` | `#ff6a3d` | route, live, italic accents |
+| `--accent-ink` | `#b5370f` | `#ff8a63` | accent on small text (AA) |
+| `--contour` + `--contour-alpha` | forest @ .16 | moss @ .11 | canvas contour lines (rgb triplet) |
+| `--grid` | ink @ 5% | paper @ 4% | map grid |
 
 ## 3. Typography
 
-- **Display:** Instrument Serif 400, upright and *italic*. Headings are large and light; one word in italic + `--accent` is the signature move (e.g. the name in the hero).
-- **Body:** Inter 300 for paragraphs, 400–500 for UI.
-- **Eyebrow** (`.eyebrow`, `.post-date`): 0.72rem, 500, uppercase, `letter-spacing: .18em`, `--text-subtle`.
-- Scale: hero h1 `clamp(3.2rem, 7.5vw, 6.2rem)` · stage h2 `clamp(2.6rem, 5vw, 4rem)` italic · card h3 1.85rem · body ~1rem.
+- **Headlines:** Inter Tight 600, tracking −0.025 to −0.045em.
+- **Accent:** Instrument Serif *italic* (`.serif`), one or two words per heading, in `--accent`.
+- **Data / labels:** JetBrains Mono 400–500, uppercase, 0.68–0.82rem (`.mono`, `.eyebrow`, buttons, tags, HUD readouts).
+- Scale: hero h1 `clamp(3rem, 7.4vw, 6.6rem)` · stage h2 `clamp(2.2rem, 4.4vw, 3.6rem)` · card h3 1.45rem · body ~1rem.
 
 ## 4. Shape, space, motion
 
-- Radius: cards `--radius-lg` 28px, images `--radius-md` 14px, pills `--radius-pill`.
-- Blobs: `--blob-a/b/c` are organic `border-radius` values used on `.blob`, the portrait and pins.
-- Spacing: `--space-1 … --space-24` (4px base); sections breathe with 6rem stage padding.
-- Motion: `--ease` `cubic-bezier(.22,1,.36,1)`. Trail draws with scroll, cards fade up 28px, links lengthen on hover. `prefers-reduced-motion` turns it all off.
+- Radius: `--radius-sm` 8 (buttons, tags) · `--radius-md` 12 (images) · `--radius-lg` 18 (cards).
+- Markers are 45° diamonds (summits on a map); reached markers fill orange.
+- Spacing: `--space-1 … --space-24` (4px base).
+- Easing: `--ease` `cubic-bezier(.22,1,.36,1)`.
+- Motion inventory: contour morph + cursor peak (`topo.js`, ~30 fps, paused off-screen) · staggered hero entrance · typed role rotator · count-up stats · word-by-word heading reveal · card fade-up and pointer spotlight · stack marquee (pauses on hover) · scroll-drawn route with pulsing tip · live HUD.
 
 ## 5. Components
 
 | Class | Description |
 |---|---|
-| `.blob` / `.blob.sand` / `.blob.soft` | Organic background shapes. |
-| `svg.botanical[data-kind]` | Line art drawn by `botanicals.js`: `fern`, `leaf`, `edelweiss`, `pine`, `ridge`. Options via `data-opts` JSON, `data-seed`, `data-stroke`. |
-| `.stage` | Section header: dot pin, eyebrow (stage + altitude), big italic h2. |
-| `.waypoint.left/.right` + `.pin` | Card on one side, numbered sand pebble on the trail; pebble turns sage when reached. |
-| `.card` / `.feature` / `.compact` | Default, with a corner blob, and smaller (recognition). |
-| `.text-links` | Uppercase underlined links (hero socials). |
-| `.read-more` | Uppercase accent link with arrow. |
-| `.tech-tag` | Hairline pill. |
-| `.contact-list` | Large serif rows with meta on the right ("Say hi,"). |
+| `canvas[data-topo]` | Animated contour map. `data-summit="x,y"` (0–1), `data-scale`, `data-levels`. |
+| `.map-label` | Corner coordinates / sheet info. |
+| `.status` / `.status.live` | Pill with dot; `live` pulses orange (in-progress work). |
+| `.btn` / `.btn.primary` | Mono uppercase buttons; primary is ink, turns orange on hover. |
+| `.stats` / `.metrics` + `[data-count]` | Big numbers with mono captions; count up on view. |
+| `.marquee` | Scrolling tech-stack band. |
+| `.hud` | Sticky route panel: stage, elevation, distance, profile, stage links. Bottom bar on mobile. |
+| `.stage` + `.marker[data-alt][data-stage][data-sec]` | Section header on the route. |
+| `.wp` > `.card` | Waypoint card; `.card.project.wip` adds hatch for ongoing work. |
+| `.tech-tag` | Mono tag. |
+| `.log` | Dated list (recognition). |
+| `.read-more` | Mono link with orange underline. |
 
-## 6. The trail
+## 6. The route
 
-`index.html` collects every `.marker` inside `#trail` and draws one path through
-them: vertical S-curves when pins are aligned, wide horizontal swings when they
-alternate sides (like a hand-drawn journey line). A faint dotted copy shows the
-route ahead; the solid line and its tip follow the point 62% down the viewport.
+`index.html` reads every `.marker` in `#trail`, draws one path through them and
+samples it. On scroll, the point 55% down the viewport sets the drawn length,
+the tip, reached markers, the active nav item and the HUD (altitude is
+interpolated between `data-alt` values; the profile is built from the same stops).
 
-**Adding a project:** copy a `.waypoint` in the Projects stage, alternate
-`left`/`right`, renumber the pins. The trail redraws itself.
+**Adding a project:** copy a `.wp` block in Stage 02 with a `.marker`
+(`data-alt` between its neighbours, `data-stage` = short name, `data-sec="work"`)
+and a `.card.project`. Use `.status.live` + `.wip` for work in progress.
 
 ## 7. Responsive
 
-- ≤1100px: margin blobs and botanicals hidden.
-- ≤860px: nav links hidden, portrait above the name, single column; the trail runs down the left edge with pins at x≈24px.
+- ≤1000px: nav links hidden, single column, portrait above the name, HUD becomes a fixed bottom bar with a progress line.
+- ≤480px: map labels hidden.

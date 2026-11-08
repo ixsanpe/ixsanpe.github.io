@@ -7,8 +7,8 @@ Personal portfolio site showcasing tech projects & initiatives.
 ```
 .
 ├── index.html             # Main page
-├── style.css              # Alpine Botanical design tokens + shared components
-├── botanicals.js          # Line-art generator (ferns, leaf, edelweiss, pine, ridge)
+├── style.css              # Topo design tokens + shared components
+├── topo.js                # Animated contour-map canvas
 ├── design-system.html     # Visual style guide
 ├── DESIGN_SYSTEM.md       # Design system spec (incl. extracted legacy system)
 ├── assets/                # Images & files

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alpine Botanical Design System</title>
+    <title>Topo Design System</title>
     <script>
         (function () {
             var t = null;
@@ -14,103 +14,97 @@
     </script>
     <link rel="stylesheet" href="style.css">
     <style>
-        html, body { overflow-x: clip; }
-        main { max-width: 1000px; margin: 0 auto; padding: 8rem 1.25rem 4rem; position: relative; }
-        h1 { font-size: clamp(3rem, 7vw, 5rem); margin: 0.25rem 0 1rem; }
-        h1 em { color: var(--accent); }
-        .lead { color: var(--text-muted); font-weight: 300; max-width: 600px; margin-bottom: 4rem; }
-        section { margin-bottom: 4rem; position: relative; }
-        section > h2 { font-size: 2.2rem; font-style: italic; margin-bottom: 1.5rem; }
+        .ds-hero { position: relative; height: 380px; overflow: hidden; border-bottom: 1px solid var(--border); }
+        .ds-hero canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+        .ds-hero .inner { position: relative; z-index: 1; max-width: 1000px; margin: 0 auto; padding: 8rem 1.25rem 0; }
+        h1 { font-size: clamp(3rem, 8vw, 5.5rem); letter-spacing: -0.045em; }
+        h1 .serif { color: var(--accent); }
+        main { max-width: 1000px; margin: 0 auto; padding: 3rem 1.25rem 4rem; }
+        .lead { color: var(--text-muted); max-width: 620px; margin-bottom: 3.5rem; }
+        section { margin-bottom: 3.5rem; }
+        section > h2 { font-size: 1.8rem; letter-spacing: -0.03em; margin-bottom: 1.25rem; }
         .swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 1rem; }
-        .swatch div { height: 72px; border-radius: var(--radius-blob, 18px); border: 1px solid var(--border); }
-        .swatch span { display: block; padding: 0.5rem 0.1rem; font-size: 0.75rem; color: var(--text-subtle); }
-        .swatch strong { display: block; color: var(--text); font-weight: 500; font-size: 0.8rem; }
-        .row { display: flex; flex-wrap: wrap; gap: 2rem; align-items: flex-end; }
-        .specimen { background: var(--surface); border-radius: var(--radius-lg); padding: 2rem; }
-        .specimen p { color: var(--text-muted); font-weight: 300; }
-        .art { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: var(--text-subtle); }
-        .art svg { position: static; height: 150px; }
-        .pebble { width: 58px; height: 44px; display: inline-flex; align-items: center; justify-content: center; background: var(--shape-sand); border-radius: var(--blob-b); font-family: var(--font-display); font-size: 1.15rem; }
-        .pebble.reached { background: var(--shape-sage); transform: rotate(-6deg); }
-        .tag { padding: 0.2rem 0.85rem; font-size: 0.75rem; border: 1px solid var(--border); border-radius: 999px; color: var(--text-muted); }
-        .ulink { font-size: 0.78rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; text-decoration: none; color: var(--text); border-bottom: 1px solid var(--accent); padding-bottom: 3px; }
-        .demo-blobs { position: relative; height: 160px; }
+        .swatch div { height: 64px; border-radius: var(--radius-md); border: 1px solid var(--border); }
+        .swatch span { display: block; padding: 0.45rem 0; font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-subtle); }
+        .swatch strong { display: block; color: var(--text); font-weight: 500; }
+        .panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.75rem; }
+        .row { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; }
+        .btn { display: inline-flex; padding: 0.75rem 1.2rem; border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 0.78rem; text-transform: uppercase; text-decoration: none; border: 1px solid var(--border); color: var(--text); }
+        .btn.primary { background: var(--text); color: var(--bg); border-color: var(--text); }
+        .btn.primary:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
+        .tech-tag { padding: 0.2rem 0.6rem; }
+        .diamond { width: 13px; height: 13px; transform: rotate(45deg); border: 2px solid var(--text-subtle); background: var(--bg); display: inline-block; }
+        .diamond.on { background: var(--accent); border-color: var(--accent); }
+        .big { font-size: 2rem; font-weight: 600; letter-spacing: -0.03em; }
     </style>
 </head>
 <body>
     <nav>
         <div class="container">
-            <a href="index.html" class="logo">Alpine Botanical</a>
+            <a href="index.html" class="logo">topo / design system</a>
             <div style="display:flex; align-items:center; gap:1.5rem;">
-                <a href="index.html" class="back-link">← The trail</a>
+                <a href="index.html" class="back-link">← Route</a>
                 <button id="darkModeToggle" class="dark-mode-toggle" aria-label="Toggle dark mode">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
                 </button>
             </div>
         </div>
     </nav>
 
-    <main>
-        <span class="blob" style="width:340px; height:280px; right:-160px; top:40px; opacity:.5"></span>
-        <svg class="botanical" data-kind="fern" data-seed="3" data-opts='{"length":300,"leaves":11,"leafLen":70,"bend":0.3,"veins":3}' style="right:20px; top:70px; height:260px" aria-hidden="true"></svg>
+    <header class="ds-hero">
+        <canvas data-topo data-summit="0.82,0.55" aria-hidden="true"></canvas>
+        <div class="inner">
+            <p class="eyebrow">Design system · v3 · move your cursor over the map</p>
+            <h1>Topo <span class="serif">system</span></h1>
+        </div>
+    </header>
 
-        <p class="eyebrow">Design system · v2</p>
-        <h1>Alpine <em>Botanical</em></h1>
-        <p class="lead">Cream paper, sage &amp; sand organic shapes, fine burgundy line art and one hand-drawn trail line. Every token switches to a night palette in dark mode. Full spec in <code>DESIGN_SYSTEM.md</code>.</p>
+    <main>
+        <p class="lead">A mountain route rendered like a GPS map: contour lines, monospace data, one signal-orange route. Every token switches to a night palette. Full spec in <code>DESIGN_SYSTEM.md</code>.</p>
 
         <section>
             <h2>Colour</h2>
-            <div class="swatches" id="semantic"></div>
+            <div class="swatches" id="sw"></div>
         </section>
 
         <section>
             <h2>Typography</h2>
-            <div class="specimen">
-                <p class="eyebrow">Eyebrow · Inter 500 · .18em</p>
-                <p style="font-family:var(--font-display); font-size:3.5rem; line-height:1; color:var(--text)">Instrument <em style="color:var(--accent)">Serif</em></p>
-                <p style="font-family:var(--font-display); font-size:2rem; font-style:italic; color:var(--text); margin:1rem 0">Stage heading, italic</p>
-                <p>Body copy is Inter Light at ~1rem with a 1.7 line height. <a href="#">Links use the accent.</a></p>
+            <div class="panel">
+                <p class="mono" style="margin-bottom:.75rem">JetBrains Mono · labels &amp; data</p>
+                <p style="font-size:3.2rem; font-weight:600; letter-spacing:-.045em; line-height:1">Inter Tight <span class="serif" style="color:var(--accent)">Serif</span></p>
+                <p style="color:var(--text-muted); margin-top:1rem">Body copy in Inter Tight at ~1rem. <a href="#">Links use the accent.</a></p>
             </div>
         </section>
 
         <section>
-            <h2>Line art</h2>
-            <div class="row">
-                <div class="art"><svg class="botanical" data-kind="fern" data-seed="21" data-opts='{"length":300,"leaves":13,"leafLen":60,"bend":-0.25}'></svg>fern</div>
-                <div class="art"><svg class="botanical" data-kind="leaf" data-seed="5" data-opts='{"size":200}'></svg>leaf</div>
-                <div class="art"><svg class="botanical" data-kind="edelweiss" data-seed="4" data-opts='{"size":50}'></svg>edelweiss</div>
-                <div class="art"><svg class="botanical" data-kind="pine" data-seed="9" data-opts='{"length":260}'></svg>pine</div>
-            </div>
-            <svg class="botanical" data-kind="ridge" data-seed="11" data-opts='{"width":1000,"height":80}' data-stroke="1" preserveAspectRatio="none" style="position:static; width:100%; height:80px; margin-top:2rem; opacity:.6"></svg>
-        </section>
-
-        <section>
-            <h2>Shapes &amp; markers</h2>
-            <div class="demo-blobs">
-                <span class="blob" style="width:200px; height:150px; left:0; top:0"></span>
-                <span class="blob sand" style="width:130px; height:110px; left:170px; top:40px"></span>
-                <span class="blob soft" style="width:160px; height:130px; left:330px; top:10px"></span>
-            </div>
-            <div class="row" style="margin-top:1.5rem; align-items:center">
-                <span class="pebble">01</span>
-                <span class="pebble reached">02</span>
-                <span class="tag">PyTorch</span>
-                <a href="#" class="ulink">LinkedIn ↗</a>
-                <a href="#" class="ulink" style="border:none; color:var(--accent)">Read more →</a>
+            <h2>Components</h2>
+            <div class="panel">
+                <div class="row" style="margin-bottom:1.25rem">
+                    <span class="status">Summited · SOSP '25</span>
+                    <span class="status live">Currently learning</span>
+                    <span class="tech-tag">Ray Data</span><span class="tech-tag">PyTorch</span>
+                    <span class="diamond"></span><span class="diamond on"></span>
+                </div>
+                <div class="row" style="margin-bottom:1.25rem">
+                    <a class="btn primary" href="#">Follow the route ↓</a>
+                    <a class="btn" href="#">Get in touch</a>
+                </div>
+                <div class="row" style="gap:2.5rem">
+                    <div><div class="big">2.87×</div><span class="mono">Goodput vs. SOTA</span></div>
+                    <div><div class="big">1,350 m</div><span class="mono">Elevation</span></div>
+                </div>
             </div>
         </section>
     </main>
 
-    <footer>
-        <p><a href="index.html">Back to the trail</a></p>
-    </footer>
+    <footer><p><a href="index.html">Back to the route</a></p></footer>
 
-    <script src="botanicals.js"></script>
+    <script src="topo.js"></script>
     <script>
-        const tokens = ['--bg', '--surface', '--text', '--text-muted', '--text-subtle', '--accent', '--shape-sage', '--shape-sand', '--border'];
+        const tokens = ['--bg', '--surface', '--surface-2', '--text', '--text-muted', '--text-subtle', '--border', '--brand', '--accent', '--accent-ink'];
         function render() {
             const cs = getComputedStyle(document.documentElement);
-            document.getElementById('semantic').innerHTML = tokens.map(v =>
+            document.getElementById('sw').innerHTML = tokens.map(v =>
                 `<div class="swatch"><div style="background:var(${v})"></div><span><strong>${v}</strong>${cs.getPropertyValue(v).trim()}</span></div>`).join('');
         }
         render();

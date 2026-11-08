@@ -10,7 +10,7 @@
         (function () {
             var t = null;
             try { t = localStorage.getItem('theme'); } catch (e) {}
-            if (!t) t = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            if (!t) t = 'dark';
             document.documentElement.setAttribute('data-theme', t);
             document.documentElement.classList.add('js');
         })();
@@ -123,7 +123,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            object-position: center 62%;
+            object-position: center 30%;
             border-radius: var(--blob-c);
         }
 
@@ -513,6 +513,114 @@
         .contact-list .label { font-size: 1.3rem; font-weight: 500; letter-spacing: -0.02em; }
         .contact-list .meta { font-size: 0.85rem; color: var(--text-subtle); font-weight: 300; }
 
+        /* ---------- Experience (CV) ---------- */
+        .cv {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: minmax(0, 1.6fr) minmax(240px, 1fr);
+            gap: 2.5rem;
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            padding: 2.25rem;
+            margin: 0.5rem 0 1rem;
+        }
+
+        .cv h4 {
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--text-subtle);
+            margin-bottom: 1rem;
+        }
+
+        .cv-side h4:not(:first-child) { margin-top: 2rem; }
+
+        .timeline { list-style: none; position: relative; }
+
+        .timeline > li {
+            display: grid;
+            grid-template-columns: 84px 1fr;
+            gap: 1.25rem;
+            position: relative;
+            padding-bottom: 1.6rem;
+        }
+
+        .timeline > li::before {
+            content: "";
+            position: absolute;
+            left: 96px;
+            top: 0.55rem;
+            bottom: -0.2rem;
+            width: 1px;
+            background: var(--border);
+        }
+
+        .timeline > li:last-child::before { display: none; }
+
+        .timeline > li::after {
+            content: "";
+            position: absolute;
+            left: 92px;
+            top: 0.4rem;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--surface);
+            border: 2px solid var(--line);
+        }
+
+        .timeline > li:first-child::after { background: var(--line); }
+
+        .timeline .when {
+            font-size: 0.8rem;
+            color: var(--text-subtle);
+            font-variant-numeric: tabular-nums;
+            padding-top: 0.1rem;
+        }
+
+        .timeline .what { padding-left: 1.25rem; }
+        .timeline h3 { font-size: 1.15rem; letter-spacing: -0.02em; margin-bottom: 0.15rem; }
+        .timeline .org { color: var(--accent); font-size: 0.9rem; font-weight: 500; margin-bottom: 0.4rem; }
+
+        .timeline ul { list-style: none; }
+
+        .timeline ul li {
+            position: relative;
+            padding: 0.2rem 0 0.2rem 1.2rem;
+            color: var(--text-muted);
+            font-weight: 300;
+            font-size: 0.93rem;
+        }
+
+        .timeline ul li::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0.85rem;
+            width: 0.6rem;
+            height: 1px;
+            background: var(--accent);
+        }
+
+        .cv-list { list-style: none; }
+        .cv-list li { padding: 0.6rem 0; border-top: 1px solid var(--border); }
+        .cv-list li:first-child { border-top: none; padding-top: 0; }
+        .cv-list strong { display: block; font-weight: 500; font-size: 0.95rem; }
+        .cv-list span { font-size: 0.85rem; color: var(--text-subtle); }
+
+        .cv .tech-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+        .cv .tech-tag { padding: 0.15rem 0.7rem; font-size: 0.75rem; }
+
+        @media (max-width: 860px) {
+            .cv { grid-template-columns: 1fr; padding: 1.5rem; gap: 1.5rem; margin-left: 3.25rem; }
+            .timeline > li { grid-template-columns: 1fr; gap: 0.2rem; padding-left: 1.4rem; }
+            .timeline > li::before { left: 4px; top: 0.6rem; }
+            .timeline > li::after { left: 0; }
+            .timeline .what { padding-left: 0; }
+        }
+
         /* ---------- Route map index ---------- */
         .route-map {
             position: fixed;
@@ -627,8 +735,9 @@
             <div class="nav-right">
                 <ul>
                     <li><a href="#about">About</a></li>
-                    <li><a href="#work">System</a></li>
-                    <li><a href="#recognition-stage">Recognition</a></li>
+                    <li><a href="#experience">Experience</a></li>
+                    <li><a href="#work">Portfolio</a></li>
+                    <li><a href="#recognition-stage">Awards</a></li>
                     <li><a href="#contact">Contact</a></li>
                 </ul>
                 <button id="darkModeToggle" class="dark-mode-toggle" aria-label="Toggle dark mode">
@@ -660,7 +769,7 @@
         <div class="portrait-wrap">
             <span class="blob back"></span>
             <span class="blob sand"></span>
-            <img src="assets/profile_illustrated.jpg" alt="Illustrated portrait of Ixeia Sánchez Périz on a green hillside above the sea" class="portrait">
+            <img src="assets/profile_cafe.jpg" alt="Illustrated portrait of Ixeia Sánchez Périz in a wooden café" class="portrait">
             <svg class="botanical" data-kind="fern" data-seed="3" data-opts='{"length":340,"leaves":11,"leafLen":80,"bend":0.3,"veins":3}' aria-hidden="true"></svg>
         </div>
         <svg class="hero-ridge botanical" data-kind="ridge" data-seed="11" data-opts='{"width":1200,"height":80}' data-stroke="1" preserveAspectRatio="none" aria-hidden="true"></svg>
@@ -701,31 +810,88 @@
         <div class="waypoint right">
             <span class="pin marker">02</span>
             <article class="card">
-                <h4>Experience</h4>
-                <ul>
-                    <li><strong>SWISS International Air Lines</strong> — Senior SWE, AI</li>
-                    <li><strong>ETH Zürich</strong> — Research, distributed LLM training (SOSP '25)</li>
-                    <li><strong>UPV Valencia</strong> — Research</li>
-                    <li><strong>Start-up</strong> — Consulting</li>
-                </ul>
-                <h4>Education</h4>
-                <ul>
-                    <li><strong>ETH Zürich</strong> — MSc Data Science</li>
-                    <li><strong>UPV Valencia</strong> — Double BSc Telecommunication Engineering &amp; Business Administration (1st in class)</li>
-                </ul>
                 <h4>Focus</h4>
-                <p>Agentic systems · Data platforms · MLOps · Large-scale LLM training</p>
+                <ul>
+                    <li>Agentic systems &amp; AI platforms</li>
+                    <li>Data platforms &amp; TB-scale pipelines</li>
+                    <li>MLOps &amp; production ML</li>
+                    <li>Large-scale LLM training</li>
+                </ul>
+                <p style="margin-top:1rem"><a href="#experience" class="read-more">See my experience <span aria-hidden="true">→</span></a></p>
             </article>
         </div>
 
-        <!-- ===== The system (projects & talks) ===== -->
-        <header class="stage" id="work">
+        <!-- ===== Experience (CV) ===== -->
+        <header class="stage" id="experience">
             <span class="pin marker"></span>
             <p class="eyebrow">02</p>
-            <h2>The system</h2>
+            <h2>Experience</h2>
         </header>
 
-        <section class="sys" id="system" aria-label="Interactive map of my projects">
+        <section class="cv" aria-label="Experience and education">
+            <div class="cv-main">
+                <h4>Experience</h4>
+                <ol class="timeline">
+                    <li>
+                        <div class="when">Present</div>
+                        <div class="what">
+                            <h3>Senior Software Engineer, Data &amp; AI Systems</h3>
+                            <p class="org">SWISS International Air Lines · Zürich</p>
+                            <ul>
+                                <li>AI agents &amp; ML models adopted across business units</li>
+                                <li>TB-scale data pipelines with PySpark</li>
+                                <li>Cloud-native data platforms</li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="when">2024</div>
+                        <div class="what">
+                            <h3>Research Engineer, Distributed LLM Training</h3>
+                            <p class="org">ETH Zürich · Master's thesis</p>
+                            <ul>
+                                <li>Sailor: elastic, fault-tolerant ML training in the cloud — 2.87× higher goodput</li>
+                                <li>Published at SOSP '25</li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="when"></div>
+                        <div class="what">
+                            <h3>Consultant</h3>
+                            <p class="org">Start-up</p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="when"></div>
+                        <div class="what">
+                            <h3>Researcher</h3>
+                            <p class="org">Universidad Politécnica de Valencia</p>
+                        </div>
+                    </li>
+                </ol>
+            </div>
+            <aside class="cv-side">
+                <h4>Education</h4>
+                <ul class="cv-list">
+                    <li><strong>MSc Data Science</strong><span>ETH Zürich</span></li>
+                    <li><strong>Double BSc Telecommunication Engineering &amp; Business Administration</strong><span>UPV Valencia · 1st in class</span></li>
+                </ul>
+                <h4>Skills</h4>
+                <div class="tech-tags">
+                    <span class="tech-tag">Python</span><span class="tech-tag">PySpark</span><span class="tech-tag">PyTorch</span><span class="tech-tag">DeepSpeed</span><span class="tech-tag">Ray</span><span class="tech-tag">Kubernetes</span><span class="tech-tag">GKE</span><span class="tech-tag">Docker</span><span class="tech-tag">RAG</span><span class="tech-tag">LLM agents</span><span class="tech-tag">MLOps</span>
+                </div>
+            </aside>
+        </section>
+
+        <!-- ===== Portfolio (interactive system of projects & talks) ===== -->
+        <header class="stage" id="work">
+            <span class="pin marker"></span>
+            <p class="eyebrow">03</p>
+            <h2>Portfolio</h2>
+        </header>
+
+        <section class="sys" id="system" aria-label="Interactive portfolio of my projects">
             <div class="sys-stage">
                 <p class="eyebrow sys-hint">Click a part · or take the tour</p>
                 <div class="sys-scene"></div>
@@ -744,11 +910,11 @@
         <!-- ===== Recognition ===== -->
         <header class="stage" id="recognition-stage">
             <span class="pin marker"></span>
-            <p class="eyebrow">03</p>
+            <p class="eyebrow">04</p>
             <h2>Recognition</h2>
         </header>
 
-        <div class="waypoint right" id="recognition">
+        <div class="waypoint left" id="recognition">
             <span class="pin marker">03</span>
             <article class="card">
                 <ul class="log">
@@ -764,7 +930,7 @@
         <!-- ===== Contact ===== -->
         <section class="summit" id="contact">
             <span class="pin marker"></span>
-            <p class="eyebrow">04</p>
+            <p class="eyebrow">05</p>
             <h2>Get in touch</h2>
             <ul class="contact-list">
                 <li><a href="mailto:ixeiasp98@gmail.com"><span class="label">Email</span><span class="meta">ixeiasp98@gmail.com</span></a></li>
@@ -783,13 +949,14 @@
             <ellipse class="rm-contour" cx="180" cy="42" rx="32" ry="22"/>
             <ellipse class="rm-contour" cx="170" cy="54" rx="52" ry="36"/>
             <path class="rm-contour" d="M24 128 C60 112 100 126 150 108 C176 98 196 104 206 96"/>
-            <path class="rm-path" id="rmPath" d="M28 124 C46 114 58 96 76 92 S110 114 128 106 S150 72 160 62 S184 36 194 26"/>
-            <path class="rm-walked" id="rmWalked" d="M28 124 C46 114 58 96 76 92 S110 114 128 106 S150 72 160 62 S184 36 194 26"/>
+            <path class="rm-path" id="rmPath" d="M28 124 C40 112 50 100 62 96 S92 116 106 110 S126 86 138 80 S158 70 166 58 S186 36 194 26"/>
+            <path class="rm-walked" id="rmWalked" d="M28 124 C40 112 50 100 62 96 S92 116 106 110 S126 86 138 80 S158 70 166 58 S186 36 194 26"/>
             <path d="M188 22 L194 12 L200 22 Z" fill="var(--line)" opacity="0.8"/>
             <g class="rm-stop" data-target="top" tabindex="0" role="listitem" aria-label="Intro"><circle cx="28" cy="124" r="4"/><text x="28" y="141" text-anchor="middle">Intro</text></g>
-            <g class="rm-stop" data-target="about" tabindex="0" role="listitem" aria-label="About"><circle cx="76" cy="92" r="4"/><text x="76" y="81" text-anchor="middle">About</text></g>
-            <g class="rm-stop" data-target="work" tabindex="0" role="listitem" aria-label="The system"><circle cx="128" cy="106" r="4"/><text x="128" y="123" text-anchor="middle">System</text></g>
-            <g class="rm-stop" data-target="recognition-stage" tabindex="0" role="listitem" aria-label="Recognition"><circle cx="160" cy="62" r="4"/><text x="146" y="58" text-anchor="end">Awards</text></g>
+            <g class="rm-stop" data-target="about" tabindex="0" role="listitem" aria-label="About"><circle cx="62" cy="96" r="4"/><text x="58" y="86" text-anchor="middle">About</text></g>
+            <g class="rm-stop" data-target="experience" tabindex="0" role="listitem" aria-label="Experience"><circle cx="106" cy="110" r="4"/><text x="106" y="127" text-anchor="middle">Experience</text></g>
+            <g class="rm-stop" data-target="work" tabindex="0" role="listitem" aria-label="Portfolio"><circle cx="138" cy="80" r="4"/><text x="128" y="72" text-anchor="end">Portfolio</text></g>
+            <g class="rm-stop" data-target="recognition-stage" tabindex="0" role="listitem" aria-label="Awards"><circle cx="166" cy="58" r="4"/><text x="174" y="66" text-anchor="start">Awards</text></g>
             <g class="rm-stop" data-target="contact" tabindex="0" role="listitem" aria-label="Contact"><circle cx="194" cy="26" r="4"/><text x="180" y="14" text-anchor="end">Contact</text></g>
             <circle class="rm-me-ring" id="rmRing" cx="28" cy="124" r="4"/>
             <circle class="rm-me" id="rmMe" cx="28" cy="124" r="3"/>

@@ -4,6 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fitness RAG: Lessons from an End-to-End Build - Ixeia Sánchez Périz</title>
+    <meta name="description" content="Case study by Ixeia Sánchez Périz: an end-to-end RAG system over 873 gym exercises. Hybrid BM25 + dense retrieval with RRF (+15% Recall@10), contrastive fine-tuning (Recall@10 0.36 → 0.81), MLflow, Milvus Lite and a local LLM, measured with a 69-query eval set.">
+    <link rel="canonical" href="https://ixsanpe.github.io/projects/fitness-rag.html">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Fitness RAG: what building a small retrieval system taught me">
+    <meta property="og:description" content="An end-to-end RAG build over 873 exercises: hybrid search, embedder fine-tuning, experiment tracking and what would break at scale.">
+    <meta property="og:url" content="https://ixsanpe.github.io/projects/fitness-rag.html">
+    <meta property="og:image" content="https://ixsanpe.github.io/assets/fitness-superman-1.jpg">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Fitness RAG: what building a small retrieval system taught me",
+        "description": "An end-to-end RAG system over 873 gym exercises: hybrid BM25 + dense retrieval with Reciprocal Rank Fusion, contrastive fine-tuning of the embedder (Recall@10 0.36 to 0.81), MLflow experiment tracking, Milvus Lite and a local LLM, measured with a 69-query labelled eval set.",
+        "url": "https://ixsanpe.github.io/projects/fitness-rag.html",
+        "image": "https://ixsanpe.github.io/assets/fitness-superman-1.jpg",
+        "author": { "@type": "Person", "name": "Ixeia Sánchez Périz", "url": "https://ixsanpe.github.io/" },
+        "keywords": ["RAG", "hybrid search", "BM25", "Reciprocal Rank Fusion", "embeddings", "fine-tuning", "MLflow", "Milvus", "Ollama", "MLOps"],
+        "isBasedOn": "https://github.com/wrkout/exercises.json",
+        "codeRepository": "https://github.com/ixsanpe/fitness-ai-assistant"
+    }
+    </script>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23ffffff'/><path d='M20 85 L30 70 Q35 65 40 68 L45 72 Q50 75 55 70 L60 62 Q65 55 70 60 L78 68 Q82 72 85 68 L85 85 Z' fill='%2395c9c9' stroke='%232d3748' stroke-width='2'/><path d='M25 75 L32 65 Q37 58 42 62 L50 70 Q55 74 60 68 L68 58 Q72 53 77 58 L82 65 L82 85 L25 85 Z' fill='%23b8a8d8' opacity='0.7' stroke='%232d3748' stroke-width='2'/><path d='M35 50 L45 30 L50 35 L55 28 L65 45 L70 38 L80 55' fill='none' stroke='%237b9ab8' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/><ellipse cx='18' cy='25' rx='8' ry='5' fill='%23e8a89a' opacity='0.8'/><ellipse cx='25' cy='18' rx='7' ry='4' fill='%23e8a89a' opacity='0.6'/></svg>">
     <link rel="stylesheet" href="../style.css">
     <style>
@@ -425,6 +446,166 @@
             .compare th, .compare td { padding: 0.6rem 0.7rem; }
         }
 
+
+        .learned {
+            display: flex;
+            gap: 0.85rem;
+            align-items: baseline;
+            margin: 1.5rem 0 0;
+            padding: 0.85rem 1.15rem;
+            background: var(--shape-sage-soft);
+            border-radius: var(--radius-md);
+            color: var(--text);
+            font-size: 0.95rem;
+            line-height: 1.55;
+        }
+
+        .learned::before {
+            content: "Learned";
+            flex-shrink: 0;
+            font-size: 0.66rem;
+            font-weight: 600;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--accent);
+        }
+
+        .journal {
+            margin: 2rem 0 0;
+            padding: 1.25rem 1.5rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            background: var(--surface);
+        }
+
+        .journal h4 {
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--text-subtle);
+            margin-bottom: 0.6rem;
+        }
+
+        .journal ul { margin: 0; padding: 0; list-style: none; }
+        .journal li { position: relative; padding-left: 1.4rem; margin-bottom: 0.35rem; color: var(--text); font-size: 1rem; line-height: 1.6; }
+        .journal li::before { content: "→"; position: absolute; left: 0; color: var(--accent); }
+
+        .resources { columns: 2; column-gap: 2rem; font-size: 0.92rem; }
+        .project-content .resources li { break-inside: avoid; margin-bottom: 0.5rem; }
+
+        @media (max-width: 768px) {
+            .resources { columns: 1; }
+            .learned { flex-direction: column; gap: 0.25rem; }
+        }
+
+
+        .sample {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.25rem;
+            margin: 1.75rem 0 0;
+            padding: 1.25rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+        }
+
+        .sample-imgs { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+
+        .sample-body {
+            display: grid;
+            grid-template-columns: minmax(200px, 1fr) 1.5fr;
+            grid-template-rows: auto auto 1fr;
+            gap: 0 1.75rem;
+            align-items: start;
+        }
+
+        .sample-body h3 { grid-column: 1 / -1; }
+        .sample-fields { grid-column: 1; grid-row: 2 / 4; }
+        .sample-body .sample-label { grid-column: 2; grid-row: 2; }
+        .sample-body .sample-text { grid-column: 2; grid-row: 3; }
+        .sample-imgs figure { margin: 0; }
+        .sample-imgs img { display: block; width: 100%; height: auto; border-radius: var(--radius-md); }
+        .sample-imgs figcaption { font-size: 0.75rem; color: var(--text-subtle); margin-top: 0.3rem; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+
+        .project-content .sample-body h3 { margin: 0 0 0.75rem; }
+
+        .sample-fields {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 0.3rem 1rem;
+            font-size: 0.9rem;
+            margin: 0 0 1rem;
+        }
+
+        .sample-fields dt { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.8rem; color: var(--text-subtle); }
+        .sample-fields dd { margin: 0; color: var(--text); }
+
+        .project-content .sample-label { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.4rem; }
+
+        .project-content .sample-text {
+            font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+            font-size: 0.78rem;
+            line-height: 1.6;
+            color: var(--text);
+            background: var(--bg-sunken);
+            border-radius: var(--radius-md);
+            padding: 0.75rem 0.9rem;
+            margin: 0;
+        }
+
+        @media (max-width: 768px) {
+            .sample { grid-template-columns: 1fr; }
+            .sample-toggle .sample { margin: 0 1rem; }
+            .sample-body { display: block; }
+        }
+
+
+        .sample-toggle {
+            margin: 1.5rem 0 0;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            background: var(--surface);
+        }
+
+        .sample-toggle summary {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            gap: 0.25rem 0.75rem;
+            padding: 1rem 1.25rem;
+            cursor: pointer;
+            list-style: none;
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        .sample-toggle summary::-webkit-details-marker { display: none; }
+
+        .sample-toggle summary::before {
+            content: "+";
+            display: inline-grid;
+            place-items: center;
+            width: 1.4rem;
+            height: 1.4rem;
+            border-radius: 50%;
+            background: var(--shape-sand);
+            color: var(--text);
+            font-size: 0.95rem;
+            line-height: 1;
+            transition: transform 0.3s var(--ease);
+        }
+
+        .sample-toggle[open] summary::before { content: "−"; }
+
+        .sample-toggle summary span { font-size: 0.82rem; font-weight: 400; color: var(--text-subtle); }
+        .sample-toggle summary:hover { color: var(--accent); }
+        .sample-toggle summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: var(--radius-lg); }
+
+        .sample-toggle .sample { margin: 0 1.25rem; padding: 1.25rem 0 0; background: none; border: none; border-top: 1px solid var(--border); border-radius: 0; }
+        .sample-toggle .caption { margin: 0.75rem 0 1.1rem; }
+
         @media (prefers-reduced-motion: reduce) {
             .pin circle, .cta a { transition: none; }
         }
@@ -435,7 +616,7 @@
         <div class="container">
             <a href="../index.html" class="logo">Ixeia Sánchez Périz</a>
             <div style="display: flex; align-items: center; gap: 2rem;">
-                <a href="../index.html#fitness" class="back-link">
+                <a href="../index.html#portfolio" class="back-link">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M19 12H5M12 19l-7-7 7-7"/>
                     </svg>
@@ -459,37 +640,75 @@
             <div class="post-date">Personal project · 2025–2026</div>
             <h1>Fitness RAG: what building a small retrieval system <span class="accent">taught me</span></h1>
             <p class="lede">
-                A RAG system over 873 gym exercises. Ask <em>"a good bodyweight leg exercise"</em> and get an answer that only uses exercises that exist. The dataset is small on purpose: I used it to learn how the parts of an ML system fit together. This page is that system drawn out, with the notes I kept while building it.
+                A RAG system over 873 gym exercises: ask for "a good bodyweight leg exercise" and get an answer that only uses exercises that exist. I kept it small on purpose, to learn how the parts of an ML system fit together.
             </p>
             <div class="tech-tags">
-                <span class="tech-tag">Python</span>
                 <span class="tech-tag">Sentence-Transformers</span>
                 <span class="tech-tag">CLIP</span>
                 <span class="tech-tag">BM25</span>
                 <span class="tech-tag">Milvus Lite</span>
                 <span class="tech-tag">MLflow</span>
                 <span class="tech-tag">Ollama</span>
-                <span class="tech-tag">uv</span>
             </div>
 
             <div class="glance">
                 <div><b>873</b><span>exercises, with images and metadata</span></div>
-                <div><b>69</b><span>labelled eval queries, built before any tuning</span></div>
-                <div><b>+15%</b><span>Recall@10 from hybrid search over dense alone</span></div>
-                <div><b>0.36 → 0.81</b><span>Recall@10 after contrastive fine-tuning</span></div>
+                <div><b>69</b><span>labelled eval queries</span></div>
+                <div><b>+15%</b><span>Recall@10 from hybrid search</span></div>
+                <div><b>0.36 → 0.81</b><span>Recall@10 after fine-tuning</span></div>
+            </div>
+
+            <div class="journal">
+                <h4>From my project journal</h4>
+                <ul>
+                    <li>Don't overthink it. Start simpler.</li>
+                    <li>Be product-oriented, not tool-oriented.</li>
+                    <li>Classic ML and GenAI need different toolchains. Learn one at a time.</li>
+                    <li>Build it end to end first, then measure it.</li>
+                </ul>
             </div>
         </header>
 
         <div class="project-content">
 
-            <!-- ============ 01 SYSTEM ============ -->
-            <section class="section" style="margin-top: 3rem;">
+            <section class="section sample-section" style="margin-top: 3.5rem;">
+                <div class="section-eyebrow">The data</div>
+                <h2>One exercise, as the model sees it</h2>
+                <p>Each of the 873 exercises has two photos and a small record. The feature pipeline flattens the record into one string, and that string is what gets embedded.</p>
+
+                <details class="sample-toggle">
+                    <summary>Show a sample exercise <span>Superman · photos, record and embedder text</span></summary>
+                    <div class="sample">
+                        <div class="sample-imgs">
+                            <figure><img src="../assets/fitness-superman-0.jpg" alt="Superman exercise, start position: lying face down on a mat with arms extended forward" loading="lazy" width="850" height="567"><figcaption>0.jpg · start</figcaption></figure>
+                            <figure><img src="../assets/fitness-superman-1.jpg" alt="Superman exercise, held position: arms, chest and legs raised off the floor" loading="lazy" width="850" height="567"><figcaption>1.jpg · hold</figcaption></figure>
+                        </div>
+                        <div class="sample-body">
+                            <h3>Superman</h3>
+                            <dl class="sample-fields">
+                                <dt>level</dt><dd>beginner</dd>
+                                <dt>equipment</dt><dd>body only</dd>
+                                <dt>mechanic</dt><dd>compound</dd>
+                                <dt>force</dt><dd>static</dd>
+                                <dt>primary</dt><dd>lower back</dd>
+                                <dt>secondary</dt><dd>glutes, hamstrings</dd>
+                                <dt>category</dt><dd>stretching</dd>
+                            </dl>
+                            <p class="sample-label">→ text for the embedder</p>
+                            <p class="sample-text">Superman . static . beginner . compound . body only . lower back . glutes, hamstrings . stretching . To begin, lie straight and face down on the floor or exercise mat. Your arms should be fully extended in front of you…</p>
+                        </div>
+                    </div>
+                    <p class="caption">From the public-domain <a href="https://github.com/wrkout/exercises.json" target="_blank" rel="noopener">exercises.json</a> dataset.</p>
+                </details>
+                <p class="learned">The metadata (muscles, equipment, level) is what made a labelled eval set possible without hand-labelling anything.</p>
+            </section>
+
+            <section class="section">
                 <div class="section-eyebrow">01 · The system</div>
                 <h2>Feature, Training, Inference</h2>
                 <p>
-                    I structured the code as three separate pipelines, the <strong>FTI</strong> pattern (<a href="https://www.hopsworks.ai/post/mlops-to-ml-systems-with-fti-pipelines" target="_blank" rel="noopener">Feature/Training/Inference pipelines, Hopsworks</a>). The <strong>feature</strong> pipeline turns raw data into features and stores them. The <strong>training</strong> pipeline reads a version of those features and produces model weights, tracked in a registry. The <strong>inference</strong> pipeline loads a specific model version and serves queries. They only talk through what they store, so each one can change without breaking the others.
+                    Three pipelines that only talk through what they store (the <a href="https://www.hopsworks.ai/post/mlops-to-ml-systems-with-fti-pipelines" target="_blank" rel="noopener">FTI pattern</a>). Hover or tap the numbers for tips.
                 </p>
-                <p>Hover or tap the numbers for the tips I'd give myself if I started again.</p>
 
                 <figure class="figure">
                     <div class="figure-scroll">
@@ -609,83 +828,42 @@
                 </figure>
 
                 <ol class="tips" id="tips">
-                    <li data-n="1"><b>Configs live outside <code>src/</code></b>They change per environment and per experiment, so they don't belong in the package. One YAML per run, checked by Pydantic, is what makes a run repeatable. <code>uv</code> plus a setup script picks the right PyTorch build (CPU on a Mac, CUDA when it finds a GPU).</li>
-                    <li data-n="2"><b>JSONL as the dataset format</b>One exercise per line. Easy to stream, split into chunks and process in parallel, and readable in a diff.</li>
-                    <li data-n="3"><b>Text and images in one vector</b>With CLIP, the feature pipeline embeds the description and the images, then averages them (<code>text_weight: 0.5</code>, <code>image_weight: 0.5</code>). Section 03 shows why that wasn't enough for text queries.</li>
-                    <li data-n="4"><b>Build the eval set before tuning</b>69 queries generated from metadata combinations, like <em>"plyometrics exercise for hamstrings"</em>. The combinations used for eval and for training pairs are kept separate.</li>
-                    <li data-n="5"><b>Track runs instead of printing them</b>Each run logs its setup as params and its results as metrics. A local SQLite file is enough; no server needed. More in section 05.</li>
-                    <li data-n="6"><b>The same model on both sides</b>The query has to be embedded by the exact model version that embedded the corpus. Fine-tune the model and you have to re-embed and re-index everything.</li>
-                    <li data-n="7"><b>One interface for every backend</b>NumPy, Milvus Lite and BM25 all implement <code>SearchBackend.search(vector, top_k)</code>. Swapping in Lance would be one new ~100-line class; nothing else would change.</li>
-                    <li data-n="8"><b>Fail loudly</b>If Ollama isn't running, <code>answer()</code> raises a clear error. It doesn't quietly fall back to search-only, which would look like it works.</li>
+                    <li data-n="1"><b>Configs live outside <code>src/</code></b>One YAML per run, checked by Pydantic, so every run can be repeated.</li>
+                    <li data-n="2"><b>JSONL for the dataset</b>One exercise per line: easy to stream, split and process in parallel.</li>
+                    <li data-n="3"><b>Text + image in one vector</b>CLIP embeds the description and the images, then averages them 50/50.</li>
+                    <li data-n="4"><b>Eval set before tuning</b>69 queries from metadata, kept separate from the training pairs.</li>
+                    <li data-n="5"><b>Track runs, don't print them</b>Params and metrics go to MLflow, in a local SQLite file.</li>
+                    <li data-n="6"><b>Same model on both sides</b>Query and corpus must use the same model version. New model = re-index.</li>
+                    <li data-n="7"><b>One backend interface</b>NumPy, Milvus Lite and BM25 all implement <code>search(vector, top_k)</code>.</li>
+                    <li data-n="8"><b>Fail loudly</b>No Ollama, no answer: a clear error instead of a silent search-only fallback.</li>
                 </ol>
 
-                <h3>How that maps to the code</h3>
-<div class="tree">configs/                <i>one YAML per pipeline run</i>
-src/
-  config/               <i>Pydantic schemas for those YAMLs</i>
-  feature_pipeline/     <i>loaders → embedders → storage</i>
-  training_pipeline/    <i>contrastive fine-tune, MLflow experiments</i>
-  inference_pipeline/
-    backends/           <i>numpy · Milvus Lite · BM25, one interface</i>
-    generation.py       <i>Ollama: the "G" in RAG</i>
-    gradio_app.py       <i>the UI</i>
-  eval/                 <i>eval set, metrics, RRF, index sweep</i>
-tests/                  <i>pytest, run in CI with ruff</i></div>
+                <p class="learned">Splitting the code this way made each part swappable: a new embedder, backend or LLM is one config change.</p>
             </section>
 
-            <!-- ============ 02 TRAINING VS INFERENCE ============ -->
             <section class="section">
                 <div class="section-eyebrow">02 · Training vs. inference</div>
-                <h2>Same model, two very different jobs</h2>
-                <p>
-                    Before this project, "training" and "inference" were just two scripts to me. Splitting them into separate pipelines made it clear they care about different things, and that the only thing they share is a model version.
-                </p>
-
+                <h2>Same model, two different jobs</h2>
                 <div class="table-wrap">
                 <table class="compare">
                     <thead>
                         <tr><th></th><th>Training</th><th>Inference</th></tr>
                     </thead>
                     <tbody>
-                        <tr><th>Runs</th><td>Offline, when I change the model</td><td>On every query</td></tr>
-                        <tr><th>Input</th><td>Pairs: (query, matching exercise)</td><td>One user question</td></tr>
-                        <tr><th>Output</th><td>New weights, logged to MLflow</td><td>Ranked exercises and an answer</td></tr>
-                        <tr><th>Cares about</th><td>Throughput, GPU memory, reproducibility</td><td>Latency, and giving the same answer twice</td></tr>
-                        <tr><th>Fails by</th><td>Overfitting to the eval set</td><td>Using a different model than the index was built with</td></tr>
+                        <tr><th>Runs</th><td>Offline, when the model changes</td><td>On every query</td></tr>
+                        <tr><th>Cares about</th><td>Throughput, reproducibility</td><td>Latency, consistent answers</td></tr>
+                        <tr><th>Fails by</th><td>Overfitting to the eval set</td><td>Using a different model than the index</td></tr>
                     </tbody>
                 </table>
                 </div>
-
-                <p>
-                    The feature pipeline sits in front of both and also runs offline. Embedding all 873 exercises happens once per model, so a query only has to embed one short sentence and run a search.
-                </p>
+                <p class="learned">The only thing they share is a model version, and that's exactly what has to match.</p>
             </section>
 
-            <!-- ============ 03 EMBEDDINGS ============ -->
             <section class="section">
                 <div class="section-eyebrow">03 · Embeddings</div>
-                <h2>Text vs. images: CLIP was the wrong default</h2>
+                <h2>Text vs. images</h2>
                 <p>
-                    An embedding turns an exercise into a list of numbers, so that similar exercises end up close together. Search is then "find the vectors closest to the query vector", usually by cosine similarity. A toy version with three made-up dimensions shows the idea (the real vectors have 384 dimensions that don't map to named concepts):
-                </p>
-
-                <div class="table-wrap">
-                <table class="compare">
-                    <thead>
-                        <tr><th>Exercise</th><th>Toy vector <code>[band, shoulder, push↔pull]</code></th><th class="num">Cosine to query</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr class="best"><td>Query: Internal Rotation with Band</td><td><code>[1, 1, 0]</code></td><td class="num">1.00</td></tr>
-                        <tr><td>Band Hip Adductions</td><td><code>[1, 0, 0]</code></td><td class="num">0.71</td></tr>
-                        <tr><td>Front Cable Raise</td><td><code>[0, 1, 1]</code></td><td class="num">0.50</td></tr>
-                        <tr><td>Bench Press with Bands</td><td><code>[1, 0, 1]</code></td><td class="num">0.50</td></tr>
-                        <tr><td>Bent Over Barbell Row</td><td><code>[-1, 0, 1]</code></td><td class="num">−0.50</td></tr>
-                    </tbody>
-                </table>
-                </div>
-
-                <p>
-                    The question is which model produces those numbers. The dataset has images, so I started with CLIP. The two kinds of model are trained for different things:
+                    The dataset has images, so I started with CLIP. But CLIP is trained to match an image with its caption, not text with text.
                 </p>
 
                 <figure class="figure">
@@ -736,26 +914,21 @@ tests/                  <i>pytest, run in CI with ruff</i></div>
                     </div>
                 </figure>
 
-                <p>On my eval set, text-only queries made that difference very visible:</p>
-
                 <div class="bars" aria-label="Recall at 10 by embedder">
                     <div class="bar-row hi"><span>Sentence embedder</span><div class="bar-track"><div class="bar-fill" style="width: 35.6%"></div></div><span class="bar-value">0.356</span></div>
                     <div class="bar-row neg"><span>CLIP (text side)</span><div class="bar-track"><div class="bar-fill" style="width: 3.3%"></div></div><span class="bar-value">0.033</span></div>
                 </div>
-                <p class="caption">Recall@10 on 69 text queries: about 10× apart.</p>
+                <p class="caption">Recall@10 on text queries: about 10× apart.</p>
 
-                <div class="note">
-                    <span class="label">Lesson</span>
-                    <p>Pick the embedder for the <strong>query</strong>, not for the data. My users type text, so a text embedder wins even though every exercise has a picture. CLIP earns its place when the query is an image, like "find exercises that look like this photo", which is on my list with pose estimation.</p>
-                </div>
+                <p class="learned">Pick the embedder for the query, not the data. My users type text, so a text model wins.</p>
+                <p class="learned">Normalize the vectors and cosine, dot product and Euclidean distance give the same ranking.</p>
             </section>
 
-            <!-- ============ 04 RETRIEVAL ============ -->
             <section class="section">
                 <div class="section-eyebrow">04 · Retrieval</div>
-                <h2>Why the boring baseline almost won</h2>
+                <h2>Keyword search still matters</h2>
                 <p>
-                    I expected dense search to beat keyword search (BM25) easily. It barely did. My queries are short and full of exact terms, like "hamstrings" or "kettlebell", which is exactly what BM25 is built for. Combining the two worked better than either, using <strong><a href="https://plg.uwaterloo.ca/~gvcormac/cormacksigir09-rrf.pdf" target="_blank" rel="noopener">Reciprocal Rank Fusion</a></strong>:
+                    Dense search barely beat BM25: short queries like "hamstrings" or "kettlebell" are keyword search's home turf. Combining both with <a href="https://plg.uwaterloo.ca/~gvcormac/cormacksigir09-rrf.pdf" target="_blank" rel="noopener">Reciprocal Rank Fusion</a> beat either one.
                 </p>
 
                 <div class="rrf" aria-label="Reciprocal rank fusion example">
@@ -773,13 +946,8 @@ tests/                  <i>pytest, run in CI with ruff</i></div>
                         <ol><li>Walking lunge <small>0.0325</small></li><li>Bodyweight squat <small>0.0323</small></li><li>Glute bridge <small>0.0161</small></li><li>Step-up <small>0.0159</small></li></ol>
                     </div>
                 </div>
-                <p class="formula"><code>score(doc) = Σ 1 / (60 + rank)</code> over every list the doc appears in</p>
-                <p class="caption" style="margin-top:-1rem; margin-bottom: 1.5rem;">Illustrative example for "bodyweight leg exercise". Showing up high in both lists beats being first in one.</p>
-
-                <ul>
-                    <li><strong>Fuse ranks, not scores.</strong> BM25 scores and cosine similarities are on different scales, so adding them directly makes no sense. Ranks are comparable.</li>
-                    <li><strong>Fuse from a deeper pool.</strong> I take the top 20 from each retriever, fuse, then cut to 10. Fusing two lists that are already cut to 10 leaves RRF too little to work with.</li>
-                </ul>
+                
+                <p class="formula"><code>score(doc) = Σ 1 / (60 + rank)</code> · illustrative example</p>
 
                 <div class="table-wrap">
                 <table class="compare">
@@ -795,78 +963,33 @@ tests/                  <i>pytest, run in CI with ruff</i></div>
                     </tbody>
                 </table>
                 </div>
-                <p class="caption">Hybrid beats both of its parts on every metric. Fusing with a weak retriever (CLIP) drags BM25 down.</p>
 
-                <h3>Fine-tuning, and reading the result honestly</h3>
-                <p>
-                    Then I fine-tuned the sentence embedder on (query, exercise) pairs with <code>MultipleNegativesRankingLoss</code>. Every other pair in a batch serves as a negative example, so there's no negative mining to do.
-                </p>
+                <p class="learned">Fuse ranks, not scores (BM25 and cosine use different scales), and fuse from a top-20 pool before cutting to 10.</p>
+
+                <h3>Fine-tuning</h3>
                 <div class="bars" aria-label="Recall at 10 before and after fine-tuning">
                     <div class="bar-row"><span>Off-the-shelf</span><div class="bar-track"><div class="bar-fill" style="width: 35.6%"></div></div><span class="bar-value">0.356</span></div>
                     <div class="bar-row hi"><span>Fine-tuned</span><div class="bar-track"><div class="bar-fill" style="width: 81.3%"></div></div><span class="bar-value">0.813</span></div>
                 </div>
-                <p>
-                    That looks great, and I don't fully trust it. Training pairs and eval queries come from the same metadata templates, so the model mostly learned <em>this dataset's phrasing</em>. That's useful for this app, but it doesn't show the model would handle a question worded in a way it has never seen. A real test needs queries written by people.
-                </p>
+                <p class="learned">A big jump on a templated eval set mostly means the model learned this dataset's phrasing. Real queries need real users.</p>
             </section>
 
-            <!-- ============ 05 MLFLOW ============ -->
             <section class="section">
                 <div class="section-eyebrow">05 · Experiment tracking</div>
-                <h2>Why MLflow instead of print()</h2>
-                <p>
-                    Printing results works until you want to compare a run from today with one from last week, under a different config. MLflow records each run with what went in and what came out, and puts them in one sortable table.
-                </p>
-
-                <div class="table-wrap">
-                <table class="compare">
-                    <thead>
-                        <tr><th>Run</th><th><span class="group">param</span> embedding_type</th><th><span class="group">param</span> model</th><th class="num"><span class="group">metric</span> Recall@10</th><th class="num"><span class="group">metric</span> nDCG@10</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>clip-baseline</td><td>clip</td><td>clip-vit-base-patch32</td><td class="num">0.033</td><td class="num">0.080</td></tr>
-                        <tr><td>sentence-baseline</td><td>sentence</td><td>all-MiniLM-L6-v2</td><td class="num">0.356</td><td class="num">0.665</td></tr>
-                        <tr class="best"><td>contrastive-finetune</td><td>sentence</td><td>all-MiniLM-L6-v2 (tuned)</td><td class="num">0.813</td><td class="num">0.990</td></tr>
-                    </tbody>
-                </table>
-                </div>
-                <p class="caption">A simplified view of the runs table: setup on the left, results on the right.</p>
-
+                <h2>Tracking experiments with MLflow</h2>
                 <ul>
-                    <li><strong>Params vs. metrics is the whole trick.</strong> Setup goes in <code>log_param</code> (model, batch size, device, loss). Numbers go in <code>log_metric</code> (encoding time, samples/sec, retrieval scores). Keeping that split consistent is what lines runs up in the UI.</li>
-                    <li><strong>Log retrieval metrics, not just loss.</strong> Training loss going down tells you nothing about search quality. The before/after Recall@10 is logged on the run, so the comparison can be looked up later instead of scrolling through a terminal.</li>
-                    <li><strong>No server to start with.</strong> A local SQLite file holds everything. A shared tracking server only matters when other people need to see the runs.</li>
+                    <li>Setup goes in <code>log_param</code>, results in <code>log_metric</code>, so runs line up in one sortable table.</li>
+                    <li>Log retrieval metrics, not just loss. Loss going down says nothing about search quality.</li>
+                    <li>Each run is one <code>with mlflow.start_run():</code> block, and a local SQLite file is enough to start.</li>
                 </ul>
+                <p class="learned">A tracking server only matters once other people need to see the runs.</p>
             </section>
 
-            <!-- ============ 06 VECTOR DB ============ -->
             <section class="section">
                 <div class="section-eyebrow">06 · The vector database</div>
                 <h2>Milvus Lite, and an index sweep that found nothing</h2>
                 <p>
-                    I used <strong>Milvus Lite</strong>: an embedded build of the full Milvus engine that stores everything in one local file (438 KB for 100 exercises × 384 dimensions). The reason to pick it is the API. It's the same <code>MilvusClient</code> as a production cluster, so moving to a server means changing a path to a URI.
-                </p>
-                <p>
-                    To understand the trade-off, I also prototyped <strong>Lance</strong>. Lance is a file format, not a database: no process, just versioned Arrow files in a folder or a bucket, which DuckDB or Polars can read directly.
-                </p>
-
-                <div class="table-wrap">
-                <table class="compare">
-                    <thead>
-                        <tr><th></th><th>Milvus Lite → Milvus</th><th>Lance / LanceDB</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr><th>What it is</th><td>A database engine, embedded</td><td>A file format plus a client library</td></tr>
-                        <tr><th>To scale</th><td>Point the client at a Milvus cluster</td><td>Point it at S3 or GCS; no cluster to run</td></tr>
-                        <tr><th>Versions</th><td>Not built in</td><td>Every write is a new version you can query</td></tr>
-                        <tr><th>Pick it when</th><td>You want local dev to match production</td><td>You want to version embeddings like code</td></tr>
-                    </tbody>
-                </table>
-                </div>
-
-                <h3>FLAT vs. IVF vs. HNSW</h3>
-                <p>
-                    Then I swept approximate-nearest-neighbour indexes, including deliberately weak settings meant to lose recall:
+                    Milvus Lite is the full Milvus engine in one local file, with the same API as a cluster. I also prototyped Lance, a versioned file format with no server at all.
                 </p>
 
                 <figure class="figure">
@@ -895,22 +1018,13 @@ tests/                  <i>pytest, run in CI with ruff</i></div>
                     </div>
                 </figure>
 
-                <p>
-                    No difference. Every config returned the same top 10 as exact search, all within a tenth of a millisecond. With 873 vectors, comparing against every one of them is already instant, and an index only adds build time. I'm glad I measured it, because "use HNSW" was going to be my default.
-                </p>
-                <div class="note">
-                    <span class="label">Gotcha</span>
-                    <p>Milvus Lite's local mode rejects <code>index_type="HNSW"</code> and only accepts FLAT, IVF_FLAT or AUTOINDEX. AUTOINDEX does build an HNSW graph under the hood (<code>describe_index()</code> shows <code>M</code> and <code>efConstruction</code>), so that's how the HNSW rows above were made.</p>
-                </div>
+                <p class="learned">With 873 vectors, exact search is already instant. Measure before reaching for HNSW.</p>
             </section>
 
-            <!-- ============ 07 SCALE ============ -->
             <section class="section">
                 <div class="section-eyebrow">07 · At scale</div>
-                <h2>What would break with a million exercises and real users</h2>
-                <p>
-                    Almost nothing in this project is hard at 873 rows. That's why I sketched how it would change at scale, using what I'd been reading in the <a href="https://github.com/donnemartin/system-design-primer" target="_blank" rel="noopener">System Design Primer</a>.
-                </p>
+                <h2>What would break with a million exercises</h2>
+                <p>Nothing here is hard at 873 rows, so I sketched the scaled version using the <a href="https://github.com/donnemartin/system-design-primer" target="_blank" rel="noopener">System Design Primer</a>.</p>
 
                 <figure class="figure">
                     <div class="figure-scroll">
@@ -974,41 +1088,38 @@ tests/                  <i>pytest, run in CI with ruff</i></div>
                 </figure>
 
                 <ol class="tips" id="issues">
-                    <li data-n="1"><b>Exact search stops being free</b>Brute force compares the query with every vector, O(N·D) per query. At 873 rows that's 0.3 ms; at millions it isn't. You need IVF or HNSW, and recall becomes a trade-off you have to measure, unlike in my sweep.</li>
-                    <li data-n="2"><b>Shards make every search fan out</b>Split the vectors across machines and each query has to hit every shard and merge the results. The slowest shard sets your latency.</li>
-                    <li data-n="3"><b>A new model means re-embedding everything</b>Every vector depends on the model version (tip 6). A new fine-tune becomes a batch job over the whole corpus, plus a switch-over without downtime. Versioned storage like Lance helps here.</li>
-                    <li data-n="4"><b>Cache the repeat queries</b>A cache keyed on <code>hash(query + model + top_k)</code> skips the encoder and the search for common queries. The hard part is clearing it when the index changes.</li>
-                    <li data-n="5"><b>One file is one point of failure</b>Milvus Lite is a single local file. At scale you want replicas and backups, and the metadata (names, muscles, images) in a database that replicates.</li>
-                    <li data-n="6"><b>The LLM is the slow part</b>A 7B model on a laptop is fine for one person. Many users means GPU serving, batching and timeouts, and most of the latency budget goes here, not to search.</li>
+                    <li data-n="1"><b>Exact search stops being free</b>Millions of vectors need an ANN index, and recall becomes a real trade-off.</li>
+                    <li data-n="2"><b>Shards fan out</b>Every query hits every shard; the slowest one sets the latency.</li>
+                    <li data-n="3"><b>New model, re-embed everything</b>A batch job over the whole corpus, then a switch-over without downtime.</li>
+                    <li data-n="4"><b>Cache repeat queries</b>Key on <code>hash(query + model + top_k)</code>; clear it when the index changes.</li>
+                    <li data-n="5"><b>One file, one point of failure</b>At scale: replicas, backups, and metadata in a replicated database.</li>
+                    <li data-n="6"><b>The LLM is the slow part</b>Many users means GPU serving and batching; search is the cheap step.</li>
                 </ol>
-
-                <p style="margin-top: 1.5rem;">
-                    The eval set also stops being enough. Queries generated from templates can't test multi-step questions or real phrasing. Next I want to try these ideas on public benchmarks with human relevance labels: <strong><a href="https://github.com/beir-cellar/beir" target="_blank" rel="noopener">BEIR</a></strong> for hybrid search and reranking, and <strong><a href="https://hotpotqa.github.io/" target="_blank" rel="noopener">HotpotQA</a></strong> for questions that need more than one retrieval step.
-                </p>
             </section>
 
-            <!-- ============ 08 NEXT ============ -->
             <section class="section">
                 <div class="section-eyebrow">08 · Next</div>
                 <h2>Where it goes from here</h2>
                 <ul>
-                    <li><strong>A reranker.</strong> A small cross-encoder that re-scores the hybrid top-k before it reaches the LLM.</li>
-                    <li><strong>Newer embedders.</strong> <code>all-MiniLM-L6-v2</code> is fast but old. BGE, E5 and Nomic Embed go through the same benchmark script.</li>
-                    <li><strong>Search as a tool.</strong> Let the LLM decide when and what to search, through Ollama tool calling, instead of always retrieving once. That's the first step towards agentic retrieval.</li>
-                    <li><strong>Images as queries.</strong> Pose estimation on a photo, then find the exercise. This is where CLIP comes back.</li>
+                    <li>A cross-encoder reranker over the hybrid top-k.</li>
+                    <li>Search as a tool the LLM calls, the first step to agentic retrieval.</li>
+                    <li>Real benchmarks: <a href="https://github.com/beir-cellar/beir" target="_blank" rel="noopener">BEIR</a> and <a href="https://hotpotqa.github.io/" target="_blank" rel="noopener">HotpotQA</a>.</li>
                 </ul>
 
-                <h3>Resources I learned from</h3>
-                <ul>
-                    <li><a href="https://www.hopsworks.ai/post/mlops-to-ml-systems-with-fti-pipelines" target="_blank" rel="noopener">From MLOps to ML Systems with Feature/Training/Inference Pipelines</a> (Hopsworks): the FTI architecture this project follows.</li>
-                    <li><a href="https://medium.com/decodingai/an-end-to-end-framework-for-production-ready-llm-systems-by-building-your-llm-twin-2cc6bb01141f" target="_blank" rel="noopener">An End-to-End Framework for Production-Ready LLM Systems</a> (Decoding AI, the "LLM Twin" course): the project idea and structure.</li>
-                    <li><a href="https://milvus.io/docs/embeddings.md#Embedding-Overview" target="_blank" rel="noopener">Milvus: Embedding overview</a>: how text and images end up in one vector space.</li>
-                    <li><a href="https://towardsdatascience.com/multimodal-embeddings-an-introduction-5dc36975966f/" target="_blank" rel="noopener">Multimodal Embeddings: An Introduction</a> (Towards Data Science) and <a href="https://bhavishyapandit9.substack.com/p/building-multimodal-embeddings-a" target="_blank" rel="noopener">Building Multimodal Embeddings</a> (Bhavishya Pandit).</li>
-                    <li><a href="https://huggingface.co/learn/cookbook/en/faiss_with_hf_datasets_and_clip" target="_blank" rel="noopener">Hugging Face cookbook: FAISS with datasets and CLIP</a>: image and text search with CLIP.</li>
-                    <li><a href="https://docs.langchain.com/oss/python/integrations/vectorstores" target="_blank" rel="noopener">LangChain vector store integrations</a>: the overview I used to compare vector databases.</li>
-                    <li><a href="https://plg.uwaterloo.ca/~gvcormac/cormacksigir09-rrf.pdf" target="_blank" rel="noopener">Reciprocal Rank Fusion</a> (Cormack, Clarke &amp; Büttcher, SIGIR 2009): the original RRF paper, where k = 60 comes from.</li>
-                    <li><a href="https://github.com/donnemartin/system-design-primer" target="_blank" rel="noopener">System Design Primer</a>: scaling, caching, replication and load balancing for section 07.</li>
-                    <li><a href="https://github.com/wrkout/exercises.json" target="_blank" rel="noopener">exercises.json</a>: the open exercise dataset.</li>
+                <h3>Resources</h3>
+                <ul class="resources">
+                    <li><a href="https://www.hopsworks.ai/post/mlops-to-ml-systems-with-fti-pipelines" target="_blank" rel="noopener">FTI pipelines</a> (Hopsworks)</li>
+                    <li><a href="https://medium.com/decodingai/an-end-to-end-framework-for-production-ready-llm-systems-by-building-your-llm-twin-2cc6bb01141f" target="_blank" rel="noopener">LLM Twin framework</a> (Decoding AI)</li>
+                    <li><a href="https://developers.google.com/machine-learning/crash-course/embeddings" target="_blank" rel="noopener">Embeddings</a> (Google ML Crash Course)</li>
+                    <li><a href="https://milvus.io/docs/embeddings.md#Embedding-Overview" target="_blank" rel="noopener">Embedding overview</a> (Milvus)</li>
+                    <li><a href="https://towardsdatascience.com/multimodal-embeddings-an-introduction-5dc36975966f/" target="_blank" rel="noopener">Multimodal embeddings</a> (TDS)</li>
+                    <li><a href="https://bhavishyapandit9.substack.com/p/building-multimodal-embeddings-a" target="_blank" rel="noopener">Building multimodal embeddings</a></li>
+                    <li><a href="https://huggingface.co/learn/cookbook/en/faiss_with_hf_datasets_and_clip" target="_blank" rel="noopener">FAISS + CLIP cookbook</a> (Hugging Face)</li>
+                    <li><a href="https://docs.langchain.com/oss/python/integrations/vectorstores" target="_blank" rel="noopener">Vector store comparison</a> (LangChain)</li>
+                    <li><a href="https://mlflow.org/docs/latest/ml/getting-started/" target="_blank" rel="noopener">MLflow getting started</a></li>
+                    <li><a href="https://plg.uwaterloo.ca/~gvcormac/cormacksigir09-rrf.pdf" target="_blank" rel="noopener">Reciprocal Rank Fusion</a> (SIGIR 2009)</li>
+                    <li><a href="https://github.com/donnemartin/system-design-primer" target="_blank" rel="noopener">System Design Primer</a></li>
+                    <li><a href="https://github.com/wrkout/exercises.json" target="_blank" rel="noopener">exercises.json</a> dataset</li>
                 </ul>
 
                 <p class="cta">
@@ -1024,7 +1135,7 @@ tests/                  <i>pytest, run in CI with ruff</i></div>
     </div>
 
     <footer>
-        <p>&copy; <span id="currentYear"></span> Ixeia Sánchez Périz. All rights reserved.</p>
+        <p>&copy; <span id="currentYear">2026</span> Ixeia Sánchez Périz. All rights reserved.</p>
         <p><a href="../index.html">← Back to Portfolio</a></p>
     </footer>
 

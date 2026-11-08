@@ -1,0 +1,44 @@
+# Ixeia Sánchez Périz
+
+> Senior Software Engineer in Data & AI Systems at SWISS International Air Lines, Zürich. Works on AI agents, ML systems and TB-scale PySpark data pipelines. Previously researcher at ETH Zürich on distributed, fault-tolerant LLM training (Sailor, published at SOSP '25). MSc Data Science, ETH Zürich; double BSc Telecommunication Engineering & Business Administration, UPV Valencia (1st in class).
+
+This file is a plain-text guide to the site for LLM agents and tools. The human site is at https://ixsanpe.github.io/ and has the same content with an interactive layout.
+
+## Experience
+
+- Senior Software Engineer, Data & AI Systems — SWISS International Air Lines, Zürich (Jun 2024 – present): AI agents and ML systems adopted across business units; TB-scale data pipelines with PySpark; system design and adoption.
+- Researcher, LLM Systems at Scale — ETH Zürich (Oct 2023 – May 2024): designed and built Sailor's elastic, fault-tolerant runtime for LLM training on preemptible VMs (2.87× higher goodput; published at SOSP '25); also worked on its cost-effective resource planner.
+- Junior Machine Learning Engineer — Visium, AI consulting start-up, Zürich (Mar 2023 – Aug 2023): data pipelines and automated ML model deployment for clients on GCP.
+- Data Scientist Intern — Corify Care, medtech start-up, Valencia (Jun 2020 – Jul 2021): real-time streaming ECG classification in a medical device; cost-effectiveness study published in Value in Health (ISPOR), 2022.
+
+Skills: Python, PySpark, Databricks, BigQuery, GCP, PyTorch, DeepSpeed, Ray, Kubernetes, Docker, LLM agents, RAG, evals, MLOps.
+
+## Projects
+
+- [Sailor: automated ML training in the cloud](https://ixsanpe.github.io/projects/sailor-llm.html): ETH Zürich master's thesis. Ixeia designed and built Sailor's elastic, fault-tolerant runtime for LLM training on spot instances. Checkpoints live in CPU memory and surviving nodes are reconfigured in place, so a 1.5B-parameter model is training again 52 s after a preemption; 2.87× higher goodput than state-of-the-art fault tolerance. Includes a 56 s video of one recovery. Ixeia also worked on Sailor's resource planner, which the page mentions without detail. [Paper (SOSP '25)](https://dl.acm.org/doi/10.1145/3731569.3764839), [code](https://github.com/eth-easl/sailor).
+- [Fitness RAG](https://ixsanpe.github.io/projects/fitness-rag.html): end-to-end retrieval system over 873 exercises; hybrid BM25 + dense retrieval with RRF, contrastive fine-tuning (Recall@10 0.36 → 0.81), MLflow, Milvus Lite, local LLM; labelled eval set. [Code](https://github.com/ixsanpe/fitness-ai-assistant).
+
+## Talks
+
+- [Career Tips for Fresh Graduates](https://ixsanpe.github.io/talks/uzh-career-night-2024.html): UZH Career Night, Nov 2024.
+- [Commencement Speech, Class of 2025](https://www.youtube.com/watch?v=Q9edBOO_sYo): UPV Valencia, May 2025 (in Spanish).
+
+## Recognition
+
+- 2025: Commencement Speaker, BSc Graduation Ceremony, UPV
+- 2022: Best Student Award, Social Council, UPV
+- 2022: Nova Top 111 University Talent in Spain
+- 2021: 1st rank, double BSc graduation class, UPV
+- 2019: Santander Bank Fellow, exchange programme
+
+## Contact
+
+- Email: ixeiasp98@gmail.com
+- [LinkedIn](https://www.linkedin.com/in/ixeia-s-p/)
+- [GitHub](https://github.com/ixsanpe)
+- [Google Scholar](https://scholar.google.com/citations?user=iWlPeUYAAAAJ)
+
+## Optional
+
+- How the portfolio is organised: the homepage draws the projects as one AI system. Unstructured data feeds the systems (RAG + MLOps; Sailor for LLM training), which run on infrastructure (Ray, GPUs, cloud) and power a solution (Fitness RAG). Underneath is Ixeia: building the systems, giving talks and learning through ongoing projects.
+- In progress: unstructured data processing; Ray Data & distributed GPU training; a second brain (AI for organising notes and knowledge); a coding harness (AI development setup).

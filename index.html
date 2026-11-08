@@ -4,10 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ixeia Sánchez Périz</title>
-    <meta name="description" content="Ixeia Sánchez Périz — Data & AI at Scale. A summer hike through my projects, talks and awards.">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23cfe8f5'/><circle cx='74' cy='28' r='11' fill='%23f6c431'/><path d='M8 82 L36 34 L50 54 L62 40 L92 82 Z' fill='%232f6b4f'/><path d='M36 34 L44 48 L38 46 L32 50 Z' fill='%23ffffff'/><path d='M0 100 V80 Q30 70 50 82 T100 78 V100 Z' fill='%237fb04f'/></svg>">
+    <meta name="description" content="Ixeia Sánchez Périz — Data & AI at Scale. A walk along the trail of my projects, talks and recognition.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%23f1ece4'/><path d='M10 70 Q30 30 50 45 T90 30' fill='none' stroke='%236b1f2a' stroke-width='5' stroke-linecap='round'/><ellipse cx='62' cy='68' rx='22' ry='16' fill='%23b9c7b4'/></svg>">
     <script>
-        // Set theme before paint to avoid a flash
         (function () {
             var t = null;
             try { t = localStorage.getItem('theme'); } catch (e) {}
@@ -18,230 +17,166 @@
     </script>
     <link rel="stylesheet" href="style.css">
     <style>
-        /* ---------------- Zone tokens (vegetation belts as you climb) ---------------- */
-        :root {
-            --zone-meadow: #edf5dc;
-            --zone-forest: #e4efe2;
-            --zone-rock: #eceeec;
-            --zone-snow: #f6f9fb;
-        }
-        [data-theme="dark"] {
-            --zone-meadow: #16291f;
-            --zone-forest: #11231b;
-            --zone-rock: #182224;
-            --zone-snow: #1c2630;
-        }
+        html, body { overflow-x: clip; }
 
-        /* ---------------- Nav ---------------- */
+        /* ---------- Nav ---------- */
         nav ul {
             list-style: none;
             display: flex;
-            gap: 1.5rem;
+            gap: 2rem;
+            align-items: center;
         }
 
         nav ul a {
             text-decoration: none;
             color: var(--text);
+            font-size: 0.74rem;
             font-weight: 500;
-            font-size: 0.95rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
             transition: color 0.3s;
         }
 
-        nav ul a:hover {
-            color: var(--brand);
-        }
+        nav ul a:hover { color: var(--accent); }
 
-        nav .logo {
-            display: inline-flex;
+        .nav-right {
+            display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 2rem;
         }
 
-        nav .logo svg {
-            width: 28px;
-            height: 28px;
-        }
-
-        /* ---------------- Hero: the valley ---------------- */
+        /* ---------- Hero ---------- */
         .hero {
             position: relative;
-            min-height: max(640px, min(100vh, 860px));
-            overflow: hidden;
-            display: flex;
-            align-items: flex-start;
-            justify-content: center;
-            color: var(--text);
-        }
-
-        .landscape {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-        }
-
-        .landscape .stars {
-            opacity: 0;
-            transition: opacity 0.6s;
-        }
-
-        [data-theme="dark"] .landscape .stars {
-            opacity: 1;
-        }
-
-        .landscape .cloud {
-            animation: drift 60s linear infinite;
-        }
-
-        .landscape .cloud.c2 {
-            animation-duration: 85s;
-            animation-delay: -30s;
-        }
-
-        [data-theme="dark"] .landscape .cloud {
-            opacity: 0.15;
-        }
-
-        @keyframes drift {
-            from { transform: translateX(-300px); }
-            to { transform: translateX(1700px); }
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 2;
-            max-width: 1100px;
-            width: 100%;
-            padding: 8.5rem 2rem 0;
-            display: flex;
+            max-width: 1200px;
+            margin: 0 auto;
+            min-height: max(620px, min(100vh, 860px));
+            padding: 8rem 2rem 6rem;
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
             align-items: center;
-            gap: 2.5rem;
+            gap: 3rem;
         }
 
-        .profile-picture {
-            width: 168px;
-            height: 168px;
-            border-radius: 50%;
-            object-fit: cover;
-            object-position: center 10%;
-            border: 6px solid var(--surface);
-            box-shadow: var(--shadow-md);
-            flex-shrink: 0;
-        }
-
-        .hero-eyebrow {
-            margin-bottom: 0.75rem;
-        }
+        .hero-text { position: relative; z-index: 2; }
 
         .hero h1 {
-            font-size: clamp(2.4rem, 5vw, 3.75rem);
-            margin-bottom: 0.4rem;
+            font-size: clamp(3.2rem, 7.5vw, 6.2rem);
+            line-height: 0.98;
+            margin: 0.5rem 0 1.5rem;
+        }
+
+        .hero h1 em {
+            font-style: italic;
+            color: var(--accent);
         }
 
         .hero .tagline {
-            font-size: 1.25rem;
+            font-family: var(--font-display);
+            font-size: clamp(1.4rem, 2.4vw, 1.9rem);
+            font-style: italic;
             color: var(--text-muted);
             margin-bottom: 1.25rem;
         }
 
-        .hero-meta {
+        .hero .intro {
+            max-width: 460px;
+            color: var(--text-muted);
+            font-weight: 300;
+            font-size: 1.02rem;
+            margin-bottom: 2rem;
+        }
+
+        .text-links {
             display: flex;
-            align-items: center;
             flex-wrap: wrap;
-            gap: 0.75rem;
+            gap: 0.5rem 1.75rem;
         }
 
-        .chip {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.4rem;
-            padding: 0.35rem 0.9rem;
-            border-radius: var(--radius-pill);
-            background: color-mix(in srgb, var(--surface) 75%, transparent);
-            border: 1px solid var(--border);
-            font-size: 0.9rem;
+        .text-links a {
+            font-size: 0.78rem;
             font-weight: 500;
-            backdrop-filter: blur(6px);
-        }
-
-        .chip svg {
-            width: 15px;
-            height: 15px;
-        }
-
-        .social-link {
-            width: 40px;
-            height: 40px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            background: color-mix(in srgb, var(--surface) 75%, transparent);
-            border: 1px solid var(--border);
-            color: var(--text);
-            transition: transform 0.3s var(--ease-trail), background-color 0.3s;
-            backdrop-filter: blur(6px);
-        }
-
-        .social-link:hover {
-            color: var(--accent-ink);
-            background: var(--accent);
-            transform: translateY(-3px);
-        }
-
-        .social-link svg {
-            width: 18px;
-            height: 18px;
-        }
-
-        .start-hike {
-            position: absolute;
-            z-index: 2;
-            left: 50%;
-            bottom: 2.25rem;
-            transform: translateX(-50%);
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
             text-decoration: none;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.5rem;
+            color: var(--text);
+            padding-bottom: 3px;
+            border-bottom: 1px solid var(--accent);
+            transition: color 0.3s, padding 0.3s var(--ease);
         }
 
-        .start-hike .signpost {
-            transition: transform 0.3s var(--ease-trail);
+        .text-links a:hover {
+            color: var(--accent);
+            padding-bottom: 6px;
         }
 
-        .start-hike:hover .signpost {
-            transform: translateX(4px);
-        }
-
-        .start-hike .arrow {
-            color: #fff;
-            animation: bob 2s ease-in-out infinite;
-            filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
-        }
-
-        @keyframes bob {
-            50% { transform: translateY(6px); }
-        }
-
-        /* ---------------- The trail ---------------- */
-        .trail-zone {
+        .portrait-wrap {
             position: relative;
-            background: linear-gradient(to bottom,
-                var(--mtn-meadow) 0,
-                var(--zone-meadow) 140px,
-                var(--zone-forest) 38%,
-                var(--zone-rock) 78%,
-                var(--zone-snow) 100%);
-            padding-bottom: 4rem;
+            justify-self: center;
+            width: min(380px, 100%);
+            aspect-ratio: 0.88;
         }
 
+        .portrait-wrap .blob.back {
+            inset: -6% -14% 4% 10%;
+        }
+
+        .portrait-wrap .blob.sand {
+            width: 42%;
+            height: 34%;
+            left: -14%;
+            bottom: -6%;
+        }
+
+        .portrait {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 15%;
+            border-radius: var(--blob-c);
+        }
+
+        .portrait-wrap .botanical {
+            z-index: 2;
+            left: -30%;
+            bottom: -8%;
+            height: 82%;
+        }
+
+        .hero-ridge {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 1.5rem;
+            height: 90px;
+            width: 100%;
+            color: var(--line);
+            opacity: 0.55;
+        }
+
+        .scroll-cue {
+            position: absolute;
+            left: 50%;
+            bottom: -0.5rem;
+            transform: translateX(-50%);
+            font-size: 0.68rem;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--text-subtle);
+            text-decoration: none;
+            z-index: 2;
+            background: var(--bg);
+            padding: 0 0.75rem;
+        }
+
+        /* ---------- Trail ---------- */
         .trail {
             position: relative;
             max-width: 1100px;
             margin: 0 auto;
-            padding: 1rem 2rem 0;
+            padding: 2rem 2rem 2rem;
         }
 
         .trail-svg {
@@ -254,125 +189,61 @@
             z-index: 0;
         }
 
-        .trail-bed {
+        .trail-ghost {
             fill: none;
-            stroke: var(--trail);
-            stroke-opacity: 0.22;
-            stroke-width: 18;
+            stroke: var(--line);
+            stroke-opacity: 0.18;
+            stroke-width: 1.3;
+            stroke-dasharray: 2 6;
             stroke-linecap: round;
         }
 
-        .trail-dash {
+        .trail-line {
             fill: none;
-            stroke: var(--trail);
-            stroke-opacity: 0.7;
-            stroke-width: 3;
-            stroke-dasharray: 7 11;
+            stroke: var(--line);
+            stroke-width: 1.5;
             stroke-linecap: round;
         }
 
-        .trail-walked {
-            fill: none;
-            stroke: var(--trail-walked);
-            stroke-width: 4;
-            stroke-linecap: round;
+        .trail-tip {
+            fill: var(--line);
         }
 
-        .hiker {
-            transition: transform 0.12s linear;
-        }
-
-        .hiker circle {
-            fill: var(--accent);
-            stroke: var(--pine-900);
-            stroke-width: 2;
-        }
-
-        .hiker path {
-            fill: none;
-            stroke: var(--pine-900);
-            stroke-width: 2;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-        }
-
-        /* Waypoint markers on the path */
-        .marker {
-            position: absolute;
-            width: 22px;
-            height: 22px;
-            border-radius: 50%;
-            background: var(--surface);
-            border: 4px solid var(--trail);
-            transform: translate(-50%, -50%);
-            z-index: 2;
-            transition: border-color 0.4s, background-color 0.4s, transform 0.4s var(--ease-trail);
-        }
-
-        .marker.reached {
-            border-color: var(--trail-walked);
-            background: var(--accent);
-            transform: translate(-50%, -50%) scale(1.15);
-        }
-
-        .marker::after {
-            content: attr(data-alt) " m";
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            white-space: nowrap;
-            font-size: 0.72rem;
-            font-weight: 600;
-            letter-spacing: 0.05em;
-            color: var(--text-subtle);
-        }
-
-        /* Stage = signpost on the path */
+        /* Stage header */
         .stage {
             position: relative;
             z-index: 1;
-            display: grid;
-            grid-template-columns: 1fr 64px 1fr;
-            align-items: center;
-            padding: 5rem 0 2rem;
+            text-align: center;
+            padding: 6rem 0 2.5rem;
         }
 
-        .stage .marker {
-            left: 50%;
-            top: calc(5rem + 50% - 3.5rem);
-            width: 14px;
-            height: 44px;
-            border-radius: 4px;
-            background: var(--earth-700);
-            border: none;
+        .stage .pin {
+            position: relative;
+            display: block;
+            width: 10px;
+            height: 10px;
+            margin: 0 auto 1.25rem;
+            border-radius: 50%;
+            background: var(--line);
         }
 
-        .stage .marker.reached {
-            background: var(--earth-700);
-            transform: translate(-50%, -50%);
-        }
-
-        .stage .marker::after {
-            display: none;
+        .stage .eyebrow,
+        .stage h2 {
+            display: inline-block;
+            background: var(--bg);
+            padding: 0 0.75rem;
+            position: relative;
         }
 
         .stage h2 {
-            grid-column: 1;
-            text-align: right;
-            font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+            display: table;
+            margin: 0 auto;
+            font-size: clamp(2.6rem, 5vw, 4rem);
+            font-style: italic;
         }
 
-        .stage .signpost {
-            grid-column: 3;
-            justify-self: start;
-        }
-
-        .stage-sub {
-            grid-column: 1;
-            text-align: right;
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            margin-top: 0.35rem;
+        .stage .eyebrow {
+            margin-bottom: 0.25rem;
         }
 
         /* Waypoints */
@@ -381,95 +252,67 @@
             z-index: 1;
             display: grid;
             grid-template-columns: 1fr 1fr;
-            column-gap: 140px;
-            margin: 2.25rem 0;
+            column-gap: 150px;
+            margin: 1.5rem 0 3rem;
         }
 
-        .waypoint .marker {
-            top: 2.4rem;
-            left: calc(50% - 38px);
+        .waypoint .card { grid-column: 1; }
+        .waypoint.right .card { grid-column: 2; }
+
+        .waypoint .pin {
+            position: absolute;
+            top: 1.75rem;
+            left: calc(50% - 64px);
+            transform: translate(-50%, -50%);
+            width: 58px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--shape-sand);
+            border-radius: var(--blob-b);
+            font-family: var(--font-display);
+            font-size: 1.15rem;
+            color: var(--text);
+            z-index: 2;
+            transition: background-color 0.5s, transform 0.5s var(--ease);
         }
 
-        .waypoint .marker::after {
-            left: calc(100% + 10px);
-        }
+        .waypoint.right .pin { left: calc(50% + 64px); border-radius: var(--blob-a); }
 
-        .waypoint.right .marker {
-            left: calc(50% + 38px);
-        }
-
-        .waypoint.right .marker::after {
-            left: auto;
-            right: calc(100% + 10px);
-        }
-
-        .waypoint .card {
-            grid-column: 1;
-        }
-
-        .waypoint.right .card {
-            grid-column: 2;
+        .waypoint .pin.reached {
+            background: var(--shape-sage);
+            transform: translate(-50%, -50%) rotate(-6deg);
         }
 
         .card {
             position: relative;
             background: var(--surface);
-            border: 1px solid var(--border);
+            border: 1px solid transparent;
             border-radius: var(--radius-lg);
-            padding: 1.75rem;
-            box-shadow: var(--shadow-sm);
-            transition: transform 0.4s var(--ease-trail), box-shadow 0.4s, opacity 0.6s var(--ease-trail);
+            padding: 2.25rem;
+            transition: border-color 0.4s, transform 0.6s var(--ease), opacity 0.8s var(--ease);
         }
 
-        .card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-md);
-        }
+        .card:hover { border-color: var(--border); }
 
-        .js .waypoint .card {
-            opacity: 0;
-            transform: translateY(24px);
-        }
-
-        .js .waypoint.in-view .card {
-            opacity: 1;
-            transform: none;
-        }
-
-        .js .waypoint.in-view .card:hover {
-            transform: translateY(-4px);
-        }
-
-        .card-kind {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.75rem;
-            font-weight: 700;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            color: var(--brand);
-            margin-bottom: 0.6rem;
-        }
-
-        .card-kind svg {
-            width: 16px;
-            height: 16px;
-        }
+        .js .waypoint .card { opacity: 0; transform: translateY(28px); }
+        .js .waypoint.in-view .card { opacity: 1; transform: none; }
 
         .card h3 {
-            font-size: 1.35rem;
-            margin-bottom: 0.6rem;
+            font-size: 1.85rem;
+            margin-bottom: 0.75rem;
         }
 
         .card p {
             color: var(--text-muted);
-            font-size: 0.97rem;
+            font-weight: 300;
+            font-size: 0.98rem;
         }
 
-        .card p + p {
-            margin-top: 0.75rem;
-        }
+        .card p + p { margin-top: 0.85rem; }
+
+        .card strong { color: var(--text); font-weight: 500; }
 
         .card ul {
             list-style: none;
@@ -478,724 +321,500 @@
 
         .card ul li {
             position: relative;
-            padding: 0.3rem 0 0.3rem 1.25rem;
+            padding: 0.45rem 0 0.45rem 1.5rem;
             color: var(--text-muted);
-            font-size: 0.95rem;
+            font-weight: 300;
+            font-size: 0.96rem;
+            border-bottom: 1px solid var(--border);
         }
+
+        .card ul li:last-child { border-bottom: none; }
 
         .card ul li::before {
             content: "";
             position: absolute;
             left: 0;
-            top: 0.85rem;
-            width: 7px;
-            height: 7px;
+            top: 1.1rem;
+            width: 0.75rem;
+            height: 1px;
             background: var(--accent);
-            transform: rotate(45deg);
-        }
-
-        .card strong {
-            color: var(--text);
         }
 
         .card img {
             display: block;
+            width: 100%;
             border-radius: var(--radius-md);
-            margin: 0.5rem 0 1rem;
+            margin: 0.75rem 0 1.25rem;
         }
 
-        .card.feature {
-            border-top: 6px solid var(--accent);
+        .card.feature { overflow: hidden; }
+
+        .card.feature .blob {
+            width: 220px;
+            height: 180px;
+            right: -70px;
+            top: -60px;
+            opacity: 0.55;
         }
 
-        .card.cairn {
-            padding: 1.25rem 1.5rem;
-        }
+        .card.feature > *:not(.blob) { position: relative; z-index: 1; }
 
-        .card.cairn h3 {
-            font-size: 1.1rem;
-        }
-
-        .card.cairn p {
-            font-size: 0.92rem;
-        }
+        .card.compact { padding: 1.6rem 1.9rem; }
+        .card.compact h3 { font-size: 1.4rem; }
+        .card.compact p { font-size: 0.92rem; }
 
         .tech-tags {
             display: flex;
             flex-wrap: wrap;
             gap: 0.5rem;
-            margin: 1rem 0;
+            margin: 1.25rem 0;
         }
 
         .tech-tag {
-            padding: 0.2rem 0.75rem;
-            font-size: 0.78rem;
-            font-weight: 500;
+            padding: 0.2rem 0.85rem;
+            font-size: 0.75rem;
+            letter-spacing: 0.04em;
         }
 
         .read-more {
             display: inline-flex;
             align-items: center;
-            gap: 0.35rem;
-            font-weight: 600;
+            gap: 0.5rem;
+            font-size: 0.74rem;
+            font-weight: 500;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
             text-decoration: none;
-            color: var(--link);
+            color: var(--accent);
+            transition: gap 0.3s var(--ease);
         }
 
-        .read-more:hover {
-            gap: 0.6rem;
-        }
-
-        .read-more {
-            transition: gap 0.3s var(--ease-trail);
-        }
+        .read-more:hover { gap: 0.85rem; }
 
         .gh-link {
             color: var(--text-subtle);
             display: inline-flex;
             vertical-align: middle;
-            margin-left: 0.35rem;
+            margin-left: 0.4rem;
         }
 
-        .gh-link:hover {
-            color: var(--text);
-        }
+        .gh-link:hover { color: var(--accent); }
 
         .video-thumb {
             position: relative;
             display: block;
-            max-width: 360px;
         }
 
-        .video-thumb svg {
+        .video-thumb .play {
             position: absolute;
             top: 50%;
             left: 50%;
-            width: 56px;
-            height: 56px;
-            transform: translate(-50%, -60%);
-            filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.35));
+            transform: translate(-50%, -50%);
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            background: color-mix(in srgb, var(--cream-50) 85%, transparent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--wine-700);
         }
 
-        /* Decorations in the margins */
-        .deco {
-            position: absolute;
-            z-index: 0;
-            pointer-events: none;
-            opacity: 0.85;
-        }
+        /* Margin decorations */
+        .trail > .blob { opacity: 0.5; }
+        .trail > .botanical { opacity: 0.85; }
 
-        /* ---------------- Summit ---------------- */
+        /* ---------- Summit / contact ---------- */
         .summit {
             position: relative;
             z-index: 1;
-            text-align: center;
-            padding-top: 5rem;
-        }
-
-        .summit-cross {
-            position: relative;
-            width: 90px;
+            max-width: 760px;
             margin: 0 auto;
+            padding: 6rem 0 3rem;
+            text-align: center;
         }
 
-        .summit-cross svg {
+        .summit .pin {
             display: block;
-            width: 90px;
-            height: 120px;
-        }
-
-        .summit .marker {
-            left: 50%;
-            top: calc(5rem + 120px);
-            width: 30px;
-            height: 30px;
-        }
-
-        .summit .marker::after {
-            display: none;
+            width: 14px;
+            height: 14px;
+            margin: 0 auto 1.5rem;
+            border-radius: 50%;
+            background: var(--line);
+            box-shadow: 0 0 0 8px color-mix(in srgb, var(--line) 15%, transparent);
         }
 
         .summit h2 {
-            font-size: clamp(2rem, 4vw, 2.75rem);
-            margin-top: 2rem;
+            font-size: clamp(3rem, 6vw, 4.8rem);
+            font-style: italic;
+            display: table;
+            margin: 0 auto;
+            background: var(--bg);
+            padding: 0 0.75rem;
         }
 
         .summit .lead {
             color: var(--text-muted);
-            font-size: 1.1rem;
-            margin: 0.5rem auto 2.5rem;
-            max-width: 520px;
+            font-weight: 300;
+            margin: 0.75rem auto 2.5rem;
         }
 
-        .contact-links {
-            display: flex;
-            justify-content: center;
-            gap: 1.25rem;
-            flex-wrap: wrap;
+        .contact-list {
+            list-style: none;
+            text-align: left;
+            border-top: 1px solid var(--border);
         }
 
-        .contact-card {
+        .contact-list a {
             display: flex;
-            align-items: center;
-            gap: 0.9rem;
-            padding: 1rem 1.5rem;
-            min-width: 220px;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 1rem;
+            padding: 1.15rem 0.5rem;
+            border-bottom: 1px solid var(--border);
             text-decoration: none;
             color: var(--text);
-            box-shadow: var(--shadow-sm);
-            transition: transform 0.3s var(--ease-trail), border-color 0.3s, box-shadow 0.3s;
-            text-align: left;
+            transition: padding 0.4s var(--ease), color 0.3s;
         }
 
-        .contact-card:hover {
-            color: var(--text);
-            transform: translateY(-4px);
-            border-color: var(--accent);
-            box-shadow: var(--shadow-md);
+        .contact-list a:hover {
+            padding-left: 1.25rem;
+            color: var(--accent);
         }
 
-        .contact-card svg {
-            width: 26px;
-            height: 26px;
-            color: var(--brand);
-            flex-shrink: 0;
+        .contact-list .label {
+            font-family: var(--font-display);
+            font-size: 1.7rem;
         }
 
-        .contact-card h3 {
-            font-size: 1.05rem;
-        }
-
-        .contact-card p {
-            font-size: 0.82rem;
-            color: var(--text-muted);
-        }
-
-        /* Altimeter */
-        .altimeter {
-            position: fixed;
-            left: 1.25rem;
-            bottom: 1.25rem;
-            z-index: 900;
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-            padding: 0.5rem 1rem 0.5rem 0.6rem;
-            border-radius: var(--radius-pill);
-            background: color-mix(in srgb, var(--surface) 88%, transparent);
-            border: 1px solid var(--border);
-            box-shadow: var(--shadow-md);
-            backdrop-filter: blur(8px);
+        .contact-list .meta {
             font-size: 0.85rem;
-            opacity: 0;
-            transform: translateY(12px);
-            transition: opacity 0.4s, transform 0.4s var(--ease-trail);
-            pointer-events: none;
+            color: var(--text-subtle);
+            font-weight: 300;
         }
 
-        .altimeter.visible {
-            opacity: 1;
-            transform: none;
+        /* ---------- Responsive ---------- */
+        @media (max-width: 1100px) {
+            .trail > .blob,
+            .trail > .botanical { display: none; }
         }
 
-        .altimeter .alt-icon {
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            background: var(--accent);
-            color: var(--accent-ink);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+        @media (max-width: 860px) {
+            nav ul { display: none; }
 
-        .altimeter .alt-icon svg {
-            width: 16px;
-            height: 16px;
-        }
-
-        .altimeter strong {
-            font-variant-numeric: tabular-nums;
-        }
-
-        .altimeter .alt-stage {
-            color: var(--text-muted);
-        }
-
-        /* ---------------- Responsive ---------------- */
-        @media (max-width: 1080px) {
-            .deco { display: none; }
-        }
-
-        @media (max-width: 820px) {
-            nav .logo span { display: none; }
-            nav ul { gap: 1rem; }
-            nav ul a { font-size: 0.88rem; }
-
-            .hero-content {
-                flex-direction: column;
-                text-align: center;
-                padding: 6.5rem 1rem 0;
-                gap: 1.25rem;
+            .hero {
+                grid-template-columns: 1fr;
+                padding: 6.5rem 1.25rem 6rem;
+                gap: 3rem;
+                min-height: 0;
             }
 
-            .profile-picture {
-                width: 124px;
-                height: 124px;
+            .portrait-wrap {
+                width: min(280px, 80%);
+                grid-row: 1;
             }
 
-            .hero .tagline {
-                font-size: 1.05rem;
-            }
-
-            .hero-meta {
-                justify-content: center;
-            }
-
-            .trail {
-                padding: 1rem 1rem 0 0;
-            }
+            .trail { padding: 1rem 1rem 1rem 0; }
 
             .stage {
-                grid-template-columns: 56px 1fr;
-                padding: 3.5rem 0 1rem;
-            }
-
-            .stage .marker {
-                left: 28px;
-                top: calc(3.5rem + 50% - 2.25rem);
-            }
-
-            .stage h2,
-            .stage-sub,
-            .stage .signpost {
-                grid-column: 2;
                 text-align: left;
+                padding: 4rem 0 1.5rem 3.25rem;
             }
 
-            .stage .signpost {
-                grid-row: 1;
-                margin-bottom: 0.5rem;
+            .stage .pin {
+                position: absolute;
+                left: 24px;
+                top: 4.6rem;
+                margin: 0;
+                transform: translateX(-50%);
             }
+
+            .stage h2 { margin: 0; }
+            .stage .eyebrow, .stage h2 { padding: 0; }
 
             .waypoint {
                 grid-template-columns: 1fr;
-                padding-left: 56px;
-                margin: 1.5rem 0;
+                padding-left: 3.25rem;
+                margin: 1rem 0 1.75rem;
             }
 
             .waypoint .card,
-            .waypoint.right .card {
-                grid-column: 1;
+            .waypoint.right .card { grid-column: 1; }
+
+            .waypoint .pin,
+            .waypoint.right .pin {
+                left: 24px;
+                width: 42px;
+                height: 34px;
+                font-size: 0.95rem;
             }
 
-            .waypoint .marker {
-                left: 22px;
-            }
+            .card { padding: 1.5rem; }
+            .card h3 { font-size: 1.55rem; }
 
-            .waypoint.right .marker {
-                left: 34px;
-            }
-
-            .waypoint .marker::after {
-                display: none;
-            }
-
-            .card {
-                padding: 1.35rem;
-            }
-
-            .summit {
-                padding-left: 1rem;
-            }
-
-            .contact-card {
-                width: 100%;
-            }
-
-            .altimeter {
-                left: 50%;
-                transform: translate(-50%, 12px);
-            }
-
-            .altimeter.visible {
-                transform: translate(-50%, 0);
-            }
-        }
-
-        @media (max-width: 520px) {
-            nav .container { padding: 0.75rem 1rem; }
-            nav ul { gap: 0.75rem; }
-            nav ul li.opt { display: none; }
+            .summit { padding: 4rem 1rem 2rem 3.25rem; text-align: left; }
+            .summit .pin { position: absolute; left: 24px; top: 4.4rem; margin: 0; transform: translateX(-50%); }
+            .summit h2 { margin: 0; padding: 0; }
         }
     </style>
 </head>
 <body>
-    <!-- Navigation -->
     <nav>
         <div class="container">
-            <a href="#top" class="logo" aria-label="Back to the valley">
-                <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="24" cy="9" r="4" fill="var(--accent)"/><path d="M2 27 L12 11 L17 18 L21 13 L30 27 Z" fill="var(--brand)"/><path d="M12 11 L15 16 L12.5 15 L10 17 Z" fill="var(--snowcap)"/></svg>
-                <span>Ixeia Sánchez Périz</span>
-            </a>
-            <ul>
-                <li><a href="#about">About</a></li>
-                <li><a href="#work">Projects</a></li>
-                <li><a href="#talks">Talks</a></li>
-                <li class="opt"><a href="#awards">Awards</a></li>
-            </ul>
-            <button id="darkModeToggle" class="dark-mode-toggle" aria-label="Toggle dark mode">
-                <svg class="sun-icon" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="4" fill="currentColor"/>
-                    <path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32l1.41-1.41" fill="none"/>
-                </svg>
-                <svg class="moon-icon" viewBox="0 0 24 24" fill="currentColor" style="display: none;">
-                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-                </svg>
-            </button>
+            <a href="#top" class="logo">Ixeia Sánchez Périz</a>
+            <div class="nav-right">
+                <ul>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#work">Projects</a></li>
+                    <li><a href="#talks">Talks</a></li>
+                    <li><a href="#recognition">Recognition</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+                <button id="darkModeToggle" class="dark-mode-toggle" aria-label="Toggle dark mode">
+                    <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+                        <circle cx="12" cy="12" r="4"/>
+                        <path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32l1.41-1.41"/>
+                    </svg>
+                    <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" style="display: none;">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                    </svg>
+                </button>
+            </div>
         </div>
     </nav>
 
-    <!-- Hero: the valley -->
+    <!-- Hero -->
     <header class="hero" id="top">
-        <svg class="landscape" viewBox="0 0 1440 860" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
-            <defs>
-                <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0" style="stop-color: var(--sky-top)"/>
-                    <stop offset="1" style="stop-color: var(--sky-bottom)"/>
-                </linearGradient>
-                <radialGradient id="glow">
-                    <stop offset="0" style="stop-color: var(--sun-disc); stop-opacity: 0.55"/>
-                    <stop offset="1" style="stop-color: var(--sun-disc); stop-opacity: 0"/>
-                </radialGradient>
-            </defs>
-            <rect width="1440" height="860" fill="url(#sky)"/>
-            <g class="stars" fill="#fff">
-                <circle cx="120" cy="80" r="1.4"/><circle cx="260" cy="150" r="1"/><circle cx="380" cy="60" r="1.6"/>
-                <circle cx="520" cy="130" r="1"/><circle cx="660" cy="70" r="1.3"/><circle cx="800" cy="160" r="1"/>
-                <circle cx="900" cy="50" r="1.5"/><circle cx="1010" cy="120" r="1"/><circle cx="1290" cy="90" r="1.4"/>
-                <circle cx="1380" cy="190" r="1"/><circle cx="60" cy="230" r="1"/><circle cx="1220" cy="240" r="1.2"/>
-                <circle cx="720" cy="230" r="0.9"/><circle cx="450" cy="250" r="1.1"/>
-            </g>
-            <circle cx="1150" cy="200" r="160" fill="url(#glow)"/>
-            <circle cx="1150" cy="200" r="58" style="fill: var(--sun-disc)"/>
-            <g class="cloud" fill="#fff" opacity="0.85">
-                <ellipse cx="200" cy="260" rx="70" ry="22"/><ellipse cx="240" cy="245" rx="45" ry="26"/><ellipse cx="170" cy="250" rx="35" ry="20"/>
-            </g>
-            <g class="cloud c2" fill="#fff" opacity="0.7">
-                <ellipse cx="0" cy="170" rx="55" ry="16"/><ellipse cx="30" cy="158" rx="36" ry="20"/>
-            </g>
-            <!-- far range -->
-            <path d="M0 560 L120 470 L210 510 L330 380 L420 450 L520 340 L610 420 L700 360 L790 430 L900 300 L1010 410 L1100 370 L1210 450 L1320 390 L1440 470 L1440 860 L0 860 Z" style="fill: var(--mtn-far)"/>
-            <path d="M330 380 L362 405 L348 408 L338 420 L322 410 L305 398 Z M520 340 L556 372 L540 370 L528 384 L512 372 L494 366 Z M900 300 L940 340 L922 338 L910 352 L895 340 L872 330 Z M1320 390 L1350 412 L1334 414 L1322 424 L1305 404 Z" style="fill: var(--snowcap)"/>
-            <!-- mid ridge -->
-            <path d="M0 640 L140 560 L260 600 L400 520 L520 580 L640 510 L760 570 L880 500 L1000 575 L1130 520 L1260 590 L1440 540 L1440 860 L0 860 Z" style="fill: var(--mtn-mid)"/>
-            <!-- pines on the ridge -->
-            <g style="fill: var(--mtn-near)">
-                <path d="M180 610 l12 -34 l12 34z M205 615 l10 -28 l10 28z M1090 590 l12 -36 l12 36z M1115 596 l10 -28 l10 28z M1145 600 l8 -22 l8 22z M300 618 l9 -24 l9 24z"/>
-            </g>
-            <!-- near hills -->
-            <path d="M0 720 Q240 640 480 700 T960 690 T1440 660 L1440 860 L0 860 Z" style="fill: var(--mtn-near)"/>
-            <path d="M0 790 Q360 730 720 780 T1440 760 L1440 860 L0 860 Z" style="fill: var(--mtn-meadow)"/>
-            <!-- flowers -->
-            <g>
-                <circle cx="160" cy="800" r="4" fill="var(--alpenrose)"/><circle cx="178" cy="812" r="3" fill="var(--sun-500)"/>
-                <circle cx="1240" cy="790" r="4" fill="var(--gentian)"/><circle cx="1262" cy="800" r="3" fill="var(--alpenrose)"/>
-                <circle cx="420" cy="815" r="3" fill="var(--snow)"/><circle cx="1010" cy="810" r="3" fill="var(--sun-500)"/>
-            </g>
-            <!-- trail leaving the valley, continues into the page -->
-            <path d="M720 860 C720 820 640 800 660 760 C680 720 820 720 780 690" fill="none" style="stroke: var(--trail)" stroke-opacity="0.7" stroke-width="3" stroke-dasharray="7 11" stroke-linecap="round"/>
-        </svg>
-
-        <div class="hero-content">
-            <img src="assets/profile_small.jpg" alt="Ixeia Sánchez Périz" class="profile-picture">
-            <div class="hero-text">
-                <div class="hero-eyebrow"><span class="blaze" aria-hidden="true"></span>&nbsp; <span class="post-date" style="display:inline">Portfolio trail</span></div>
-                <h1>Ixeia Sánchez Périz</h1>
-                <p class="tagline">Data &amp; AI at Scale</p>
-                <div class="hero-meta">
-                    <span class="chip">
-                        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>
-                        Zürich · 408 m
-                    </span>
-                    <a href="https://www.linkedin.com/in/ixeia-s-p/" target="_blank" rel="noopener" class="social-link" title="LinkedIn" aria-label="LinkedIn">
-                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.750-.79-1.750-1.764s.784-1.764 1.750-1.764 1.750.79 1.750 1.764-.783 1.764-1.750 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
-                    </a>
-                    <a href="https://github.com/ixsanpe" target="_blank" rel="noopener" class="social-link" title="GitHub" aria-label="GitHub">
-                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-                    </a>
-                    <a href="https://scholar.google.com/citations?user=iWlPeUYAAAAJ&hl=en" target="_blank" rel="noopener" class="social-link" title="Google Scholar" aria-label="Google Scholar">
-                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 24a7 7 0 1 1 0-14 7 7 0 0 1 0 14zm0-24L0 9.5l4.838 3.94A8 8 0 0 1 12 9a8 8 0 0 1 7.162 4.44L24 9.5z"/></svg>
-                    </a>
-                </div>
+        <div class="hero-text">
+            <p class="eyebrow">Zürich · 408 m — the trailhead</p>
+            <h1>Ixeia <em>Sánchez</em> Périz</h1>
+            <p class="tagline">Data &amp; AI at scale</p>
+            <p class="intro">Senior Data &amp; AI Engineer building TB-scale pipelines and agentic platforms. Walk the trail below to see what I've been working on.</p>
+            <div class="text-links">
+                <a href="https://www.linkedin.com/in/ixeia-s-p/" target="_blank" rel="noopener">LinkedIn ↗</a>
+                <a href="https://github.com/ixsanpe" target="_blank" rel="noopener">GitHub ↗</a>
+                <a href="https://scholar.google.com/citations?user=iWlPeUYAAAAJ&hl=en" target="_blank" rel="noopener">Scholar ↗</a>
             </div>
         </div>
-
-        <a href="#about" class="start-hike">
-            <span class="signpost">Start the hike <span class="time">≈ 5 min</span></span>
-            <svg class="arrow" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
-        </a>
+        <div class="portrait-wrap">
+            <span class="blob back"></span>
+            <span class="blob sand"></span>
+            <img src="assets/profile_small.jpg" alt="Ixeia Sánchez Périz" class="portrait">
+            <svg class="botanical" data-kind="fern" data-seed="3" data-opts='{"length":340,"leaves":11,"leafLen":80,"bend":0.3,"veins":3}' aria-hidden="true"></svg>
+        </div>
+        <svg class="hero-ridge botanical" data-kind="ridge" data-seed="11" data-opts='{"width":1200,"height":90}' data-stroke="1" preserveAspectRatio="none" aria-hidden="true"></svg>
+        <a href="#about" class="scroll-cue">Begin the walk ↓</a>
     </header>
 
-    <main class="trail-zone">
-        <div class="trail" id="trail">
-            <svg class="trail-svg" aria-hidden="true">
-                <path class="trail-bed"/>
-                <path class="trail-dash"/>
-                <path class="trail-walked"/>
-                <g class="hiker">
-                    <circle r="15"/>
-                    <path d="M1 -8 a2.4 2.4 0 1 1 0.01 0 M0 -4 L-1 3 L-4 9 M-1 3 L2 9 M0 -2 L4 1 M-1 -3 L-5 0 M6 -4 L4 10"/>
-                </g>
-            </svg>
+    <main class="trail" id="trail">
+        <svg class="trail-svg" aria-hidden="true">
+            <path class="trail-ghost"/>
+            <path class="trail-line"/>
+            <circle class="trail-tip" r="4"/>
+        </svg>
 
-            <!-- decorations -->
-            <svg class="deco" style="left:-40px; top:120px" width="90" height="110" viewBox="0 0 90 110" aria-hidden="true"><g fill="var(--pine-500)"><path d="M30 100 L45 20 L60 100Z"/><path d="M55 104 L66 50 L77 104Z" opacity="0.8"/><path d="M10 104 L20 60 L30 104Z" opacity="0.7"/></g></svg>
-            <svg class="deco" style="right:-30px; top:22%" width="80" height="100" viewBox="0 0 80 100" aria-hidden="true"><g fill="var(--pine-700)"><path d="M20 96 L36 18 L52 96Z"/><path d="M48 98 L60 50 L72 98Z" opacity="0.75"/></g></svg>
-            <svg class="deco" style="left:-20px; top:44%" width="70" height="40" viewBox="0 0 70 40" aria-hidden="true"><circle cx="10" cy="30" r="5" fill="var(--alpenrose)"/><circle cx="26" cy="22" r="4" fill="var(--gentian)"/><circle cx="40" cy="32" r="5" fill="var(--sun-500)"/><circle cx="56" cy="24" r="4" fill="var(--alpenrose)"/></svg>
-            <svg class="deco" style="right:-10px; top:62%" width="90" height="50" viewBox="0 0 90 50" aria-hidden="true"><path d="M5 48 Q15 20 35 24 Q50 10 65 26 Q85 28 88 48Z" fill="var(--granite-500)" opacity="0.55"/></svg>
-            <svg class="deco" style="left:-30px; top:80%" width="70" height="70" viewBox="0 0 70 70" aria-hidden="true"><g fill="var(--granite-500)" opacity="0.6"><ellipse cx="35" cy="62" rx="26" ry="8"/><ellipse cx="35" cy="48" rx="18" ry="7"/><ellipse cx="35" cy="36" rx="12" ry="6"/><ellipse cx="35" cy="26" rx="7" ry="5"/></g></svg>
+        <!-- margin decorations -->
+        <span class="blob" style="width:260px; height:210px; left:-200px; top:4%"></span>
+        <svg class="botanical" data-kind="leaf" data-seed="5" data-opts='{"size":220}' style="left:-150px; top:5%; height:260px" aria-hidden="true"></svg>
+        <span class="blob sand" style="width:160px; height:130px; right:-130px; top:24%"></span>
+        <svg class="botanical" data-kind="pine" data-seed="9" data-opts='{"length":300}' style="right:-110px; top:23%; height:300px; transform:rotate(18deg)" aria-hidden="true"></svg>
+        <span class="blob" style="width:240px; height:200px; left:-190px; top:50%"></span>
+        <svg class="botanical" data-kind="fern" data-seed="21" data-opts='{"length":300,"leaves":13,"leafLen":60,"bend":-0.25}' style="left:-120px; top:49%; height:320px" aria-hidden="true"></svg>
+        <span class="blob sand" style="width:200px; height:160px; right:-160px; top:72%"></span>
+        <svg class="botanical" data-kind="edelweiss" data-seed="4" data-opts='{"size":50}' style="right:-100px; top:71%; height:240px" aria-hidden="true"></svg>
 
-            <!-- ============ STAGE 1: TRAILHEAD / ABOUT ============ -->
-            <header class="stage" id="about">
-                <span class="marker" data-alt="450" data-stage="Trailhead"></span>
-                <div>
-                    <h2>Trailhead</h2>
-                    <p class="stage-sub">About me</p>
-                </div>
-                <span class="signpost">About <span class="time">0:15 h</span></span>
-            </header>
+        <!-- ===== About ===== -->
+        <header class="stage" id="about">
+            <span class="pin marker"></span>
+            <p class="eyebrow">Stage I · 450 m</p>
+            <h2>About</h2>
+        </header>
 
-            <div class="waypoint left">
-                <span class="marker" data-alt="620" data-stage="About"></span>
-                <article class="card feature">
-                    <div class="card-kind">
-                        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-                        Hi there
-                    </div>
-                    <h3>Before we set off</h3>
-                    <p>I'm a Senior Data &amp; AI Engineer at SWISS International Airlines, where I build TB-scale pipelines and cutting-edge agentic platforms, with hands-on experience across text, tabular, audio, and video data.</p>
-                    <p>I hold an MSc in Data Science from ETH Zürich, where I gained experience as a research engineer on distributed LLM training and fault tolerance. This was published at SOSP '25.</p>
-                    <p>Beyond work, I enjoy mentoring students, contributing to diversity &amp; inclusion initiatives, and travelling.</p>
-                </article>
-            </div>
-
-            <div class="waypoint right">
-                <span class="marker" data-alt="780" data-stage="Work"></span>
-                <article class="card">
-                    <div class="card-kind">
-                        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20 6h-4V4c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v2H4c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-6 0h-4V4h4v2z"/></svg>
-                        Waypoint · Work
-                    </div>
-                    <h3>SWISS International Airlines</h3>
-                    <p>Cloud Data Engineer</p>
-                    <ul>
-                        <li>Designing &amp; productionizing TB-scale data pipelines with PySpark</li>
-                        <li>Adopting AI Agents &amp; ML models across Business Units</li>
-                        <li>Building cloud-native data platforms</li>
-                    </ul>
-                </article>
-            </div>
-
-            <div class="waypoint left">
-                <span class="marker" data-alt="940" data-stage="Education"></span>
-                <article class="card">
-                    <div class="card-kind">
-                        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82zM12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/></svg>
-                        Waypoint · Education
-                    </div>
-                    <h3>Where I trained</h3>
-                    <ul>
-                        <li><strong>ETH Zürich</strong><br>MSc in Data Science</li>
-                        <li><strong>Universidad Politécnica de Valencia</strong><br>Double BSc in Telecommunication Engineering &amp; Business Administration (Ranked 1st in class)</li>
-                    </ul>
-                </article>
-            </div>
-
-            <div class="waypoint right">
-                <span class="marker" data-alt="1120" data-stage="Interests"></span>
-                <article class="card">
-                    <div class="card-kind">
-                        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"/></svg>
-                        Waypoint · Interests
-                    </div>
-                    <h3>What's in my backpack</h3>
-                    <ul>
-                        <li>Scalable data pipelines &amp; cloud platforms</li>
-                        <li>MLOps &amp; production ML systems</li>
-                        <li>Agentic systems &amp; AI integration</li>
-                        <li>Large-scale LLM training</li>
-                    </ul>
-                </article>
-            </div>
-
-            <!-- ============ STAGE 2: PROJECTS ============ -->
-            <header class="stage" id="work">
-                <span class="marker" data-alt="1350" data-stage="Projects"></span>
-                <div>
-                    <h2>Projects</h2>
-                    <p class="stage-sub">Highlighted climbs</p>
-                </div>
-                <span class="signpost">Projects <span class="time">1:20 h</span></span>
-            </header>
-
-            <div class="waypoint left">
-                <span class="marker" data-alt="1690" data-stage="Sailor"></span>
-                <article class="card feature">
-                    <div class="post-date">ETH Zürich · 2024</div>
-                    <h3>Sailor: Automated ML Training System for the Cloud
-                        <a href="https://github.com/eth-easl/sailor" target="_blank" rel="noopener" class="gh-link" title="View on GitHub" aria-label="Sailor on GitHub">
-                            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.230 3.297-1.230.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-                        </a>
-                    </h3>
-                    <p>System for automating large-scale ML training in dynamic cloud environments. Features elastic fault-tolerant mechanism with in-CPU checkpointing and fast reconfiguration, achieving 2.87× higher goodput compared to state-of-the-art. Includes optimal resource planner that explores search space 100× faster than naive approaches.</p>
-                    <div class="tech-tags">
-                        <span class="tech-tag">PyTorch</span>
-                        <span class="tech-tag">DeepSpeed</span>
-                        <span class="tech-tag">GKE</span>
-                    </div>
-                    <a href="projects/sailor-llm.html" class="read-more">Explore this climb <span aria-hidden="true">→</span></a>
-                </article>
-            </div>
-
-            <!-- ============ STAGE 3: TALKS ============ -->
-            <header class="stage" id="talks">
-                <span class="marker" data-alt="1900" data-stage="Viewpoints"></span>
-                <div>
-                    <h2>Viewpoints</h2>
-                    <p class="stage-sub">Talks</p>
-                </div>
-                <span class="signpost">Talks <span class="time">2:10 h</span></span>
-            </header>
-
-            <div class="waypoint right">
-                <span class="marker" data-alt="2060" data-stage="UZH Career Night"></span>
-                <article class="card">
-                    <div class="post-date">UZH Career Night · November 2024</div>
-                    <h3>Career Tips for Fresh Graduates</h3>
-                    <img src="assets/2024113_UZH_talk.jpg" alt="Speaking at the UZH Career Night" loading="lazy">
-                    <p>I was invited to the UZH Career Night to share my experience as a fresh graduate on how to find a job and tips about transitioning from university to professional life. The talk covered five key principles for career development and job searching.</p>
-                    <p><strong>Key topics:</strong> Finding your interests · Planning ahead · Understanding market trends · Learning from mistakes · Prioritizing wellbeing</p>
-                    <p style="margin-top:1rem"><a href="talks/uzh-career-night-2024.html" class="read-more">Read more <span aria-hidden="true">→</span></a></p>
-                </article>
-            </div>
-
-            <div class="waypoint left">
-                <span class="marker" data-alt="2210" data-stage="Commencement Speech"></span>
-                <article class="card">
-                    <div class="post-date">Universidad Politécnica de Valencia · May 2025</div>
-                    <h3>Commencement Speech for BSc Graduation Ceremony</h3>
-                    <a href="https://www.youtube.com/watch?v=Q9edBOO_sYo" target="_blank" rel="noopener" class="video-thumb" aria-label="Watch the commencement speech on YouTube">
-                        <img src="assets/commencement_speech_thumbnail.jpg" alt="Commencement speech thumbnail" loading="lazy">
-                        <svg viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-                    </a>
-                    <p>I was honored to deliver the commencement speech for the Class of 2025 at my alma mater. It was a meaningful moment to share my journey with graduating students. The speech is available on YouTube in Spanish.</p>
-                </article>
-            </div>
-
-            <!-- ============ STAGE 4: AWARDS ============ -->
-            <header class="stage" id="awards">
-                <span class="marker" data-alt="2390" data-stage="Summit log"></span>
-                <div>
-                    <h2>Summit log</h2>
-                    <p class="stage-sub">Awards &amp; recognition</p>
-                </div>
-                <span class="signpost">Awards <span class="time">2:45 h</span></span>
-            </header>
-
-            <div class="waypoint right">
-                <span class="marker" data-alt="2480" data-stage="Summit log"></span>
-                <article class="card cairn">
-                    <div class="post-date">May 2025</div>
-                    <h3>Commencement Speaker for BSc Graduation Ceremony</h3>
-                    <p>Selected to deliver the commencement speech at the BSc Graduation Ceremony at Universidad Politécnica de Valencia, representing the graduating class and sharing insights on the journey from university to professional life.</p>
-                </article>
-            </div>
-
-            <div class="waypoint left">
-                <span class="marker" data-alt="2570" data-stage="Summit log"></span>
-                <article class="card cairn">
-                    <div class="post-date">July 2022</div>
-                    <h3>Best Student Award by Social Council at Universidad Politécnica de Valencia</h3>
-                    <p>Awarded by the Social Council of Universidad Politécnica de Valencia for outstanding academic achievement and contribution to the university community throughout my degree program.</p>
-                </article>
-            </div>
-
-            <div class="waypoint right">
-                <span class="marker" data-alt="2660" data-stage="Summit log"></span>
-                <article class="card cairn">
-                    <div class="post-date">March 2022</div>
-                    <h3>Nova Top 111 University Talent in Spain</h3>
-                    <p>Recognized as one of the top 111 university talents in Spain by Nova, highlighting exceptional academic performance and potential for future professional success.</p>
-                </article>
-            </div>
-
-            <div class="waypoint left">
-                <span class="marker" data-alt="2750" data-stage="Summit log"></span>
-                <article class="card cairn">
-                    <div class="post-date">November 2021</div>
-                    <h3>Award for 1st Rank amongst Double BSc Graduation Class</h3>
-                    <p>Graduated with the highest GPA in my class from the double degree program in Telecommunication Engineering and Business Administration at Universidad Politécnica de Valencia.</p>
-                </article>
-            </div>
-
-            <div class="waypoint right">
-                <span class="marker" data-alt="2840" data-stage="Summit log"></span>
-                <article class="card cairn">
-                    <div class="post-date">May 2019</div>
-                    <h3>Santander Bank Fellow for Exchange Programme</h3>
-                    <p>Selected as a Santander Bank Fellow for academic merit, receiving funding support for an international exchange program to broaden academic and cultural perspectives.</p>
-                </article>
-            </div>
-
-            <!-- ============ SUMMIT: CONTACT ============ -->
-            <section class="summit" id="contact">
-                <div class="summit-cross">
-                    <svg viewBox="0 0 90 120" aria-hidden="true">
-                        <rect x="41" y="10" width="8" height="110" rx="2" fill="var(--earth-700)"/>
-                        <rect x="20" y="32" width="50" height="8" rx="2" fill="var(--earth-700)"/>
-                        <path d="M49 14 L80 22 L49 30 Z" fill="var(--trail-red)"/>
-                    </svg>
-                </div>
-                <span class="marker" data-alt="3020" data-stage="Summit"></span>
-                <h2>You reached the summit</h2>
-                <p class="lead">Thanks for hiking along. Enjoy the view — and feel free to reach out!</p>
-                <div class="contact-links">
-                    <a href="https://github.com/ixsanpe" target="_blank" rel="noopener" class="contact-card">
-                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-                        <div><h3>GitHub</h3><p>Check out my code</p></div>
-                    </a>
-                    <a href="https://www.linkedin.com/in/ixeia-s-p/" target="_blank" rel="noopener" class="contact-card">
-                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
-                        <div><h3>LinkedIn</h3><p>Let's connect professionally</p></div>
-                    </a>
-                    <a href="mailto:ixeiasp98@gmail.com" class="contact-card">
-                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-                        <div><h3>Email</h3><p>Send me a message</p></div>
-                    </a>
-                </div>
-            </section>
+        <div class="waypoint left">
+            <span class="pin marker">01</span>
+            <article class="card feature">
+                <span class="blob"></span>
+                <p class="eyebrow">Hello</p>
+                <h3>Before we set off</h3>
+                <p>I'm a Senior Data &amp; AI Engineer at SWISS International Airlines, where I build TB-scale pipelines and cutting-edge agentic platforms, with hands-on experience across text, tabular, audio, and video data.</p>
+                <p>I hold an MSc in Data Science from ETH Zürich, where I gained experience as a research engineer on distributed LLM training and fault tolerance. This was published at SOSP '25.</p>
+                <p>Beyond work, I enjoy mentoring students, contributing to diversity &amp; inclusion initiatives, and travelling.</p>
+            </article>
         </div>
+
+        <div class="waypoint right">
+            <span class="pin marker">02</span>
+            <article class="card">
+                <p class="eyebrow">Work · 780 m</p>
+                <h3>SWISS International Airlines</h3>
+                <p>Cloud Data Engineer</p>
+                <ul>
+                    <li>Designing &amp; productionizing TB-scale data pipelines with PySpark</li>
+                    <li>Adopting AI Agents &amp; ML models across Business Units</li>
+                    <li>Building cloud-native data platforms</li>
+                </ul>
+            </article>
+        </div>
+
+        <div class="waypoint left">
+            <span class="pin marker">03</span>
+            <article class="card">
+                <p class="eyebrow">Education · 940 m</p>
+                <h3>Where I trained</h3>
+                <ul>
+                    <li><strong>ETH Zürich</strong> — MSc in Data Science</li>
+                    <li><strong>Universidad Politécnica de Valencia</strong> — Double BSc in Telecommunication Engineering &amp; Business Administration (Ranked 1st in class)</li>
+                </ul>
+            </article>
+        </div>
+
+        <div class="waypoint right">
+            <span class="pin marker">04</span>
+            <article class="card">
+                <p class="eyebrow">Interests · 1,120 m</p>
+                <h3>What's in my backpack</h3>
+                <ul>
+                    <li>Scalable data pipelines &amp; cloud platforms</li>
+                    <li>MLOps &amp; production ML systems</li>
+                    <li>Agentic systems &amp; AI integration</li>
+                    <li>Large-scale LLM training</li>
+                </ul>
+            </article>
+        </div>
+
+        <!-- ===== Projects ===== -->
+        <header class="stage" id="work">
+            <span class="pin marker"></span>
+            <p class="eyebrow">Stage II · 1,350 m</p>
+            <h2>Projects</h2>
+        </header>
+
+        <div class="waypoint left">
+            <span class="pin marker">05</span>
+            <article class="card feature">
+                <span class="blob sand"></span>
+                <p class="eyebrow">ETH Zürich · 2024</p>
+                <h3>Sailor: Automated ML Training System for the Cloud
+                    <a href="https://github.com/eth-easl/sailor" target="_blank" rel="noopener" class="gh-link" title="View on GitHub" aria-label="Sailor on GitHub">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    </a>
+                </h3>
+                <p>System for automating large-scale ML training in dynamic cloud environments. Features elastic fault-tolerant mechanism with in-CPU checkpointing and fast reconfiguration, achieving 2.87× higher goodput compared to state-of-the-art. Includes optimal resource planner that explores search space 100× faster than naive approaches.</p>
+                <div class="tech-tags">
+                    <span class="tech-tag">PyTorch</span>
+                    <span class="tech-tag">DeepSpeed</span>
+                    <span class="tech-tag">GKE</span>
+                </div>
+                <a href="projects/sailor-llm.html" class="read-more">Read the case study <span aria-hidden="true">→</span></a>
+            </article>
+        </div>
+
+        <!-- ===== Talks ===== -->
+        <header class="stage" id="talks">
+            <span class="pin marker"></span>
+            <p class="eyebrow">Stage III · 1,900 m — viewpoints</p>
+            <h2>Talks</h2>
+        </header>
+
+        <div class="waypoint right">
+            <span class="pin marker">06</span>
+            <article class="card">
+                <p class="eyebrow">UZH Career Night · November 2024</p>
+                <h3>Career Tips for Fresh Graduates</h3>
+                <img src="assets/2024113_UZH_talk.jpg" alt="Speaking at the UZH Career Night" loading="lazy">
+                <p>I was invited to the UZH Career Night to share my experience as a fresh graduate on how to find a job and tips about transitioning from university to professional life. The talk covered five key principles for career development and job searching.</p>
+                <p><strong>Key topics:</strong> Finding your interests · Planning ahead · Understanding market trends · Learning from mistakes · Prioritizing wellbeing</p>
+                <p style="margin-top:1.25rem"><a href="talks/uzh-career-night-2024.html" class="read-more">Read more <span aria-hidden="true">→</span></a></p>
+            </article>
+        </div>
+
+        <div class="waypoint left">
+            <span class="pin marker">07</span>
+            <article class="card">
+                <p class="eyebrow">Universidad Politécnica de Valencia · May 2025</p>
+                <h3>Commencement Speech for BSc Graduation Ceremony</h3>
+                <a href="https://www.youtube.com/watch?v=Q9edBOO_sYo" target="_blank" rel="noopener" class="video-thumb" aria-label="Watch the commencement speech on YouTube">
+                    <img src="assets/commencement_speech_thumbnail.jpg" alt="Commencement speech thumbnail" loading="lazy">
+                    <span class="play"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span>
+                </a>
+                <p>I was honored to deliver the commencement speech for the Class of 2025 at my alma mater. It was a meaningful moment to share my journey with graduating students. The speech is available on YouTube in Spanish.</p>
+            </article>
+        </div>
+
+        <!-- ===== Recognition ===== -->
+        <header class="stage" id="recognition">
+            <span class="pin marker"></span>
+            <p class="eyebrow">Stage IV · 2,400 m — summit log</p>
+            <h2>Recognition</h2>
+        </header>
+
+        <div class="waypoint right">
+            <span class="pin marker">08</span>
+            <article class="card compact">
+                <p class="eyebrow">May 2025</p>
+                <h3>Commencement Speaker for BSc Graduation Ceremony</h3>
+                <p>Selected to deliver the commencement speech at the BSc Graduation Ceremony at Universidad Politécnica de Valencia, representing the graduating class and sharing insights on the journey from university to professional life.</p>
+            </article>
+        </div>
+
+        <div class="waypoint left">
+            <span class="pin marker">09</span>
+            <article class="card compact">
+                <p class="eyebrow">July 2022</p>
+                <h3>Best Student Award by Social Council at Universidad Politécnica de Valencia</h3>
+                <p>Awarded by the Social Council of Universidad Politécnica de Valencia for outstanding academic achievement and contribution to the university community throughout my degree program.</p>
+            </article>
+        </div>
+
+        <div class="waypoint right">
+            <span class="pin marker">10</span>
+            <article class="card compact">
+                <p class="eyebrow">March 2022</p>
+                <h3>Nova Top 111 University Talent in Spain</h3>
+                <p>Recognized as one of the top 111 university talents in Spain by Nova, highlighting exceptional academic performance and potential for future professional success.</p>
+            </article>
+        </div>
+
+        <div class="waypoint left">
+            <span class="pin marker">11</span>
+            <article class="card compact">
+                <p class="eyebrow">November 2021</p>
+                <h3>Award for 1st Rank amongst Double BSc Graduation Class</h3>
+                <p>Graduated with the highest GPA in my class from the double degree program in Telecommunication Engineering and Business Administration at Universidad Politécnica de Valencia.</p>
+            </article>
+        </div>
+
+        <div class="waypoint right">
+            <span class="pin marker">12</span>
+            <article class="card compact">
+                <p class="eyebrow">May 2019</p>
+                <h3>Santander Bank Fellow for Exchange Programme</h3>
+                <p>Selected as a Santander Bank Fellow for academic merit, receiving funding support for an international exchange program to broaden academic and cultural perspectives.</p>
+            </article>
+        </div>
+
+        <!-- ===== Summit / Contact ===== -->
+        <section class="summit" id="contact">
+            <span class="pin marker"></span>
+            <p class="eyebrow">The summit · 3,020 m</p>
+            <h2>Say hi,</h2>
+            <p class="lead">Thanks for walking along. Feel free to reach out.</p>
+            <ul class="contact-list">
+                <li><a href="mailto:ixeiasp98@gmail.com"><span class="label">Email</span><span class="meta">ixeiasp98@gmail.com</span></a></li>
+                <li><a href="https://www.linkedin.com/in/ixeia-s-p/" target="_blank" rel="noopener"><span class="label">LinkedIn</span><span class="meta">Let's connect ↗</span></a></li>
+                <li><a href="https://github.com/ixsanpe" target="_blank" rel="noopener"><span class="label">GitHub</span><span class="meta">Check out my code ↗</span></a></li>
+            </ul>
+        </section>
     </main>
 
-    <!-- Altimeter -->
-    <div class="altimeter" id="altimeter" aria-hidden="true">
-        <span class="alt-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 6l-3.75 5 2.85 3.8-1.6 1.2C9.81 13.75 7 10 7 10l-6 8h22L14 6z"/></svg></span>
-        <strong id="altValue">450 m</strong>
-        <span class="alt-stage" id="altStage">Trailhead</span>
-    </div>
-
     <footer>
-        <p>&copy; <span id="currentYear"></span> Ixeia Sánchez Périz · Built together with 🤖 GitHub Copilot &amp; Claude</p>
-        <p><a href="https://github.com/ixsanpe">GitHub</a> • <a href="https://www.linkedin.com/in/ixeia-s-p/">LinkedIn</a> • <a href="mailto:ixeiasp98@gmail.com">Email</a> • <a href="design-system.html">Design system</a></p>
-        <p style="margin-top: 1rem; font-size: 0.85rem; opacity: 0.7;">Last updated: <span id="lastUpdated"></span></p>
+        <p>&copy; <span id="currentYear"></span> Ixeia Sánchez Périz · Built with GitHub Copilot &amp; Claude</p>
+        <p><a href="design-system.html">Design system</a> · Last updated <span id="lastUpdated"></span></p>
     </footer>
 
+    <script src="botanicals.js"></script>
     <script>
-        // ---------- Footer dates ----------
+        // Footer dates
         document.getElementById('currentYear').textContent = new Date().getFullYear();
         const fmt = d => d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
         fetch('https://api.github.com/repos/ixsanpe/ixsanpe.github.io/commits/main')
@@ -1203,7 +822,7 @@
             .then(data => { document.getElementById('lastUpdated').textContent = fmt(new Date(data.commit.author.date)); })
             .catch(() => { document.getElementById('lastUpdated').textContent = fmt(new Date()); });
 
-        // ---------- Theme toggle ----------
+        // Theme toggle
         const html = document.documentElement;
         const sunIcon = document.querySelector('.sun-icon');
         const moonIcon = document.querySelector('.moon-icon');
@@ -1219,115 +838,81 @@
             updateIcons(next);
         });
 
-        // ---------- The trail ----------
+        // The trail: one fine line through every pin, drawn as you scroll
         const trail = document.getElementById('trail');
         const svg = trail.querySelector('.trail-svg');
-        const bed = svg.querySelector('.trail-bed');
-        const dash = svg.querySelector('.trail-dash');
-        const walked = svg.querySelector('.trail-walked');
-        const hiker = svg.querySelector('.hiker');
-        const markers = [...trail.querySelectorAll('.marker')];
-        const altimeter = document.getElementById('altimeter');
-        const altValue = document.getElementById('altValue');
-        const altStage = document.getElementById('altStage');
+        const ghost = svg.querySelector('.trail-ghost');
+        const line = svg.querySelector('.trail-line');
+        const tip = svg.querySelector('.trail-tip');
+        const pins = [...trail.querySelectorAll('.marker')];
+        let samples = [], stops = [], total = 0;
 
-        let samples = [];      // {l, x, y}
-        let stops = [];        // {l, alt, stage, el}
-        let totalLen = 0;
-
-        function buildTrail() {
+        function build() {
             const box = trail.getBoundingClientRect();
-            const pts = markers.map(m => {
-                const r = m.getBoundingClientRect();
-                return { x: r.left + r.width / 2 - box.left, y: r.top + r.height / 2 - box.top, el: m };
+            const pts = pins.map(p => {
+                const r = p.getBoundingClientRect();
+                return { x: r.left + r.width / 2 - box.left, y: r.top + r.height / 2 - box.top, el: p };
             });
             if (!pts.length) return;
-
             svg.setAttribute('viewBox', `0 0 ${box.width} ${box.height}`);
             let prev = { x: box.width / 2, y: 0 };
             let d = `M ${prev.x} ${prev.y}`;
             pts.forEach(p => {
-                const dy = (p.y - prev.y) * 0.55;
-                d += ` C ${prev.x} ${prev.y + dy}, ${p.x} ${p.y - dy}, ${p.x} ${p.y}`;
+                const dx = p.x - prev.x, dy = p.y - prev.y;
+                if (Math.abs(dx) < 40) {
+                    d += ` C ${prev.x} ${prev.y + dy * 0.5}, ${p.x} ${p.y - dy * 0.5}, ${p.x} ${p.y}`;
+                } else {
+                    // horizontal tangents with overshoot: a loose, hand-drawn swing
+                    const k = dx * 1.1 + Math.sign(dx) * 90;
+                    d += ` C ${prev.x + k} ${prev.y + dy * 0.15}, ${p.x - k} ${p.y - dy * 0.15}, ${p.x} ${p.y}`;
+                }
                 prev = p;
             });
-            [bed, dash, walked].forEach(p => p.setAttribute('d', d));
-
-            totalLen = walked.getTotalLength();
-            walked.style.strokeDasharray = totalLen;
+            ghost.setAttribute('d', d);
+            line.setAttribute('d', d);
+            total = line.getTotalLength();
+            line.style.strokeDasharray = total;
             samples = [];
-            for (let l = 0; l <= totalLen; l += 6) {
-                const pt = walked.getPointAtLength(l);
-                samples.push({ l, x: pt.x, y: pt.y });
+            let maxY = -Infinity;
+            for (let l = 0; l <= total; l += 5) {
+                const pt = line.getPointAtLength(l);
+                maxY = Math.max(maxY, pt.y);
+                samples.push({ l, x: pt.x, y: pt.y, m: maxY });
             }
             stops = pts.map(p => {
-                const s = samples.reduce((a, b) => Math.abs(b.y - p.y) + Math.abs(b.x - p.x) < Math.abs(a.y - p.y) + Math.abs(a.x - p.x) ? b : a);
-                return { l: s.l, alt: +p.el.dataset.alt, stage: p.el.dataset.stage, el: p.el };
+                let best = samples[0], bd = Infinity;
+                samples.forEach(s => { const dd = Math.hypot(s.x - p.x, s.y - p.y); if (dd < bd) { bd = dd; best = s; } });
+                return { l: best.l, el: p.el };
             });
-            onScroll();
+            update();
         }
 
-        function sampleAtY(y) {
-            let lo = 0, hi = samples.length - 1;
-            while (lo < hi) {
-                const mid = (lo + hi) >> 1;
-                if (samples[mid].y < y) lo = mid + 1; else hi = mid;
-            }
-            return samples[lo];
-        }
-
-        function onScroll() {
+        function update() {
             if (!samples.length) return;
             const box = trail.getBoundingClientRect();
-            const targetY = window.innerHeight * 0.6 - box.top;
-            const s = targetY <= 0 ? samples[0] : sampleAtY(targetY);
-            walked.style.strokeDashoffset = totalLen - s.l;
-            hiker.style.transform = `translate(${s.x}px, ${s.y}px)`;
-
-            // markers reached + altimeter
-            let alt = 408, stage = 'Valley';
-            stops.forEach((st, i) => {
-                const reached = s.l >= st.l - 2;
-                st.el.classList.toggle('reached', reached);
-                if (reached) {
-                    stage = st.stage;
-                    const next = stops[i + 1];
-                    alt = next && s.l > st.l
-                        ? st.alt + (next.alt - st.alt) * Math.min(1, (s.l - st.l) / (next.l - st.l))
-                        : st.alt;
-                }
-            });
-            if (s.l < (stops[0] ? stops[0].l : 0)) {
-                alt = 408 + (stops[0].alt - 408) * (s.l / stops[0].l);
-            }
-            altValue.textContent = Math.round(alt / 10) * 10 >= 1000
-                ? (Math.round(alt / 10) * 10).toLocaleString('en-US') + ' m'
-                : Math.round(alt / 10) * 10 + ' m';
-            altStage.textContent = stage;
-            altimeter.classList.toggle('visible', box.top < window.innerHeight * 0.5 && box.bottom > window.innerHeight * 0.4);
+            const y = window.innerHeight * 0.62 - box.top;
+            // first sample whose running max-y passes the target (path may loop back up)
+            let lo = 0, hi = samples.length - 1;
+            while (lo < hi) { const mid = (lo + hi) >> 1; if (samples[mid].m < y) lo = mid + 1; else hi = mid; }
+            const s = y <= 0 ? samples[0] : samples[lo];
+            line.style.strokeDashoffset = total - s.l;
+            tip.setAttribute('cx', s.x);
+            tip.setAttribute('cy', s.y);
+            stops.forEach(st => st.el.classList.toggle('reached', s.l >= st.l - 2));
         }
 
         let ticking = false;
         window.addEventListener('scroll', () => {
-            if (!ticking) {
-                requestAnimationFrame(() => { onScroll(); ticking = false; });
-                ticking = true;
-            }
+            if (!ticking) { requestAnimationFrame(() => { update(); ticking = false; }); ticking = true; }
         }, { passive: true });
+        new ResizeObserver(() => requestAnimationFrame(build)).observe(trail);
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(build);
+        window.addEventListener('load', build);
+        build();
 
-        new ResizeObserver(() => requestAnimationFrame(buildTrail)).observe(trail);
-        if (document.fonts && document.fonts.ready) document.fonts.ready.then(buildTrail);
-        window.addEventListener('load', buildTrail);
-        buildTrail();
-
-        // ---------- Reveal waypoints ----------
+        // Reveal cards
         const io = new IntersectionObserver(entries => {
-            entries.forEach(e => {
-                if (e.isIntersecting) {
-                    e.target.classList.add('in-view');
-                    io.unobserve(e.target);
-                }
-            });
+            entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in-view'); io.unobserve(e.target); } });
         }, { rootMargin: '0px 0px -10% 0px' });
         document.querySelectorAll('.waypoint').forEach(w => io.observe(w));
     </script>

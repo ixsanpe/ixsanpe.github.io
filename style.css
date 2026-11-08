@@ -1,10 +1,10 @@
 /* =====================================================================
-   SUMMER TRAIL — design system
-   A summer hike in the Alps: meadow, pine, granite, sky, sun & the
-   yellow Swiss trail signs. See DESIGN_SYSTEM.md for the full spec.
+   ALPINE BOTANICAL — design system
+   Cream paper, sage & sand organic shapes, fine burgundy line art and
+   a single hand-drawn trail line. See DESIGN_SYSTEM.md.
    ===================================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap');
 
 * {
     margin: 0;
@@ -12,97 +12,68 @@
     box-sizing: border-box;
 }
 
-/* ---------- 1. Primitive palette ---------- */
+/* ---------- 1. Palette ---------- */
 :root {
-    --sky-100: #eaf5fb;
-    --sky-200: #cfe8f5;
-    --sky-400: #7fbfe0;
-    --sky-600: #3d8ab3;
-
-    --snow: #fbfdfc;
-    --granite-300: #c9ccd1;
-    --granite-500: #8b919b;
-    --granite-700: #4d5560;
-
-    --meadow-100: #eef5dd;
-    --meadow-300: #b9d98a;
-    --meadow-500: #7fb04f;
-    --meadow-700: #4f7d2e;
-
-    --pine-500: #2f6b4f;
-    --pine-700: #1f4a37;
-    --pine-900: #12291f;
-
-    --earth-300: #e3cba4;
-    --earth-500: #b08452;
-    --earth-700: #7a5530;
-
-    --sun-300: #ffe48a;
-    --sun-500: #f6c431;     /* Swiss hiking-sign yellow */
-    --sun-700: #c99400;
-
-    --gentian: #3b5bdb;     /* alpine flower blue */
-    --alpenrose: #d9486b;   /* alpine flower pink */
-    --trail-red: #d23a2f;   /* white-red-white mountain-trail marker */
+    --cream-50: #f8f5ef;
+    --cream-100: #f1ece4;
+    --cream-200: #e6dfd3;
+    --sage-200: #d3dccf;
+    --sage-300: #b9c7b4;
+    --sage-500: #8fa58c;
+    --sage-700: #5d7560;
+    --sand-200: #ead9cc;
+    --sand-300: #dcc3b1;
+    --sand-500: #c29f88;
+    --forest-700: #2f4637;
+    --forest-900: #1f2d24;
+    --wine-500: #8a3a44;
+    --wine-700: #6b1f2a;
 }
 
-/* ---------- 2. Semantic tokens: summer day ---------- */
+/* ---------- 2. Semantic tokens: day ---------- */
 :root {
-    --bg: #fbfaf4;              /* sun-bleached paper */
-    --bg-sunken: var(--meadow-100);
-    --surface: #ffffff;
-    --surface-raised: #ffffff;
-    --text: var(--pine-900);
-    --text-muted: #4c5a52;
-    --text-subtle: #6f7b74;
-    --border: #dfe3d3;
-    --border-strong: var(--earth-300);
+    --bg: var(--cream-100);
+    --bg-sunken: var(--cream-200);
+    --surface: var(--cream-50);
+    --text: var(--forest-900);
+    --text-muted: #56635a;
+    --text-subtle: #7d877f;
+    --border: #ddd5c8;
 
-    --brand: var(--pine-500);
-    --brand-strong: var(--pine-700);
-    --accent: var(--sun-500);
-    --accent-ink: #3a2c00;
-    --link: #2f6b4f;
-    --link-hover: #1f4a37;
-    --trail: var(--earth-500);
-    --trail-walked: var(--trail-red);
+    --brand: var(--forest-700);
+    --accent: var(--wine-700);       /* line art, trail, links */
+    --link: var(--wine-700);
+    --link-hover: var(--forest-700);
+    --shape-sage: var(--sage-300);
+    --shape-sand: var(--sand-300);
+    --shape-sage-soft: var(--sage-200);
+    --shape-sand-soft: var(--sand-200);
+    --line: var(--wine-700);
 
-    --sky-top: #9fd3ef;
-    --sky-bottom: #eaf6fb;
-    --mtn-far: #a9c4d6;
-    --mtn-mid: #6f9a83;
-    --mtn-near: #4f7d2e;
-    --mtn-meadow: #8cbf5a;
-    --snowcap: #ffffff;
-    --sun-disc: #ffd75a;
+    --font-display: 'Instrument Serif', 'Cormorant Garamond', Georgia, serif;
+    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 
-    --shadow-sm: 0 1px 2px rgba(18, 41, 31, 0.06), 0 1px 3px rgba(18, 41, 31, 0.08);
-    --shadow-md: 0 4px 10px rgba(18, 41, 31, 0.08), 0 12px 28px rgba(18, 41, 31, 0.08);
-
-    /* Type */
-    --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
-    --font-body: 'Work Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-
-    /* Spacing scale (4px base) */
     --space-1: 0.25rem;
     --space-2: 0.5rem;
-    --space-3: 0.75rem;
     --space-4: 1rem;
     --space-6: 1.5rem;
     --space-8: 2rem;
     --space-12: 3rem;
     --space-16: 4rem;
+    --space-24: 6rem;
 
-    --radius-sm: 6px;
-    --radius-md: 12px;
-    --radius-lg: 20px;
+    --radius-md: 14px;
+    --radius-lg: 28px;
     --radius-pill: 999px;
+    --blob-a: 62% 38% 54% 46% / 52% 44% 56% 48%;
+    --blob-b: 41% 59% 45% 55% / 58% 41% 59% 42%;
+    --blob-c: 55% 45% 38% 62% / 45% 60% 40% 55%;
 
-    --ease-trail: cubic-bezier(0.22, 1, 0.36, 1);
+    --ease: cubic-bezier(0.22, 1, 0.36, 1);
 
-    /* Legacy aliases — keep older pages working */
+    /* Legacy aliases — older pages keep working */
     --primary-color: var(--brand);
-    --secondary-color: var(--brand-strong);
+    --secondary-color: var(--forest-900);
     --accent-color: var(--accent);
     --text-dark: var(--text);
     --text-light: var(--text-muted);
@@ -111,37 +82,25 @@
     --border-color: var(--border);
 }
 
-/* ---------- 3. Semantic tokens: summer night ---------- */
+/* ---------- 3. Semantic tokens: night ---------- */
 [data-theme="dark"] {
-    --bg: #0f1d18;
-    --bg-sunken: #16271f;
-    --surface: #1a2e25;
-    --surface-raised: #213a2f;
-    --text: #eef3ea;
-    --text-muted: #b9c7bd;
-    --text-subtle: #8fa196;
-    --border: #2d4a3c;
-    --border-strong: #5a4a33;
+    --bg: #161d19;
+    --bg-sunken: #1d2620;
+    --surface: #1f2923;
+    --text: #ece6dc;
+    --text-muted: #b4b2a8;
+    --text-subtle: #8c8f86;
+    --border: #2f3b33;
 
-    --brand: #8cc79f;
-    --brand-strong: #b4e0c0;
-    --accent: var(--sun-500);
-    --link: #a8dcb8;
-    --link-hover: #d6f2df;
-    --trail: #a07d55;
-    --trail-walked: #ff7a6b;
-
-    --sky-top: #0b1530;
-    --sky-bottom: #2a3a5c;
-    --mtn-far: #34476a;
-    --mtn-mid: #24423a;
-    --mtn-near: #17332a;
-    --mtn-meadow: #1c3b2e;
-    --snowcap: #d8e2f0;
-    --sun-disc: #f3efd8;     /* the moon */
-
-    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
-    --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.35);
+    --brand: #b9c7b4;
+    --accent: #d9a29b;
+    --link: #e2b2ab;
+    --link-hover: #f1d2cd;
+    --shape-sage: #34473a;
+    --shape-sand: #4a3a32;
+    --shape-sage-soft: #24312a;
+    --shape-sand-soft: #2c2622;
+    --line: #d9a29b;
 }
 
 /* ---------- 4. Base ---------- */
@@ -151,7 +110,8 @@ html {
 
 body {
     font-family: var(--font-body);
-    line-height: 1.65;
+    font-weight: 400;
+    line-height: 1.7;
     color: var(--text);
     background-color: var(--bg);
     -webkit-font-smoothing: antialiased;
@@ -160,8 +120,8 @@ body {
 
 h1, h2, h3 {
     font-family: var(--font-display);
-    font-weight: 700;
-    line-height: 1.2;
+    font-weight: 400;
+    line-height: 1.1;
     letter-spacing: -0.01em;
 }
 
@@ -174,8 +134,8 @@ a:hover {
 }
 
 :focus-visible {
-    outline: 3px solid var(--accent);
-    outline-offset: 2px;
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
     border-radius: 4px;
 }
 
@@ -183,12 +143,48 @@ img {
     max-width: 100%;
 }
 
+.eyebrow,
+.post-date {
+    font-family: var(--font-body);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-subtle);
+    margin-bottom: 0.6rem;
+}
+
+/* Organic shapes */
+.blob {
+    position: absolute;
+    z-index: 0;
+    pointer-events: none;
+    border-radius: var(--blob-a);
+    background: var(--shape-sage);
+    opacity: 0.75;
+}
+
+.blob.sand { background: var(--shape-sand); border-radius: var(--blob-b); }
+.blob.soft { background: var(--shape-sage-soft); border-radius: var(--blob-c); opacity: 1; }
+
+/* Line-art botanicals (drawn by botanicals.js) */
+.botanical {
+    position: absolute;
+    z-index: 0;
+    pointer-events: none;
+    color: var(--line);
+    overflow: visible;
+}
+
+.botanical * {
+    vector-effect: non-scaling-stroke;
+}
+
 /* ---------- 5. Navigation ---------- */
 nav {
-    background-color: color-mix(in srgb, var(--bg) 85%, transparent);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border-bottom: 1px solid var(--border);
+    background-color: color-mix(in srgb, var(--bg) 82%, transparent);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     position: fixed;
     width: 100%;
     top: 0;
@@ -198,7 +194,7 @@ nav {
 nav .container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0.85rem 2rem;
+    padding: 1rem 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -207,8 +203,7 @@ nav .container {
 
 nav .logo {
     font-family: var(--font-display);
-    font-size: 1.35rem;
-    font-weight: 700;
+    font-size: 1.45rem;
     color: var(--text);
     text-decoration: none;
 }
@@ -216,162 +211,119 @@ nav .logo {
 nav .back-link {
     text-decoration: none;
     color: var(--text);
+    font-size: 0.8rem;
     font-weight: 500;
-    transition: color 0.3s;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
 }
 
 nav .back-link:hover {
-    color: var(--brand);
+    color: var(--accent);
 }
 
-/* Dark mode toggle */
 .dark-mode-toggle {
     background: none;
     border: 1px solid var(--border);
     color: var(--text);
     cursor: pointer;
-    width: 38px;
-    height: 38px;
+    width: 36px;
+    height: 36px;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    transition: background-color 0.3s, transform 0.3s var(--ease-trail);
+    transition: border-color 0.3s, color 0.3s;
 }
 
 .dark-mode-toggle:hover {
-    background-color: var(--bg-sunken);
-    transform: rotate(-15deg);
+    border-color: var(--accent);
+    color: var(--accent);
 }
 
 .dark-mode-toggle svg {
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
 }
 
 /* ---------- 6. Shared components ---------- */
-
-/* Eyebrow / date label */
-.post-date {
-    color: var(--text-subtle);
-    font-size: 0.8rem;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    margin-bottom: 0.5rem;
-}
-
-/* Trail-blaze tag (tech tags) */
 .tech-tag {
     border-radius: var(--radius-pill) !important;
-    background-color: var(--bg-sunken) !important;
+    background: transparent !important;
     border: 1px solid var(--border) !important;
-    color: var(--text) !important;
+    color: var(--text-muted) !important;
+    font-weight: 400 !important;
 }
 
-/* Swiss trail sign: yellow signpost with arrow */
-.signpost {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.75rem;
-    background: var(--sun-500);
-    color: var(--accent-ink);
-    font-family: var(--font-body);
-    font-weight: 700;
-    font-size: 0.85rem;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    padding: 0.45rem 1.6rem 0.45rem 0.9rem;
-    clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 50%, calc(100% - 14px) 100%, 0 100%);
-    box-shadow: var(--shadow-sm);
-}
-
-.signpost .time {
-    font-weight: 500;
-    opacity: 0.8;
-}
-
-/* Mountain-trail marker (white–red–white) */
-.blaze {
-    display: inline-block;
-    width: 22px;
-    height: 12px;
-    background: linear-gradient(#fff 0 33%, var(--trail-red) 33% 67%, #fff 67%);
-    border: 1px solid var(--granite-300);
-    border-radius: 2px;
-    vertical-align: middle;
-}
-
-/* Field-note callout */
 .highlight-box {
-    background-color: var(--bg-sunken) !important;
-    border-left: 4px solid var(--accent) !important;
-    border-radius: var(--radius-md) !important;
+    background-color: var(--shape-sage-soft) !important;
+    border-left: none !important;
+    border-radius: var(--radius-lg) !important;
 }
 
-/* Subpage header ridge */
+/* Subpages: soft shapes at the top */
 body.subpage {
-    background:
-        linear-gradient(to bottom, var(--sky-bottom), var(--bg) 260px) no-repeat,
-        var(--bg);
+    position: relative;
+    overflow-x: hidden;
+}
+
+body.subpage::before,
+body.subpage::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    pointer-events: none;
 }
 
 body.subpage::before {
-    content: "";
-    position: absolute;
-    top: 58px;
-    left: 0;
-    right: 0;
-    height: 140px;
-    pointer-events: none;
-    background:
-        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 140' preserveAspectRatio='none'%3E%3Cpath d='M0 140 L0 90 L140 40 L230 80 L360 20 L470 75 L600 35 L720 85 L850 30 L980 80 L1100 45 L1200 70 L1200 140Z' fill='%237f9db0' opacity='0.18'/%3E%3C/svg%3E") bottom / 100% 100% no-repeat;
-    z-index: -1;
+    top: -120px;
+    right: -100px;
+    width: 420px;
+    height: 360px;
+    background: var(--shape-sage);
+    opacity: 0.55;
+    border-radius: var(--blob-a);
 }
 
-/* ---------- 7. Footer: trail's end ---------- */
+body.subpage::after {
+    top: 140px;
+    right: 220px;
+    width: 160px;
+    height: 130px;
+    background: var(--shape-sand);
+    opacity: 0.6;
+    border-radius: var(--blob-b);
+}
+
+body.subpage h1 {
+    font-weight: 400;
+}
+
+/* ---------- 7. Footer ---------- */
 footer {
-    position: relative;
-    background-color: var(--pine-700);
-    color: #e7efe9;
+    background-color: var(--bg);
+    border-top: 1px solid var(--border);
+    color: var(--text-muted);
     text-align: center;
-    padding: 5rem 2rem 2rem;
-    font-size: 0.95rem;
-}
-
-footer::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: -1px;
-    height: 60px;
-    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 60' preserveAspectRatio='none'%3E%3Cpath d='M0 0 H1200 V18 L1120 40 L1040 22 L960 48 L860 20 L760 44 L660 16 L560 46 L460 24 L360 50 L260 22 L160 42 L80 20 L0 38 Z' fill='%23fbfaf4'/%3E%3C/svg%3E") top / 100% 100% no-repeat;
-}
-
-[data-theme="dark"] footer {
-    background-color: #08130f;
-}
-
-[data-theme="dark"] footer::before {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 60' preserveAspectRatio='none'%3E%3Cpath d='M0 0 H1200 V18 L1120 40 L1040 22 L960 48 L860 20 L760 44 L660 16 L560 46 L460 24 L360 50 L260 22 L160 42 L80 20 L0 38 Z' fill='%230f1d18'/%3E%3C/svg%3E");
+    padding: 2.5rem 2rem;
+    font-size: 0.85rem;
 }
 
 footer p + p {
-    margin-top: 0.5rem;
+    margin-top: 0.4rem;
 }
 
 footer a {
-    color: var(--sun-300);
+    color: var(--text);
     text-decoration: none;
+    border-bottom: 1px solid var(--border);
 }
 
 footer a:hover {
-    color: var(--sun-500);
-    text-decoration: underline;
+    color: var(--accent);
+    border-color: var(--accent);
 }
 
 @media (prefers-reduced-motion: reduce) {

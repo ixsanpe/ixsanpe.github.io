@@ -7,7 +7,8 @@ Personal portfolio site showcasing tech projects & initiatives.
 ```
 .
 ├── index.html             # Main page
-├── style.css              # Summer Trail design system tokens + shared components
+├── style.css              # Alpine Botanical design tokens + shared components
+├── botanicals.js          # Line-art generator (ferns, leaf, edelweiss, pine, ridge)
 ├── design-system.html     # Visual style guide
 ├── DESIGN_SYSTEM.md       # Design system spec (incl. extracted legacy system)
 ├── assets/                # Images & files

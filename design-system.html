@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Summer Trail Design System</title>
+    <title>Alpine Botanical Design System</title>
     <script>
         (function () {
             var t = null;
@@ -14,103 +14,89 @@
     </script>
     <link rel="stylesheet" href="style.css">
     <style>
-        .container { max-width: 1000px; margin: 0 auto; padding: 7rem 1rem 4rem; }
-        h1 { font-size: clamp(2rem, 5vw, 3rem); margin: 0.5rem 0; }
-        .lead { color: var(--text-muted); max-width: 640px; margin-bottom: 3rem; }
-        section { margin-bottom: 3.5rem; }
-        section > h2 { font-size: 1.6rem; margin-bottom: 1.25rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
-        .swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 1rem; }
-        .swatch { border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden; background: var(--surface); }
-        .swatch div { height: 64px; }
-        .swatch span { display: block; padding: 0.5rem 0.75rem; font-size: 0.78rem; color: var(--text-muted); }
-        .swatch strong { display: block; color: var(--text); font-size: 0.82rem; }
-        .row { display: flex; flex-wrap: wrap; gap: 1.25rem; align-items: center; }
-        .demo-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; box-shadow: var(--shadow-sm); max-width: 420px; }
-        .demo-card.feature { border-top: 6px solid var(--accent); }
-        .demo-card h3 { font-size: 1.3rem; margin: 0.25rem 0 0.5rem; }
-        .demo-card p { color: var(--text-muted); font-size: 0.95rem; }
-        .tech-tag { padding: 0.2rem 0.75rem; font-size: 0.78rem; font-weight: 500; }
-        .type-specimen p { margin-bottom: 0.75rem; }
-        .zones { display: flex; height: 70px; border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--border); }
-        .zones div { flex: 1; display: flex; align-items: flex-end; padding: 0.5rem; font-size: 0.78rem; font-weight: 600; color: var(--text-muted); }
-        .dot { width: 22px; height: 22px; border-radius: 50%; border: 4px solid var(--trail); background: var(--surface); display: inline-block; }
-        .dot.reached { border-color: var(--trail-walked); background: var(--accent); }
+        html, body { overflow-x: clip; }
+        main { max-width: 1000px; margin: 0 auto; padding: 8rem 1.25rem 4rem; position: relative; }
+        h1 { font-size: clamp(3rem, 7vw, 5rem); margin: 0.25rem 0 1rem; }
+        h1 em { color: var(--accent); }
+        .lead { color: var(--text-muted); font-weight: 300; max-width: 600px; margin-bottom: 4rem; }
+        section { margin-bottom: 4rem; position: relative; }
+        section > h2 { font-size: 2.2rem; font-style: italic; margin-bottom: 1.5rem; }
+        .swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 1rem; }
+        .swatch div { height: 72px; border-radius: var(--radius-blob, 18px); border: 1px solid var(--border); }
+        .swatch span { display: block; padding: 0.5rem 0.1rem; font-size: 0.75rem; color: var(--text-subtle); }
+        .swatch strong { display: block; color: var(--text); font-weight: 500; font-size: 0.8rem; }
+        .row { display: flex; flex-wrap: wrap; gap: 2rem; align-items: flex-end; }
+        .specimen { background: var(--surface); border-radius: var(--radius-lg); padding: 2rem; }
+        .specimen p { color: var(--text-muted); font-weight: 300; }
+        .art { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: var(--text-subtle); }
+        .art svg { position: static; height: 150px; }
+        .pebble { width: 58px; height: 44px; display: inline-flex; align-items: center; justify-content: center; background: var(--shape-sand); border-radius: var(--blob-b); font-family: var(--font-display); font-size: 1.15rem; }
+        .pebble.reached { background: var(--shape-sage); transform: rotate(-6deg); }
+        .tag { padding: 0.2rem 0.85rem; font-size: 0.75rem; border: 1px solid var(--border); border-radius: 999px; color: var(--text-muted); }
+        .ulink { font-size: 0.78rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; text-decoration: none; color: var(--text); border-bottom: 1px solid var(--accent); padding-bottom: 3px; }
+        .demo-blobs { position: relative; height: 160px; }
     </style>
 </head>
-<body class="subpage">
+<body>
     <nav>
-        <div class="container" style="padding-top: 0.85rem; padding-bottom: 0.85rem;">
-            <a href="index.html" class="logo">Summer Trail</a>
+        <div class="container">
+            <a href="index.html" class="logo">Alpine Botanical</a>
             <div style="display:flex; align-items:center; gap:1.5rem;">
-                <a href="index.html" class="back-link">← Back to the trail</a>
+                <a href="index.html" class="back-link">← The trail</a>
                 <button id="darkModeToggle" class="dark-mode-toggle" aria-label="Toggle dark mode">
-                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
                 </button>
             </div>
         </div>
     </nav>
 
-    <main class="container">
-        <span class="signpost">Design system <span class="time">v1</span></span>
-        <h1>Summer Trail</h1>
-        <p class="lead">A summer hike in the Alps: meadow, pine, granite, sky, sun and the yellow Swiss trail signs. Every token below switches to a "summer night" palette in dark mode. Full spec in <code>DESIGN_SYSTEM.md</code>.</p>
+    <main>
+        <span class="blob" style="width:340px; height:280px; right:-160px; top:40px; opacity:.5"></span>
+        <svg class="botanical" data-kind="fern" data-seed="3" data-opts='{"length":300,"leaves":11,"leafLen":70,"bend":0.3,"veins":3}' style="right:20px; top:70px; height:260px" aria-hidden="true"></svg>
+
+        <p class="eyebrow">Design system · v2</p>
+        <h1>Alpine <em>Botanical</em></h1>
+        <p class="lead">Cream paper, sage &amp; sand organic shapes, fine burgundy line art and one hand-drawn trail line. Every token switches to a night palette in dark mode. Full spec in <code>DESIGN_SYSTEM.md</code>.</p>
 
         <section>
-            <h2>Semantic colours</h2>
+            <h2>Colour</h2>
             <div class="swatches" id="semantic"></div>
         </section>
 
         <section>
-            <h2>Palette</h2>
-            <div class="swatches" id="palette"></div>
-        </section>
-
-        <section>
-            <h2>Vegetation zones</h2>
-            <div class="zones">
-                <div style="background:#edf5dc">Meadow</div>
-                <div style="background:#e4efe2">Forest</div>
-                <div style="background:#eceeec">Rock</div>
-                <div style="background:#f6f9fb">Snow</div>
-            </div>
-        </section>
-
-        <section class="type-specimen">
             <h2>Typography</h2>
-            <p class="post-date">Eyebrow · Work Sans 600 uppercase</p>
-            <p style="font-family:var(--font-display); font-size:3rem; font-weight:700; line-height:1.1">Fraunces Display</p>
-            <p style="font-family:var(--font-display); font-size:1.6rem; font-weight:700">Stage heading · Fraunces 700</p>
-            <p style="color:var(--text-muted)">Body copy is Work Sans 400 at 1rem with a 1.65 line height — easy to read on the trail. <a href="#">Links use --link.</a></p>
+            <div class="specimen">
+                <p class="eyebrow">Eyebrow · Inter 500 · .18em</p>
+                <p style="font-family:var(--font-display); font-size:3.5rem; line-height:1; color:var(--text)">Instrument <em style="color:var(--accent)">Serif</em></p>
+                <p style="font-family:var(--font-display); font-size:2rem; font-style:italic; color:var(--text); margin:1rem 0">Stage heading, italic</p>
+                <p>Body copy is Inter Light at ~1rem with a 1.7 line height. <a href="#">Links use the accent.</a></p>
+            </div>
         </section>
 
         <section>
-            <h2>Wayfinding</h2>
+            <h2>Line art</h2>
             <div class="row">
-                <span class="signpost">Projects <span class="time">1:20 h</span></span>
-                <span class="signpost">Start the hike</span>
-                <span class="blaze"></span>
-                <span class="dot"></span>
-                <span class="dot reached"></span>
+                <div class="art"><svg class="botanical" data-kind="fern" data-seed="21" data-opts='{"length":300,"leaves":13,"leafLen":60,"bend":-0.25}'></svg>fern</div>
+                <div class="art"><svg class="botanical" data-kind="leaf" data-seed="5" data-opts='{"size":200}'></svg>leaf</div>
+                <div class="art"><svg class="botanical" data-kind="edelweiss" data-seed="4" data-opts='{"size":50}'></svg>edelweiss</div>
+                <div class="art"><svg class="botanical" data-kind="pine" data-seed="9" data-opts='{"length":260}'></svg>pine</div>
             </div>
+            <svg class="botanical" data-kind="ridge" data-seed="11" data-opts='{"width":1000,"height":80}' data-stroke="1" preserveAspectRatio="none" style="position:static; width:100%; height:80px; margin-top:2rem; opacity:.6"></svg>
         </section>
 
         <section>
-            <h2>Cards</h2>
-            <div class="row" style="align-items:stretch">
-                <div class="demo-card feature">
-                    <div class="post-date">Feature card</div>
-                    <h3>A highlighted climb</h3>
-                    <p>Yellow top edge for the most important waypoint in a stage.</p>
-                    <div style="display:flex; gap:.5rem; margin-top:1rem"><span class="tech-tag">PyTorch</span><span class="tech-tag">GKE</span></div>
-                </div>
-                <div class="demo-card">
-                    <div class="post-date">Default card</div>
-                    <h3>A waypoint</h3>
-                    <p>Surface background, 20px radius, small shadow; lifts 4px on hover.</p>
-                </div>
+            <h2>Shapes &amp; markers</h2>
+            <div class="demo-blobs">
+                <span class="blob" style="width:200px; height:150px; left:0; top:0"></span>
+                <span class="blob sand" style="width:130px; height:110px; left:170px; top:40px"></span>
+                <span class="blob soft" style="width:160px; height:130px; left:330px; top:10px"></span>
             </div>
-            <div class="highlight-box" style="padding:1.25rem; margin-top:1.5rem; max-width:620px">
-                <strong>Field note</strong> — callout with a sun-yellow edge on the sunken meadow background.
+            <div class="row" style="margin-top:1.5rem; align-items:center">
+                <span class="pebble">01</span>
+                <span class="pebble reached">02</span>
+                <span class="tag">PyTorch</span>
+                <a href="#" class="ulink">LinkedIn ↗</a>
+                <a href="#" class="ulink" style="border:none; color:var(--accent)">Read more →</a>
             </div>
         </section>
     </main>
@@ -119,15 +105,13 @@
         <p><a href="index.html">Back to the trail</a></p>
     </footer>
 
+    <script src="botanicals.js"></script>
     <script>
-        const semantic = ['--bg', '--bg-sunken', '--surface', '--text', '--text-muted', '--brand', '--accent', '--link', '--trail', '--trail-walked', '--border'];
-        const palette = ['--sky-200', '--sky-600', '--snow', '--granite-500', '--meadow-300', '--meadow-500', '--pine-500', '--pine-900', '--earth-300', '--earth-500', '--sun-500', '--gentian', '--alpenrose', '--trail-red'];
+        const tokens = ['--bg', '--surface', '--text', '--text-muted', '--text-subtle', '--accent', '--shape-sage', '--shape-sand', '--border'];
         function render() {
             const cs = getComputedStyle(document.documentElement);
-            [['semantic', semantic], ['palette', palette]].forEach(([id, list]) => {
-                document.getElementById(id).innerHTML = list.map(v =>
-                    `<div class="swatch"><div style="background:var(${v})"></div><span><strong>${v}</strong>${cs.getPropertyValue(v).trim()}</span></div>`).join('');
-            });
+            document.getElementById('semantic').innerHTML = tokens.map(v =>
+                `<div class="swatch"><div style="background:var(${v})"></div><span><strong>${v}</strong>${cs.getPropertyValue(v).trim()}</span></div>`).join('');
         }
         render();
         document.getElementById('darkModeToggle').addEventListener('click', () => {

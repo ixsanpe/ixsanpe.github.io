@@ -1,15 +1,21 @@
-# Design System — "Summer Trail"
+# Design System — "Alpine Botanical"
 
-The portfolio is a summer hike in the Alps. Visitors start in the valley (hero),
-follow a trail up the page past waypoints (projects, talks, awards) and reach the
-summit (contact). Tokens live in `style.css`; the live style guide is
-`design-system.html`.
+The portfolio is a quiet walk up a mountain. A single fine line — the trail —
+draws itself as you scroll and links every project, talk and award, ending at
+the summit (contact). The look is editorial and calm: cream paper, sage & sand
+organic shapes, fine burgundy line-art of alpine plants, and a refined serif.
+
+Tokens live in `style.css`, the line art in `botanicals.js`, the live style
+guide in `design-system.html`.
+
+> v1 "Summer Trail" (cartoon landscape, yellow signposts, hiker icon) was
+> retired for feeling too playful; this replaces it.
 
 ---
 
 ## 0. Extracted legacy system (before this redesign)
 
-For reference, this is what the codebase used before "Summer Trail".
+For reference, this is what the codebase used before the redesign.
 
 | Token | Light | Dark |
 |---|---|---|
@@ -35,91 +41,68 @@ existing subpages keep working.
 
 ---
 
-## 1. Concept
+## 1. Principles
 
-| Hike | Site |
-|---|---|
-| Valley & mountain panorama | Hero |
-| Yellow Swiss signpost | Section heading / CTA |
-| Trail (dashed dirt path) | SVG path connecting all content |
-| Waypoint | A card (project, talk, job…) |
-| Altitude | Progress indicator (altimeter + marker labels) |
-| Vegetation belts | Page background: meadow → forest → rock → snow |
-| Cairns | Awards (compact cards) |
-| Summit cross | Contact |
-| Summer night | Dark mode (moon, stars) |
+1. **Paper, not screen.** Warm cream backgrounds, no drop shadows, no gradients.
+2. **One line.** The trail is the only strong line on the page; everything else is soft shape.
+3. **Organic, not cute.** Blobs and botanicals are decoration in the margins, never behind body text.
+4. **The hike is implied.** Altitude and stage names live in small eyebrows, not in illustrations.
 
 ## 2. Colour
 
-**Primitives** (`style.css` §1): `sky`, `snow`, `granite`, `meadow`, `pine`,
-`earth`, `sun`, plus alpine flowers `--gentian`, `--alpenrose` and the
-`--trail-red` of white-red-white mountain-trail markers.
-
-**Semantic tokens** — always use these in components:
-
 | Token | Day | Night | Use |
 |---|---|---|---|
-| `--bg` | `#fbfaf4` | `#0f1d18` | page |
-| `--bg-sunken` | meadow-100 | `#16271f` | tags, callouts |
-| `--surface` | `#fff` | `#1a2e25` | cards |
-| `--text` | pine-900 | `#eef3ea` | body |
-| `--text-muted` | `#4c5a52` | `#b9c7bd` | secondary text |
-| `--brand` | pine-500 | `#8cc79f` | icons, kind labels |
-| `--accent` | sun-500 `#f6c431` | same | signposts, bullets, focus ring |
-| `--link` | `#2f6b4f` | `#a8dcb8` | links |
-| `--trail` / `--trail-walked` | earth-500 / trail-red | `#a07d55` / `#ff7a6b` | path |
-| `--sky-*`, `--mtn-*`, `--snowcap`, `--sun-disc` | | | landscape illustration |
-| `--zone-*` (index) | | | vegetation-belt background |
+| `--bg` | cream-100 `#f1ece4` | `#161d19` | page |
+| `--surface` | cream-50 `#f8f5ef` | `#1f2923` | cards |
+| `--text` | forest-900 `#1f2d24` | `#ece6dc` | headings, body |
+| `--text-muted` | `#56635a` | `#b4b2a8` | paragraphs |
+| `--text-subtle` | `#7d877f` | `#8c8f86` | eyebrows, meta |
+| `--accent` / `--line` / `--link` | wine-700 `#6b1f2a` | rose `#d9a29b` | trail, line art, links, italic accents |
+| `--shape-sage` | sage-300 `#b9c7b4` | `#34473a` | blobs, reached pins |
+| `--shape-sand` | sand-300 `#dcc3b1` | `#4a3a32` | blobs, pins |
+| `--border` | `#ddd5c8` | `#2f3b33` | hairlines |
 
-Text on `--accent` uses `--accent-ink` (`#3a2c00`) for contrast.
+Primitives: `--cream-*`, `--sage-*`, `--sand-*`, `--forest-*`, `--wine-*`.
 
 ## 3. Typography
 
-- **Display:** Fraunces 500/700 — headings, logo. Warm, slightly hand-cut like carved trail signs.
-- **Body:** Work Sans 400–700.
-- **Eyebrow** (`.post-date`, `.card-kind`): 0.75–0.8rem, 600–700, uppercase, `letter-spacing: .06–.08em`.
-- Scale: h1 `clamp(2.4rem, 5vw, 3.75rem)` · stage h2 `clamp(1.8rem, 3.5vw, 2.5rem)` · card h3 1.35rem · body 0.95–1rem.
+- **Display:** Instrument Serif 400, upright and *italic*. Headings are large and light; one word in italic + `--accent` is the signature move (e.g. the name in the hero).
+- **Body:** Inter 300 for paragraphs, 400–500 for UI.
+- **Eyebrow** (`.eyebrow`, `.post-date`): 0.72rem, 500, uppercase, `letter-spacing: .18em`, `--text-subtle`.
+- Scale: hero h1 `clamp(3.2rem, 7.5vw, 6.2rem)` · stage h2 `clamp(2.6rem, 5vw, 4rem)` italic · card h3 1.85rem · body ~1rem.
 
-## 4. Space, shape, motion
+## 4. Shape, space, motion
 
-- Spacing: 4px base, `--space-1 … --space-16`.
-- Radius: `--radius-sm 6` · `--radius-md 12` · `--radius-lg 20` (cards) · `--radius-pill`.
-- Shadows: `--shadow-sm` resting, `--shadow-md` hover/floating.
-- Easing: `--ease-trail` `cubic-bezier(.22,1,.36,1)`; cards lift 4px on hover, reveal from 24px below.
-- `prefers-reduced-motion` disables all animation.
+- Radius: cards `--radius-lg` 28px, images `--radius-md` 14px, pills `--radius-pill`.
+- Blobs: `--blob-a/b/c` are organic `border-radius` values used on `.blob`, the portrait and pins.
+- Spacing: `--space-1 … --space-24` (4px base); sections breathe with 6rem stage padding.
+- Motion: `--ease` `cubic-bezier(.22,1,.36,1)`. Trail draws with scroll, cards fade up 28px, links lengthen on hover. `prefers-reduced-motion` turns it all off.
 
 ## 5. Components
 
 | Class | Description |
 |---|---|
-| `.signpost` | Yellow arrow-shaped sign; optional `.time` ("1:20 h"). |
-| `.blaze` | White-red-white trail marker. |
-| `.stage` | Section header: title left, signpost pole on the trail, sign right. |
-| `.waypoint.left/.right` | Two-column row; card on one side, `.marker` on the trail. |
-| `.marker[data-alt][data-stage]` | Trail dot with altitude label; turns yellow when `.reached`. |
-| `.card` / `.card.feature` / `.card.cairn` | Default, highlighted (yellow top edge), compact (awards). |
-| `.card-kind` | Icon + eyebrow ("Waypoint · Work"). |
-| `.tech-tag` | Pill tags. |
-| `.chip`, `.social-link` | Glassy pills/buttons over the landscape. |
-| `.altimeter` | Fixed progress pill: current altitude + stage. |
-| `.summit` | Summit cross + contact cards. |
-| `.highlight-box` | Field-note callout (subpages). |
-| `footer` | Pine-green with a jagged ridge top edge. |
+| `.blob` / `.blob.sand` / `.blob.soft` | Organic background shapes. |
+| `svg.botanical[data-kind]` | Line art drawn by `botanicals.js`: `fern`, `leaf`, `edelweiss`, `pine`, `ridge`. Options via `data-opts` JSON, `data-seed`, `data-stroke`. |
+| `.stage` | Section header: dot pin, eyebrow (stage + altitude), big italic h2. |
+| `.waypoint.left/.right` + `.pin` | Card on one side, numbered sand pebble on the trail; pebble turns sage when reached. |
+| `.card` / `.feature` / `.compact` | Default, with a corner blob, and smaller (recognition). |
+| `.text-links` | Uppercase underlined links (hero socials). |
+| `.read-more` | Uppercase accent link with arrow. |
+| `.tech-tag` | Hairline pill. |
+| `.contact-list` | Large serif rows with meta on the right ("Say hi,"). |
 
-## 6. The trail (how it works)
+## 6. The trail
 
-`index.html` measures every `.marker` inside `#trail`, draws one smooth cubic
-path through them (`.trail-bed`, `.trail-dash`, `.trail-walked`) and rebuilds on
-resize. While scrolling, the walked portion and the hiker follow the point 60%
-down the viewport; markers passed get `.reached`, and the altimeter interpolates
-`data-alt` between markers.
+`index.html` collects every `.marker` inside `#trail` and draws one path through
+them: vertical S-curves when pins are aligned, wide horizontal swings when they
+alternate sides (like a hand-drawn journey line). A faint dotted copy shows the
+route ahead; the solid line and its tip follow the point 62% down the viewport.
 
-**Adding a project:** copy a `.waypoint` block into the Projects stage, alternate
-`left`/`right`, give the marker a `data-alt` between its neighbours and a
-`data-stage` name. The trail redraws itself.
+**Adding a project:** copy a `.waypoint` in the Projects stage, alternate
+`left`/`right`, renumber the pins. The trail redraws itself.
 
 ## 7. Responsive
 
-- ≤1080px: margin decorations hidden.
-- ≤820px: single column; trail runs down the left edge (x≈28px), cards to its right; altitude labels move into the altimeter.
-- ≤520px: compact nav.
+- ≤1100px: margin blobs and botanicals hidden.
+- ≤860px: nav links hidden, portrait above the name, single column; the trail runs down the left edge with pins at x≈24px.

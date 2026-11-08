@@ -1,0 +1,356 @@
+/* =====================================================================
+   THE SYSTEM — interactive 3D (CSS) "clay render" of how projects fit
+   together. Built by system.js. Tokens come from style.css.
+   ===================================================================== */
+
+.sys {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: minmax(0, 1.55fr) minmax(280px, 1fr);
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    margin: 0.5rem 0 1rem;
+}
+
+/* ---------- Stage ---------- */
+.sys-stage {
+    position: relative;
+    height: 600px;
+    perspective: 2400px;
+    perspective-origin: 50% 40%;
+    overflow: hidden;
+    background:
+        radial-gradient(120% 90% at 50% 35%, color-mix(in srgb, var(--shape-sage-soft) 70%, var(--surface)) 0%, var(--surface) 70%);
+    touch-action: pan-y;
+}
+
+.sys-hint {
+    position: absolute;
+    left: 1.25rem;
+    top: 1rem;
+    z-index: 5;
+    margin: 0;
+}
+
+.sys-scene {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 0;
+    height: 0;
+    transform-style: preserve-3d;
+    transform:
+        scale(var(--fit, 1))
+        rotateX(var(--tx, 57deg))
+        rotateZ(var(--tz, 40deg))
+        scale(var(--zoom, 1))
+        translate3d(var(--cx, 0px), var(--cy, 0px), 0);
+}
+
+.sys-world,
+.sys-world * {
+    transform-style: preserve-3d;
+}
+
+.sys-world {
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+/* ---------- Boxes (clay blocks) ---------- */
+.box {
+    position: absolute;
+}
+
+.face {
+    position: absolute;
+    transition: filter 0.5s;
+}
+
+.f-top {
+    inset: 0;
+    background: var(--top);
+    border-radius: 7px;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35), inset 6px 6px 18px rgba(255, 255, 255, 0.25), inset -8px -8px 18px rgba(0, 0, 0, 0.06);
+}
+
+.f-front {
+    left: 0;
+    top: 100%;
+    width: 100%;
+    transform-origin: top;
+    transform: rotateX(90deg);
+    background: linear-gradient(to bottom, var(--front), color-mix(in srgb, var(--front) 88%, #000));
+    border-radius: 0 0 6px 6px;
+}
+
+.f-right {
+    left: 100%;
+    top: 0;
+    height: 100%;
+    transform-origin: left;
+    transform: rotateY(-90deg);
+    background: linear-gradient(to left, var(--side), color-mix(in srgb, var(--side) 85%, #000));
+    border-radius: 0 6px 6px 0;
+}
+
+.shadow {
+    position: absolute;
+    background: rgba(31, 45, 36, 0.22);
+    filter: blur(14px);
+    border-radius: 20px;
+}
+
+[data-theme="dark"] .shadow { background: rgba(0, 0, 0, 0.55); }
+
+/* Palette (clay) */
+.c-sage  { --top: #cfdac9; --front: #aebdaa; --side: #97a993; }
+.c-sage2 { --top: #b9c9b3; --front: #98ab93; --side: #82967d; }
+.c-sand  { --top: #efdccd; --front: #d8bda8; --side: #c5a690; }
+.c-cream { --top: #fdf9f2; --front: #e9e1d4; --side: #d9cfbf; }
+.c-wine  { --top: #a24f5b; --front: #7e2f3a; --side: #66232d; }
+.c-forest{ --top: #557a63; --front: #3f604c; --side: #324e3d; }
+.c-glass { --top: rgba(253, 249, 242, 0.75); --front: rgba(233, 225, 212, 0.75); --side: rgba(217, 207, 191, 0.75); }
+
+/* ---------- Modules ---------- */
+.mod {
+    position: absolute;
+    cursor: pointer;
+}
+
+.mod-lift {
+    position: absolute;
+    inset: 0;
+    transition: transform 0.5s var(--ease);
+}
+
+.mod:hover .mod-lift,
+.mod:focus-visible .mod-lift { transform: translateZ(10px); }
+
+.mod.active .mod-lift { transform: translateZ(14px); }
+
+.mod:focus { outline: none; }
+
+.mod.active .f-top {
+    box-shadow: inset 0 0 0 2px var(--wine-700), inset 6px 6px 18px rgba(255, 255, 255, 0.3);
+}
+
+.sys-world.focus .mod:not(.active) .face,
+.sys-world.focus .base .face {
+    filter: saturate(0.45) brightness(1.04);
+}
+
+[data-theme="dark"] .sys-world.focus .mod:not(.active) .face,
+[data-theme="dark"] .sys-world.focus .base .face {
+    filter: saturate(0.4) brightness(0.8);
+}
+
+/* Billboard labels */
+.label {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    white-space: nowrap;
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: -0.005em;
+    color: var(--forest-900);
+    background: rgba(253, 249, 242, 0.92);
+    padding: 4px 10px;
+    border-radius: 999px;
+    box-shadow: 0 6px 16px -8px rgba(31, 45, 36, 0.45);
+    transform:
+        translate(-50%, -50%)
+        translateZ(var(--lz, 80px))
+        rotateZ(calc(var(--tz) * -1))
+        rotateX(calc(var(--tx) * -1));
+    pointer-events: auto;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.label small {
+    font-size: 10px;
+    color: #7d877f;
+    margin-left: 4px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.mod:hover .label,
+.mod.active .label {
+    background: var(--wine-700);
+    color: #fff;
+}
+
+.mod:hover .label small,
+.mod.active .label small { color: rgba(255, 255, 255, 0.7); }
+
+.label.base-label {
+    background: transparent;
+    box-shadow: none;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #5d7560;
+}
+
+
+/* ---------- Data packets ---------- */
+.packet {
+    position: absolute;
+    left: -5px;
+    top: -5px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--wine-700);
+    box-shadow: 0 0 10px 2px color-mix(in srgb, var(--wine-500) 60%, transparent);
+    animation: flow var(--dur, 2.6s) linear infinite;
+    animation-delay: var(--delay, 0s);
+}
+
+@keyframes flow {
+    0% { transform: translate3d(var(--x1), var(--y1), var(--z)); opacity: 0; }
+    12% { opacity: 1; }
+    88% { opacity: 1; }
+    100% { transform: translate3d(var(--x2), var(--y2), var(--z)); opacity: 0; }
+}
+
+/* ---------- Panel ---------- */
+.sys-panel {
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+    border-left: 1px solid var(--border);
+    min-height: 600px;
+}
+
+.sys-panel-body {
+    flex: 1;
+}
+
+.sys-panel-body.swap {
+    animation: panelIn 0.6s var(--ease);
+}
+
+@keyframes panelIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: none; }
+}
+
+.sys-panel h3 {
+    font-size: 1.6rem;
+    margin: 0.35rem 0 0.75rem;
+}
+
+.sys-panel p {
+    color: var(--text-muted);
+    font-weight: 300;
+    font-size: 0.97rem;
+}
+
+.sys-panel p + p { margin-top: 0.75rem; }
+.sys-panel p.eyebrow { font-size: 0.7rem; font-weight: 500; color: var(--text-subtle); }
+
+.sys-panel .tech-tags { display: flex; flex-wrap: wrap; gap: 0.45rem; margin: 1.1rem 0; }
+.sys-panel .tech-tag { padding: 0.15rem 0.75rem; font-size: 0.75rem; }
+
+.sys-panel .card-links { display: flex; flex-wrap: wrap; gap: 1.25rem; margin-top: 0.5rem; }
+
+.sys-panel .item {
+    padding: 0.75rem 0;
+    border-top: 1px solid var(--border);
+}
+
+.sys-panel .item:first-of-type { border-top: none; }
+.sys-panel .item strong { display: block; color: var(--text); font-weight: 500; }
+
+.sys-panel-top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+.sys-panel-top .eyebrow { margin: 0; }
+
+/* Tour controls */
+.sys-tour {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding-top: 1.25rem;
+    margin-top: 1.25rem;
+    border-top: 1px solid var(--border);
+}
+
+.sys-btn {
+    font: inherit;
+    font-size: 0.82rem;
+    font-weight: 500;
+    padding: 0.55rem 0.95rem;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text);
+    cursor: pointer;
+    transition: border-color 0.3s, color 0.3s, background-color 0.3s;
+}
+
+.sys-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+.sys-btn.primary {
+    background: var(--wine-700);
+    border-color: var(--wine-700);
+    color: #fff;
+}
+
+.sys-btn.primary:hover { background: var(--wine-500); color: #fff; }
+
+.sys-btn[disabled] { opacity: 0.4; pointer-events: none; }
+.sys-btn[hidden] { display: none; }
+
+.sys-step {
+    margin-left: auto;
+    font-size: 0.78rem;
+    color: var(--text-subtle);
+    font-variant-numeric: tabular-nums;
+}
+
+/* Legend (accessible list of parts) */
+.sys-legend {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    padding: 1rem 1.25rem;
+    border-top: 1px solid var(--border);
+    list-style: none;
+}
+
+.sys-legend button {
+    font: inherit;
+    font-size: 0.78rem;
+    padding: 0.3rem 0.8rem;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.sys-legend button:hover { color: var(--accent); border-color: var(--accent); }
+.sys-legend button[aria-pressed="true"] { background: var(--wine-700); border-color: var(--wine-700); color: #fff; }
+
+@media (max-width: 860px) {
+    .sys { grid-template-columns: 1fr; }
+    .sys-stage { height: 400px; }
+    .sys-panel { border-left: none; border-top: 1px solid var(--border); min-height: 0; padding: 1.5rem; }
+    .label { font-size: 15px; }
+}

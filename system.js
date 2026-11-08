@@ -52,8 +52,9 @@
             eyebrow: 'Solutions · Personal',
             title: 'RAG for fitness exercises',
             status: 'Side project',
-            body: `<p>A personal assistant for training: ask in natural language and get exercise recommendations and explanations grounded in a curated exercise knowledge base.</p>`,
-            tags: ['RAG', 'Embeddings', 'LLMs']
+            body: `<p>Ask in natural language and get exercises grounded in a real exercise dataset. It uses hybrid BM25 + dense retrieval with RRF, contrastive fine-tuning of the embedder (Recall@10 0.36 → 0.81) and a local LLM for the answers, all measured with a labelled eval harness.</p>`,
+            tags: ['RAG', 'Hybrid search', 'Embeddings', 'Ollama'],
+            links: [['projects/fitness-rag.html', `Case study ${ARROW}`], ['https://github.com/ixsanpe/fitness-ai-assistant', 'Code ↗', true]]
         },
         assistant: {
             eyebrow: 'Solutions · Personal',
@@ -316,4 +317,21 @@
     Object.assign(cam, target);
     apply();
     if (!reduced) requestAnimationFrame(loop);
+
+    // ---------------------------------------------------------------- deep links
+    // #sailor, #talks, … open that part; old anchors (#work, #recognition-stage, #awards) still resolve.
+    const ALIASES = { work: 'portfolio', system: 'portfolio', 'recognition-stage': 'recognition', awards: 'recognition' };
+    function fromHash() {
+        const h = decodeURIComponent(location.hash.slice(1));
+        if (!h) return;
+        let dest = ALIASES[h];
+        if (PARTS[h] && h !== 'overview') { select(h); dest = 'portfolio'; }
+        if (!dest) return;
+        history.replaceState(null, '', '#' + dest);
+        const el = document.getElementById(dest);
+        if (el) el.scrollIntoView({ block: 'start', behavior: 'auto' });
+    }
+    window.addEventListener('hashchange', fromHash);
+    fromHash();
+    window.addEventListener('load', fromHash, { once: true });
 })();

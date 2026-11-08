@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fitness RAG: Lessons from an End-to-End Build - Ixeia Sánchez Périz</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23ffffff'/><path d='M20 85 L30 70 Q35 65 40 68 L45 72 Q50 75 55 70 L60 62 Q65 55 70 60 L78 68 Q82 72 85 68 L85 85 Z' fill='%2395c9c9' stroke='%232d3748' stroke-width='2'/><path d='M25 75 L32 65 Q37 58 42 62 L50 70 Q55 74 60 68 L68 58 Q72 53 77 58 L82 65 L82 85 L25 85 Z' fill='%23b8a8d8' opacity='0.7' stroke='%232d3748' stroke-width='2'/><path d='M35 50 L45 30 L50 35 L55 28 L65 45 L70 38 L80 55' fill='none' stroke='%237b9ab8' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/><ellipse cx='18' cy='25' rx='8' ry='5' fill='%23e8a89a' opacity='0.8'/><ellipse cx='25' cy='18' rx='7' ry='4' fill='%23e8a89a' opacity='0.6'/></svg>">
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 6rem 2rem 4rem;
+        }
+
+        footer { margin-top: 4rem; }
+
+        /* ---------- header ---------- */
+        .project-header { margin-bottom: 2.5rem; }
+
+        h1 {
+            font-size: clamp(2rem, 4.6vw, 2.9rem);
+            line-height: 1.12;
+            letter-spacing: -0.03em;
+            margin-bottom: 1.25rem;
+            color: var(--text);
+        }
+
+        h1 .accent { color: var(--accent); }
+
+        .lede {
+            font-size: 1.2rem;
+            line-height: 1.7;
+            color: var(--text-muted);
+            max-width: 46rem;
+        }
+
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 1.5rem 0 0;
+        }
+
+        .tech-tag {
+            padding: 0.35rem 0.9rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-pill);
+            font-size: 0.8rem;
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        .glance {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1px;
+            margin: 2.5rem 0 1rem;
+            background: var(--border);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+        }
+
+        .glance div {
+            background: var(--surface);
+            padding: 1.1rem 1.25rem;
+        }
+
+        .glance b {
+            display: block;
+            font-size: 1.45rem;
+            font-weight: 500;
+            letter-spacing: -0.02em;
+            color: var(--text);
+        }
+
+        .glance span {
+            font-size: 0.82rem;
+            color: var(--text-subtle);
+            line-height: 1.4;
+        }
+
+        /* ---------- body ---------- */
+        .project-content {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            line-height: 1.8;
+        }
+
+        .project-content p { margin-bottom: 1.25rem; }
+
+        .section { margin-top: 4.5rem; }
+
+        .section-eyebrow {
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--accent);
+        }
+
+        .project-content h2 {
+            font-size: clamp(1.6rem, 3vw, 2.05rem);
+            letter-spacing: -0.03em;
+            line-height: 1.2;
+            font-weight: 500;
+            margin: 0.4rem 0 1.1rem;
+            color: var(--text);
+        }
+
+        .project-content h3 {
+            font-size: 1.15rem;
+            font-weight: 500;
+            margin: 2rem 0 0.75rem;
+            color: var(--text);
+        }
+
+        .project-content strong { color: var(--text); font-weight: 500; }
+
+        .project-content ul {
+            margin: 1.25rem 0 1.5rem 0.5rem;
+            list-style: none;
+        }
+
+        .project-content ul li {
+            margin-bottom: 0.75rem;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .project-content ul li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+        }
+
+        .project-content a { color: var(--link); text-decoration: none; font-weight: 500; }
+        .project-content a:hover { text-decoration: underline; color: var(--link-hover); }
+
+        .project-content code {
+            font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+            font-size: 0.86em;
+            padding: 0.08rem 0.35rem;
+            background: var(--bg-sunken);
+            border-radius: 6px;
+            color: var(--text);
+        }
+
+        .caption {
+            font-size: 0.85rem;
+            color: var(--text-subtle);
+            margin-top: 0.75rem;
+            text-align: center;
+        }
+
+        .note {
+            margin: 2rem 0;
+            padding: 1.25rem 1.5rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--accent);
+            border-radius: 0 var(--radius-md) var(--radius-md) 0;
+        }
+
+        .note p:last-child { margin-bottom: 0; }
+
+        .note .label {
+            display: block;
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 0.4rem;
+        }
+
+        /* ---------- diagrams ---------- */
+        .figure {
+            margin: 2rem 0;
+        }
+
+        .figure-scroll {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .figure svg {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        .figure-scroll svg { min-width: 680px; }
+
+        .d-lane { fill: var(--surface); stroke: var(--border); stroke-width: 1; }
+        .d-node { fill: var(--bg); stroke: var(--line); stroke-width: 1.1; }
+        .d-store { fill: var(--shape-sage-soft); stroke: var(--shape-sage); stroke-width: 1; }
+        .d-config { fill: var(--shape-sand-soft); stroke: var(--shape-sand); stroke-width: 1; }
+        .d-arrow { fill: none; stroke: var(--line); stroke-width: 1.3; }
+        .d-arrow.dash { stroke-dasharray: 4 4; }
+        .d-faint { fill: none; stroke: var(--text-subtle); stroke-width: 1; stroke-dasharray: 3 4; }
+        .d-title { fill: var(--text); font-size: 14px; font-weight: 500; }
+        .d-sub { fill: var(--text-muted); font-size: 11.5px; }
+        .d-small { fill: var(--text-subtle); font-size: 10.5px; }
+        .d-eyebrow { fill: var(--text-subtle); font-size: 10px; letter-spacing: 0.16em; font-weight: 500; }
+        .d-mono { fill: var(--accent); font-size: 11px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+        .d-dot { fill: var(--accent); }
+        .d-dot.alt { fill: var(--sage-700); }
+        [data-theme="dark"] .d-dot.alt { fill: var(--sage-300); }
+
+        .pin { cursor: pointer; }
+        .pin circle { fill: var(--shape-sand); stroke: var(--line); stroke-width: 1.2; transition: transform 0.3s var(--ease); transform-box: fill-box; transform-origin: center; }
+        .pin text { fill: var(--text); font-size: 11px; font-weight: 600; text-anchor: middle; dominant-baseline: central; pointer-events: none; }
+        .pin:hover circle, .pin.on circle { fill: var(--accent); transform: scale(1.15); }
+        .pin:hover text, .pin.on text { fill: var(--bg); }
+
+        /* tips keyed to pins */
+        .tips {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+            margin: 1.5rem 0 0;
+            padding: 0;
+            list-style: none;
+            counter-reset: none;
+        }
+
+        .project-content .tips li {
+            margin: 0;
+            padding: 1rem 1.1rem 1rem 3.1rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            font-size: 0.92rem;
+            line-height: 1.6;
+            transition: border-color 0.3s var(--ease), background-color 0.3s var(--ease);
+        }
+
+        .project-content .tips li { position: relative; }
+
+        .project-content .tips li::before {
+            content: attr(data-n);
+            position: absolute;
+            left: 1rem;
+            top: 1rem;
+            width: 1.5rem;
+            height: 1.5rem;
+            border-radius: 50%;
+            background: var(--shape-sand);
+            color: var(--text);
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: grid;
+            place-items: center;
+        }
+
+        .project-content .tips li.on { border-color: var(--accent); }
+        .project-content .tips li.on::before { background: var(--accent); color: var(--bg); }
+        .tips b { display: block; color: var(--text); font-weight: 500; margin-bottom: 0.15rem; }
+
+        .tree {
+            margin: 1.5rem 0;
+            padding: 1.25rem 1.5rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+            font-size: 0.82rem;
+            line-height: 1.75;
+            color: var(--text);
+            overflow-x: auto;
+            white-space: pre;
+        }
+
+        .tree i { font-style: normal; color: var(--text-subtle); }
+
+        /* comparison table (training vs inference, mlflow) */
+        .compare {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 1.75rem 0;
+            font-size: 0.93rem;
+            line-height: 1.55;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+
+        .compare th, .compare td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            vertical-align: top;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .compare tr:last-child td { border-bottom: none; }
+        .compare thead th { background: var(--surface); color: var(--text); font-weight: 500; }
+        .compare tbody th { color: var(--text-subtle); font-weight: 500; font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap; }
+        .compare td.num, .compare th.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+        .compare tr.best td { color: var(--text); font-weight: 500; }
+        .compare .group { color: var(--accent); }
+
+        .table-wrap { overflow-x: auto; }
+
+        /* bars */
+        .bars { margin: 1.5rem 0; }
+
+        .bar-row {
+            display: grid;
+            grid-template-columns: minmax(130px, 230px) 1fr 3.2rem;
+            align-items: center;
+            gap: 0.85rem;
+            margin-bottom: 0.55rem;
+            font-size: 0.9rem;
+        }
+
+        .bar-track {
+            position: relative;
+            height: 12px;
+            background: var(--bg-sunken);
+            border-radius: var(--radius-pill);
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            background: var(--shape-sage);
+            border-radius: var(--radius-pill);
+        }
+
+        .bar-row.hi .bar-fill { background: var(--accent); }
+        .bar-row.hi span:first-child { color: var(--text); }
+        .bar-row.neg .bar-fill { background: var(--shape-sand); }
+
+        .bar-value {
+            text-align: right;
+            color: var(--text);
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* rrf illustration */
+        .rrf {
+            display: grid;
+            grid-template-columns: 1fr 1fr auto 1.2fr;
+            gap: 1rem;
+            align-items: stretch;
+            margin: 1.75rem 0;
+            font-size: 0.88rem;
+        }
+
+        .rrf .col {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 0.9rem 1rem;
+        }
+
+        .rrf .col.fused { border-color: var(--accent); }
+
+        .rrf h4 {
+            font-size: 0.68rem;
+            font-weight: 500;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--text-subtle);
+            margin-bottom: 0.6rem;
+        }
+
+        .rrf ol { list-style: none; margin: 0; padding: 0; }
+
+        .rrf li {
+            display: flex;
+            justify-content: space-between;
+            gap: 0.5rem;
+            padding: 0.3rem 0;
+            border-bottom: 1px dashed var(--border);
+            color: var(--text);
+        }
+
+        .rrf li:last-child { border-bottom: none; }
+        .rrf li small { color: var(--text-subtle); font-variant-numeric: tabular-nums; }
+        .rrf .op { align-self: center; color: var(--accent); font-size: 1.4rem; }
+
+        .formula {
+            text-align: center;
+            font-size: 0.95rem;
+            color: var(--text);
+            margin: -0.5rem 0 1.5rem;
+        }
+
+        .formula code { font-size: 0.95em; }
+
+        /* github button */
+        .cta { text-align: center; margin: 2.5rem 0 1rem; }
+
+        .cta a {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.55rem;
+            padding: 0.8rem 1.5rem;
+            background: var(--text);
+            color: var(--bg) !important;
+            border-radius: var(--radius-pill);
+            font-weight: 500;
+            text-decoration: none !important;
+            transition: transform 0.3s var(--ease);
+        }
+
+        .cta a:hover { transform: translateY(-2px); }
+
+        @media (max-width: 768px) {
+            nav { position: sticky; }
+            .container { padding-top: 2rem; }
+            .project-content { font-size: 1rem; }
+            .glance { grid-template-columns: 1fr 1fr; }
+            .tips { grid-template-columns: 1fr; }
+            .rrf { grid-template-columns: 1fr 1fr; }
+            .rrf .op { display: none; }
+            .rrf .col.fused { grid-column: 1 / -1; }
+            .bar-row { grid-template-columns: 110px 1fr 2.8rem; font-size: 0.82rem; }
+            .compare { font-size: 0.85rem; }
+            .compare th, .compare td { padding: 0.6rem 0.7rem; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .pin circle, .cta a { transition: none; }
+        }
+    </style>
+</head>
+<body class="subpage">
+    <nav>
+        <div class="container">
+            <a href="../index.html" class="logo">Ixeia Sánchez Périz</a>
+            <div style="display: flex; align-items: center; gap: 2rem;">
+                <a href="../index.html#fitness" class="back-link">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                    Back to Home
+                </a>
+                <button id="darkModeToggle" class="dark-mode-toggle" aria-label="Toggle dark mode">
+                    <svg class="sun-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="4" fill="currentColor"/>
+                        <path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32l1.41-1.41" fill="none"/>
+                    </svg>
+                    <svg class="moon-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" style="display: none;">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <header class="project-header">
+            <div class="post-date">Personal project · 2025–2026</div>
+            <h1>Fitness RAG: what building a small retrieval system <span class="accent">taught me</span></h1>
+            <p class="lede">
+                A RAG system over 873 gym exercises. Ask <em>"a good bodyweight leg exercise"</em> and get an answer that only uses exercises that exist. The dataset is small on purpose: I used it to learn how the parts of an ML system fit together. This page is that system drawn out, with the notes I kept while building it.
+            </p>
+            <div class="tech-tags">
+                <span class="tech-tag">Python</span>
+                <span class="tech-tag">Sentence-Transformers</span>
+                <span class="tech-tag">CLIP</span>
+                <span class="tech-tag">BM25</span>
+                <span class="tech-tag">Milvus Lite</span>
+                <span class="tech-tag">MLflow</span>
+                <span class="tech-tag">Ollama</span>
+                <span class="tech-tag">uv</span>
+            </div>
+
+            <div class="glance">
+                <div><b>873</b><span>exercises, with images and metadata</span></div>
+                <div><b>69</b><span>labelled eval queries, built before any tuning</span></div>
+                <div><b>+15%</b><span>Recall@10 from hybrid search over dense alone</span></div>
+                <div><b>0.36 → 0.81</b><span>Recall@10 after contrastive fine-tuning</span></div>
+            </div>
+        </header>
+
+        <div class="project-content">
+
+            <!-- ============ 01 SYSTEM ============ -->
+            <section class="section" style="margin-top: 3rem;">
+                <div class="section-eyebrow">01 · The system</div>
+                <h2>Feature, Training, Inference</h2>
+                <p>
+                    I structured the code as three separate pipelines, the <strong>FTI</strong> pattern (<a href="https://www.hopsworks.ai/post/mlops-to-ml-systems-with-fti-pipelines" target="_blank" rel="noopener">Feature/Training/Inference pipelines, Hopsworks</a>). The <strong>feature</strong> pipeline turns raw data into features and stores them. The <strong>training</strong> pipeline reads a version of those features and produces model weights, tracked in a registry. The <strong>inference</strong> pipeline loads a specific model version and serves queries. They only talk through what they store, so each one can change without breaking the others.
+                </p>
+                <p>Hover or tap the numbers for the tips I'd give myself if I started again.</p>
+
+                <figure class="figure">
+                    <div class="figure-scroll">
+                    <svg viewBox="0 0 880 560" role="img" aria-labelledby="sysTitle sysDesc">
+                        <title id="sysTitle">Fitness RAG system architecture</title>
+                        <desc id="sysDesc">Three lanes: feature pipeline, training pipeline and inference pipeline. Underneath them sit three stores: a feature store of JSONL and embeddings, an MLflow model registry, and a Milvus Lite vector database. A shared config bar spans the bottom.</desc>
+                        <defs>
+                            <marker id="ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                                <path d="M0 0 L10 5 L0 10 z" style="fill: var(--line)"/>
+                            </marker>
+                        </defs>
+
+                        <!-- lanes -->
+                        <rect class="d-lane" x="20" y="40" width="270" height="295" rx="22"/>
+                        <rect class="d-lane" x="305" y="40" width="270" height="295" rx="22"/>
+                        <rect class="d-lane" x="590" y="40" width="270" height="295" rx="22"/>
+
+                        <text class="d-eyebrow" x="40" y="68">01 · FEATURE</text>
+                        <text class="d-title" x="40" y="89">Raw data → features</text>
+                        <text class="d-mono" x="40" y="107">src/feature_pipeline/</text>
+
+                        <text class="d-eyebrow" x="325" y="68">02 · TRAINING</text>
+                        <text class="d-title" x="325" y="89">Features → model weights</text>
+                        <text class="d-mono" x="325" y="107">src/training_pipeline/</text>
+
+                        <text class="d-eyebrow" x="610" y="68">03 · INFERENCE</text>
+                        <text class="d-title" x="610" y="89">Query → grounded answer</text>
+                        <text class="d-mono" x="610" y="107">src/inference_pipeline/</text>
+
+                        <!-- feature nodes -->
+                        <rect class="d-node" x="40" y="125" width="230" height="48" rx="12"/>
+                        <text class="d-title" x="54" y="145">Load &amp; clean exercises</text>
+                        <text class="d-sub" x="54" y="162">exercises.json → dataset.jsonl</text>
+
+                        <rect class="d-node" x="40" y="195" width="230" height="48" rx="12"/>
+                        <text class="d-title" x="54" y="215">Embed text + images</text>
+                        <text class="d-sub" x="54" y="232">Sentence-Transformers · CLIP</text>
+
+                        <rect class="d-node" x="40" y="265" width="230" height="48" rx="12"/>
+                        <text class="d-title" x="54" y="285">Save embeddings</text>
+                        <text class="d-sub" x="54" y="302">one .npy file per model</text>
+
+                        <!-- training nodes -->
+                        <rect class="d-node" x="325" y="125" width="230" height="48" rx="12"/>
+                        <text class="d-title" x="339" y="145">Bootstrap eval set</text>
+                        <text class="d-sub" x="339" y="162">69 queries + training pairs</text>
+
+                        <rect class="d-node" x="325" y="195" width="230" height="48" rx="12"/>
+                        <text class="d-title" x="339" y="215">Contrastive fine-tune</text>
+                        <text class="d-sub" x="339" y="232">MultipleNegativesRankingLoss</text>
+
+                        <rect class="d-node" x="325" y="265" width="230" height="48" rx="12"/>
+                        <text class="d-title" x="339" y="285">Log every run</text>
+                        <text class="d-sub" x="339" y="302">params + retrieval metrics</text>
+
+                        <!-- inference nodes -->
+                        <rect class="d-node" x="610" y="125" width="230" height="48" rx="12"/>
+                        <text class="d-title" x="624" y="145">Embed the user query</text>
+                        <text class="d-sub" x="624" y="162">same model as the corpus</text>
+
+                        <rect class="d-node" x="610" y="195" width="230" height="48" rx="12"/>
+                        <text class="d-title" x="624" y="215">Hybrid search</text>
+                        <text class="d-sub" x="624" y="232">BM25 + dense, fused with RRF</text>
+
+                        <rect class="d-node" x="610" y="265" width="230" height="48" rx="12"/>
+                        <text class="d-title" x="624" y="285">Grounded answer</text>
+                        <text class="d-sub" x="624" y="302">Ollama · qwen2.5:7b · Gradio UI</text>
+
+                        <!-- in-lane arrows -->
+                        <path class="d-arrow" d="M155 173 L155 193" marker-end="url(#ah)"/>
+                        <path class="d-arrow" d="M155 243 L155 263" marker-end="url(#ah)"/>
+                        <path class="d-arrow" d="M440 173 L440 193" marker-end="url(#ah)"/>
+                        <path class="d-arrow" d="M440 243 L440 263" marker-end="url(#ah)"/>
+                        <path class="d-arrow" d="M725 173 L725 193" marker-end="url(#ah)"/>
+                        <path class="d-arrow" d="M725 243 L725 263" marker-end="url(#ah)"/>
+
+                        <!-- stores -->
+                        <rect class="d-store" x="40" y="385" width="230" height="52" rx="26"/>
+                        <text class="d-title" x="155" y="407" text-anchor="middle">Feature store</text>
+                        <text class="d-sub" x="155" y="424" text-anchor="middle">JSONL + embeddings</text>
+
+                        <rect class="d-store" x="325" y="385" width="230" height="52" rx="26"/>
+                        <text class="d-title" x="440" y="407" text-anchor="middle">Model registry</text>
+                        <text class="d-sub" x="440" y="424" text-anchor="middle">MLflow · local SQLite</text>
+
+                        <rect class="d-store" x="610" y="385" width="230" height="52" rx="26"/>
+                        <text class="d-title" x="725" y="407" text-anchor="middle">Vector DB</text>
+                        <text class="d-sub" x="725" y="424" text-anchor="middle">Milvus Lite · one local file</text>
+
+                        <!-- cross-pipeline arrows -->
+                        <path class="d-arrow" d="M155 313 L155 383" marker-end="url(#ah)"/>
+                        <path class="d-arrow" d="M440 313 L440 383" marker-end="url(#ah)"/>
+                        <path class="d-arrow dash" d="M250 386 C 300 340, 288 160, 322 150" marker-end="url(#ah)"/>
+                        <path class="d-arrow dash" d="M556 400 C 598 392, 576 165, 607 150" marker-end="url(#ah)"/>
+                        <path class="d-arrow dash" d="M800 386 C 878 366, 878 228, 843 220" marker-end="url(#ah)"/>
+                        <path class="d-arrow dash" d="M155 437 L155 464 L725 464 L725 440" marker-end="url(#ah)"/>
+                        <text class="d-small" x="440" y="458" text-anchor="middle">create_db.py loads the vectors into the index</text>
+                        <text class="d-small" x="244" y="377" text-anchor="end">metadata</text>
+                        <text class="d-small" x="590" y="372">weights</text>
+
+                        <!-- configs bar -->
+                        <rect class="d-config" x="20" y="488" width="840" height="52" rx="26"/>
+                        <text class="d-mono" x="48" y="519">configs/*.yaml</text>
+                        <text class="d-sub" x="160" y="519">one file per pipeline run, validated by Pydantic schemas in src/config/ · deps via uv</text>
+
+                        <!-- pins -->
+                        <g class="pin" data-tip="1" tabindex="0" role="button" aria-label="Tip 1"><circle cx="836" cy="490" r="12"/><text x="836" y="490">1</text></g>
+                        <g class="pin" data-tip="2" tabindex="0" role="button" aria-label="Tip 2"><circle cx="268" cy="127" r="12"/><text x="268" y="127">2</text></g>
+                        <g class="pin" data-tip="3" tabindex="0" role="button" aria-label="Tip 3"><circle cx="268" cy="197" r="12"/><text x="268" y="197">3</text></g>
+                        <g class="pin" data-tip="4" tabindex="0" role="button" aria-label="Tip 4"><circle cx="553" cy="127" r="12"/><text x="553" y="127">4</text></g>
+                        <g class="pin" data-tip="5" tabindex="0" role="button" aria-label="Tip 5"><circle cx="553" cy="387" r="12"/><text x="553" y="387">5</text></g>
+                        <g class="pin" data-tip="6" tabindex="0" role="button" aria-label="Tip 6"><circle cx="838" cy="127" r="12"/><text x="838" y="127">6</text></g>
+                        <g class="pin" data-tip="7" tabindex="0" role="button" aria-label="Tip 7"><circle cx="838" cy="197" r="12"/><text x="838" y="197">7</text></g>
+                        <g class="pin" data-tip="8" tabindex="0" role="button" aria-label="Tip 8"><circle cx="838" cy="267" r="12"/><text x="838" y="267">8</text></g>
+                    </svg>
+                    </div>
+                </figure>
+
+                <ol class="tips" id="tips">
+                    <li data-n="1"><b>Configs live outside <code>src/</code></b>They change per environment and per experiment, so they don't belong in the package. One YAML per run, checked by Pydantic, is what makes a run repeatable. <code>uv</code> plus a setup script picks the right PyTorch build (CPU on a Mac, CUDA when it finds a GPU).</li>
+                    <li data-n="2"><b>JSONL as the dataset format</b>One exercise per line. Easy to stream, split into chunks and process in parallel, and readable in a diff.</li>
+                    <li data-n="3"><b>Text and images in one vector</b>With CLIP, the feature pipeline embeds the description and the images, then averages them (<code>text_weight: 0.5</code>, <code>image_weight: 0.5</code>). Section 03 shows why that wasn't enough for text queries.</li>
+                    <li data-n="4"><b>Build the eval set before tuning</b>69 queries generated from metadata combinations, like <em>"plyometrics exercise for hamstrings"</em>. The combinations used for eval and for training pairs are kept separate.</li>
+                    <li data-n="5"><b>Track runs instead of printing them</b>Each run logs its setup as params and its results as metrics. A local SQLite file is enough; no server needed. More in section 05.</li>
+                    <li data-n="6"><b>The same model on both sides</b>The query has to be embedded by the exact model version that embedded the corpus. Fine-tune the model and you have to re-embed and re-index everything.</li>
+                    <li data-n="7"><b>One interface for every backend</b>NumPy, Milvus Lite and BM25 all implement <code>SearchBackend.search(vector, top_k)</code>. Swapping in Lance would be one new ~100-line class; nothing else would change.</li>
+                    <li data-n="8"><b>Fail loudly</b>If Ollama isn't running, <code>answer()</code> raises a clear error. It doesn't quietly fall back to search-only, which would look like it works.</li>
+                </ol>
+
+                <h3>How that maps to the code</h3>
+<div class="tree">configs/                <i>one YAML per pipeline run</i>
+src/
+  config/               <i>Pydantic schemas for those YAMLs</i>
+  feature_pipeline/     <i>loaders → embedders → storage</i>
+  training_pipeline/    <i>contrastive fine-tune, MLflow experiments</i>
+  inference_pipeline/
+    backends/           <i>numpy · Milvus Lite · BM25, one interface</i>
+    generation.py       <i>Ollama: the "G" in RAG</i>
+    gradio_app.py       <i>the UI</i>
+  eval/                 <i>eval set, metrics, RRF, index sweep</i>
+tests/                  <i>pytest, run in CI with ruff</i></div>
+            </section>
+
+            <!-- ============ 02 TRAINING VS INFERENCE ============ -->
+            <section class="section">
+                <div class="section-eyebrow">02 · Training vs. inference</div>
+                <h2>Same model, two very different jobs</h2>
+                <p>
+                    Before this project, "training" and "inference" were just two scripts to me. Splitting them into separate pipelines made it clear they care about different things, and that the only thing they share is a model version.
+                </p>
+
+                <div class="table-wrap">
+                <table class="compare">
+                    <thead>
+                        <tr><th></th><th>Training</th><th>Inference</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><th>Runs</th><td>Offline, when I change the model</td><td>On every query</td></tr>
+                        <tr><th>Input</th><td>Pairs: (query, matching exercise)</td><td>One user question</td></tr>
+                        <tr><th>Output</th><td>New weights, logged to MLflow</td><td>Ranked exercises and an answer</td></tr>
+                        <tr><th>Cares about</th><td>Throughput, GPU memory, reproducibility</td><td>Latency, and giving the same answer twice</td></tr>
+                        <tr><th>Fails by</th><td>Overfitting to the eval set</td><td>Using a different model than the index was built with</td></tr>
+                    </tbody>
+                </table>
+                </div>
+
+                <p>
+                    The feature pipeline sits in front of both and also runs offline. Embedding all 873 exercises happens once per model, so a query only has to embed one short sentence and run a search.
+                </p>
+            </section>
+
+            <!-- ============ 03 EMBEDDINGS ============ -->
+            <section class="section">
+                <div class="section-eyebrow">03 · Embeddings</div>
+                <h2>Text vs. images: CLIP was the wrong default</h2>
+                <p>
+                    An embedding turns an exercise into a list of numbers, so that similar exercises end up close together. Search is then "find the vectors closest to the query vector", usually by cosine similarity. A toy version with three made-up dimensions shows the idea (the real vectors have 384 dimensions that don't map to named concepts):
+                </p>
+
+                <div class="table-wrap">
+                <table class="compare">
+                    <thead>
+                        <tr><th>Exercise</th><th>Toy vector <code>[band, shoulder, push↔pull]</code></th><th class="num">Cosine to query</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr class="best"><td>Query: Internal Rotation with Band</td><td><code>[1, 1, 0]</code></td><td class="num">1.00</td></tr>
+                        <tr><td>Band Hip Adductions</td><td><code>[1, 0, 0]</code></td><td class="num">0.71</td></tr>
+                        <tr><td>Front Cable Raise</td><td><code>[0, 1, 1]</code></td><td class="num">0.50</td></tr>
+                        <tr><td>Bench Press with Bands</td><td><code>[1, 0, 1]</code></td><td class="num">0.50</td></tr>
+                        <tr><td>Bent Over Barbell Row</td><td><code>[-1, 0, 1]</code></td><td class="num">−0.50</td></tr>
+                    </tbody>
+                </table>
+                </div>
+
+                <p>
+                    The question is which model produces those numbers. The dataset has images, so I started with CLIP. The two kinds of model are trained for different things:
+                </p>
+
+                <figure class="figure">
+                    <div class="figure-scroll">
+                    <svg viewBox="0 0 860 270" role="img" aria-labelledby="embTitle embDesc">
+                        <title id="embTitle">Text embedding space vs. CLIP embedding space</title>
+                        <desc id="embDesc">Left: a text embedder places exercise descriptions with similar meaning close together. Right: CLIP is trained to place an image close to its own caption, not captions close to each other.</desc>
+                        <rect class="d-lane" x="0" y="0" width="415" height="270" rx="22"/>
+                        <rect class="d-lane" x="445" y="0" width="415" height="270" rx="22"/>
+
+                        <text class="d-eyebrow" x="24" y="30">TEXT EMBEDDER · all-MiniLM-L6-v2</text>
+                        <text class="d-title" x="24" y="52">text ↔ text</text>
+
+                        <!-- cluster A -->
+                        <circle cx="110" cy="128" r="54" class="d-faint"/>
+                        <circle class="d-dot" cx="88" cy="110" r="5"/><text class="d-sub" x="97" y="114">push-up</text>
+                        <circle class="d-dot" cx="80" cy="140" r="5"/><text class="d-sub" x="89" y="144">press-up</text>
+                        <circle class="d-dot" cx="118" cy="160" r="5"/><text class="d-sub" x="127" y="164">incline push-up</text>
+                        <!-- query -->
+                        <circle class="d-dot alt" cx="140" cy="96" r="6"/>
+                        <text class="d-sub" x="150" y="92" style="fill: var(--text)">query: "chest, no equipment"</text>
+                        <!-- cluster B -->
+                        <circle cx="305" cy="195" r="48" class="d-faint"/>
+                        <circle class="d-dot" cx="285" cy="185" r="5"/><text class="d-sub" x="294" y="189">hamstring curl</text>
+                        <circle class="d-dot" cx="300" cy="215" r="5"/><text class="d-sub" x="309" y="219">Romanian deadlift</text>
+                        <text class="d-small" x="24" y="252">Similar meaning → close together. Good for text queries.</text>
+
+                        <text class="d-eyebrow" x="469" y="30">CLIP · clip-vit-base-patch32</text>
+                        <text class="d-title" x="469" y="52">text ↔ image</text>
+
+                        <!-- pairs -->
+                        <g>
+                            <rect class="d-node" x="490" y="80" width="40" height="40" rx="8"/>
+                            <path class="d-arrow" d="M498 112 L508 96 L515 104 L522 92" style="stroke-width:1.2"/>
+                            <path class="d-faint" d="M532 100 L585 100"/>
+                            <text class="d-sub" x="592" y="104">"a person doing a push-up"</text>
+                        </g>
+                        <g>
+                            <rect class="d-node" x="490" y="140" width="40" height="40" rx="8"/>
+                            <path class="d-arrow" d="M498 172 L506 154 L514 166 L522 150" style="stroke-width:1.2"/>
+                            <path class="d-faint" d="M532 160 L585 160"/>
+                            <text class="d-sub" x="592" y="164">"a person doing a deadlift"</text>
+                        </g>
+                        <circle class="d-dot alt" cx="500" cy="212" r="6"/>
+                        <text class="d-sub" x="512" y="216" style="fill: var(--text)">text query: no image to anchor it</text>
+                        <text class="d-small" x="469" y="252">Image close to its own caption. Text-to-text is a side effect.</text>
+                    </svg>
+                    </div>
+                </figure>
+
+                <p>On my eval set, text-only queries made that difference very visible:</p>
+
+                <div class="bars" aria-label="Recall at 10 by embedder">
+                    <div class="bar-row hi"><span>Sentence embedder</span><div class="bar-track"><div class="bar-fill" style="width: 35.6%"></div></div><span class="bar-value">0.356</span></div>
+                    <div class="bar-row neg"><span>CLIP (text side)</span><div class="bar-track"><div class="bar-fill" style="width: 3.3%"></div></div><span class="bar-value">0.033</span></div>
+                </div>
+                <p class="caption">Recall@10 on 69 text queries: about 10× apart.</p>
+
+                <div class="note">
+                    <span class="label">Lesson</span>
+                    <p>Pick the embedder for the <strong>query</strong>, not for the data. My users type text, so a text embedder wins even though every exercise has a picture. CLIP earns its place when the query is an image, like "find exercises that look like this photo", which is on my list with pose estimation.</p>
+                </div>
+            </section>
+
+            <!-- ============ 04 RETRIEVAL ============ -->
+            <section class="section">
+                <div class="section-eyebrow">04 · Retrieval</div>
+                <h2>Why the boring baseline almost won</h2>
+                <p>
+                    I expected dense search to beat keyword search (BM25) easily. It barely did. My queries are short and full of exact terms, like "hamstrings" or "kettlebell", which is exactly what BM25 is built for. Combining the two worked better than either, using <strong><a href="https://plg.uwaterloo.ca/~gvcormac/cormacksigir09-rrf.pdf" target="_blank" rel="noopener">Reciprocal Rank Fusion</a></strong>:
+                </p>
+
+                <div class="rrf" aria-label="Reciprocal rank fusion example">
+                    <div class="col">
+                        <h4>BM25</h4>
+                        <ol><li>Bodyweight squat <small>#1</small></li><li>Walking lunge <small>#2</small></li><li>Step-up <small>#3</small></li></ol>
+                    </div>
+                    <div class="col">
+                        <h4>Dense</h4>
+                        <ol><li>Walking lunge <small>#1</small></li><li>Glute bridge <small>#2</small></li><li>Bodyweight squat <small>#3</small></li></ol>
+                    </div>
+                    <div class="op" aria-hidden="true">→</div>
+                    <div class="col fused">
+                        <h4>Fused (RRF, k = 60)</h4>
+                        <ol><li>Walking lunge <small>0.0325</small></li><li>Bodyweight squat <small>0.0323</small></li><li>Glute bridge <small>0.0161</small></li><li>Step-up <small>0.0159</small></li></ol>
+                    </div>
+                </div>
+                <p class="formula"><code>score(doc) = Σ 1 / (60 + rank)</code> over every list the doc appears in</p>
+                <p class="caption" style="margin-top:-1rem; margin-bottom: 1.5rem;">Illustrative example for "bodyweight leg exercise". Showing up high in both lists beats being first in one.</p>
+
+                <ul>
+                    <li><strong>Fuse ranks, not scores.</strong> BM25 scores and cosine similarities are on different scales, so adding them directly makes no sense. Ranks are comparable.</li>
+                    <li><strong>Fuse from a deeper pool.</strong> I take the top 20 from each retriever, fuse, then cut to 10. Fusing two lists that are already cut to 10 leaves RRF too little to work with.</li>
+                </ul>
+
+                <div class="table-wrap">
+                <table class="compare">
+                    <thead>
+                        <tr><th>System</th><th class="num">Recall@10</th><th class="num">nDCG@10</th><th class="num">MRR</th><th class="num">MAP@10</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>BM25</td><td class="num">0.348</td><td class="num">0.614</td><td class="num">0.528</td><td class="num">0.274</td></tr>
+                        <tr><td>Dense (Sentence-Transformers)</td><td class="num">0.356</td><td class="num">0.665</td><td class="num">0.620</td><td class="num">0.317</td></tr>
+                        <tr><td>Dense (CLIP text)</td><td class="num">0.033</td><td class="num">0.080</td><td class="num">0.051</td><td class="num">0.016</td></tr>
+                        <tr class="best"><td>Hybrid RRF (BM25 + Sentence)</td><td class="num">0.408</td><td class="num">0.707</td><td class="num">0.670</td><td class="num">0.354</td></tr>
+                        <tr><td>Hybrid RRF (BM25 + CLIP)</td><td class="num">0.241</td><td class="num">0.547</td><td class="num">0.508</td><td class="num">0.153</td></tr>
+                    </tbody>
+                </table>
+                </div>
+                <p class="caption">Hybrid beats both of its parts on every metric. Fusing with a weak retriever (CLIP) drags BM25 down.</p>
+
+                <h3>Fine-tuning, and reading the result honestly</h3>
+                <p>
+                    Then I fine-tuned the sentence embedder on (query, exercise) pairs with <code>MultipleNegativesRankingLoss</code>. Every other pair in a batch serves as a negative example, so there's no negative mining to do.
+                </p>
+                <div class="bars" aria-label="Recall at 10 before and after fine-tuning">
+                    <div class="bar-row"><span>Off-the-shelf</span><div class="bar-track"><div class="bar-fill" style="width: 35.6%"></div></div><span class="bar-value">0.356</span></div>
+                    <div class="bar-row hi"><span>Fine-tuned</span><div class="bar-track"><div class="bar-fill" style="width: 81.3%"></div></div><span class="bar-value">0.813</span></div>
+                </div>
+                <p>
+                    That looks great, and I don't fully trust it. Training pairs and eval queries come from the same metadata templates, so the model mostly learned <em>this dataset's phrasing</em>. That's useful for this app, but it doesn't show the model would handle a question worded in a way it has never seen. A real test needs queries written by people.
+                </p>
+            </section>
+
+            <!-- ============ 05 MLFLOW ============ -->
+            <section class="section">
+                <div class="section-eyebrow">05 · Experiment tracking</div>
+                <h2>Why MLflow instead of print()</h2>
+                <p>
+                    Printing results works until you want to compare a run from today with one from last week, under a different config. MLflow records each run with what went in and what came out, and puts them in one sortable table.
+                </p>
+
+                <div class="table-wrap">
+                <table class="compare">
+                    <thead>
+                        <tr><th>Run</th><th><span class="group">param</span> embedding_type</th><th><span class="group">param</span> model</th><th class="num"><span class="group">metric</span> Recall@10</th><th class="num"><span class="group">metric</span> nDCG@10</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>clip-baseline</td><td>clip</td><td>clip-vit-base-patch32</td><td class="num">0.033</td><td class="num">0.080</td></tr>
+                        <tr><td>sentence-baseline</td><td>sentence</td><td>all-MiniLM-L6-v2</td><td class="num">0.356</td><td class="num">0.665</td></tr>
+                        <tr class="best"><td>contrastive-finetune</td><td>sentence</td><td>all-MiniLM-L6-v2 (tuned)</td><td class="num">0.813</td><td class="num">0.990</td></tr>
+                    </tbody>
+                </table>
+                </div>
+                <p class="caption">A simplified view of the runs table: setup on the left, results on the right.</p>
+
+                <ul>
+                    <li><strong>Params vs. metrics is the whole trick.</strong> Setup goes in <code>log_param</code> (model, batch size, device, loss). Numbers go in <code>log_metric</code> (encoding time, samples/sec, retrieval scores). Keeping that split consistent is what lines runs up in the UI.</li>
+                    <li><strong>Log retrieval metrics, not just loss.</strong> Training loss going down tells you nothing about search quality. The before/after Recall@10 is logged on the run, so the comparison can be looked up later instead of scrolling through a terminal.</li>
+                    <li><strong>No server to start with.</strong> A local SQLite file holds everything. A shared tracking server only matters when other people need to see the runs.</li>
+                </ul>
+            </section>
+
+            <!-- ============ 06 VECTOR DB ============ -->
+            <section class="section">
+                <div class="section-eyebrow">06 · The vector database</div>
+                <h2>Milvus Lite, and an index sweep that found nothing</h2>
+                <p>
+                    I used <strong>Milvus Lite</strong>: an embedded build of the full Milvus engine that stores everything in one local file (438 KB for 100 exercises × 384 dimensions). The reason to pick it is the API. It's the same <code>MilvusClient</code> as a production cluster, so moving to a server means changing a path to a URI.
+                </p>
+                <p>
+                    To understand the trade-off, I also prototyped <strong>Lance</strong>. Lance is a file format, not a database: no process, just versioned Arrow files in a folder or a bucket, which DuckDB or Polars can read directly.
+                </p>
+
+                <div class="table-wrap">
+                <table class="compare">
+                    <thead>
+                        <tr><th></th><th>Milvus Lite → Milvus</th><th>Lance / LanceDB</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><th>What it is</th><td>A database engine, embedded</td><td>A file format plus a client library</td></tr>
+                        <tr><th>To scale</th><td>Point the client at a Milvus cluster</td><td>Point it at S3 or GCS; no cluster to run</td></tr>
+                        <tr><th>Versions</th><td>Not built in</td><td>Every write is a new version you can query</td></tr>
+                        <tr><th>Pick it when</th><td>You want local dev to match production</td><td>You want to version embeddings like code</td></tr>
+                    </tbody>
+                </table>
+                </div>
+
+                <h3>FLAT vs. IVF vs. HNSW</h3>
+                <p>
+                    Then I swept approximate-nearest-neighbour indexes, including deliberately weak settings meant to lose recall:
+                </p>
+
+                <figure class="figure">
+                    <div class="figure-scroll">
+                    <svg viewBox="0 0 820 150" role="img" aria-labelledby="sweepTitle sweepDesc">
+                        <title id="sweepTitle">Index sweep: p95 latency per index configuration</title>
+                        <desc id="sweepDesc">Seven index configurations all had p95 latency between 0.33 and 0.44 milliseconds, and all returned the same top 10 as exact search.</desc>
+                        <line x1="60" y1="75" x2="760" y2="75" style="stroke: var(--border); stroke-width: 1.5"/>
+                        <g class="d-small" text-anchor="middle">
+                            <line x1="60" y1="70" x2="60" y2="80" style="stroke: var(--text-subtle)"/><text x="60" y="140">0.30 ms</text>
+                            <line x1="293" y1="70" x2="293" y2="80" style="stroke: var(--text-subtle)"/><text x="293" y="140">0.35 ms</text>
+                            <line x1="527" y1="70" x2="527" y2="80" style="stroke: var(--text-subtle)"/><text x="527" y="140">0.40 ms</text>
+                            <line x1="760" y1="70" x2="760" y2="80" style="stroke: var(--text-subtle)"/><text x="760" y="140">0.45 ms</text>
+                        </g>
+                        <g text-anchor="middle">
+                            <circle class="d-dot alt" cx="181" cy="75" r="6"/><text class="d-sub" x="181" y="50">HNSW starved</text>
+                            <circle class="d-dot alt" cx="326" cy="75" r="6"/><text class="d-sub" x="326" y="108">HNSW M=32</text>
+                            <circle class="d-dot alt" cx="387" cy="75" r="6"/><text class="d-sub" x="387" y="50">IVF nlist=16</text>
+                            <circle class="d-dot alt" cx="443" cy="75" r="6"/><text class="d-sub" x="443" y="108">IVF starved</text>
+                            <circle class="d-dot" cx="508" cy="75" r="7"/><text class="d-sub" x="508" y="50" style="fill: var(--text)">FLAT (exact)</text>
+                            <circle class="d-dot alt" cx="681" cy="75" r="6"/><text class="d-sub" x="681" y="108">IVF nlist=64</text>
+                            <circle class="d-dot alt" cx="695" cy="75" r="6"/><text class="d-sub" x="695" y="50">HNSW M=16</text>
+                        </g>
+                        <text class="d-eyebrow" x="60" y="18">P95 LATENCY · RECALL VS. FLAT = 1.000 FOR ALL SEVEN</text>
+                    </svg>
+                    </div>
+                </figure>
+
+                <p>
+                    No difference. Every config returned the same top 10 as exact search, all within a tenth of a millisecond. With 873 vectors, comparing against every one of them is already instant, and an index only adds build time. I'm glad I measured it, because "use HNSW" was going to be my default.
+                </p>
+                <div class="note">
+                    <span class="label">Gotcha</span>
+                    <p>Milvus Lite's local mode rejects <code>index_type="HNSW"</code> and only accepts FLAT, IVF_FLAT or AUTOINDEX. AUTOINDEX does build an HNSW graph under the hood (<code>describe_index()</code> shows <code>M</code> and <code>efConstruction</code>), so that's how the HNSW rows above were made.</p>
+                </div>
+            </section>
+
+            <!-- ============ 07 SCALE ============ -->
+            <section class="section">
+                <div class="section-eyebrow">07 · At scale</div>
+                <h2>What would break with a million exercises and real users</h2>
+                <p>
+                    Almost nothing in this project is hard at 873 rows. That's why I sketched how it would change at scale, using what I'd been reading in the <a href="https://github.com/donnemartin/system-design-primer" target="_blank" rel="noopener">System Design Primer</a>.
+                </p>
+
+                <figure class="figure">
+                    <div class="figure-scroll">
+                    <svg viewBox="0 0 860 300" role="img" aria-labelledby="scaleTitle scaleDesc">
+                        <title id="scaleTitle">From one laptop to a scaled deployment</title>
+                        <desc id="scaleDesc">Today everything runs on one laptop: Gradio, the inference pipeline, a Milvus Lite file and Ollama. At scale, clients go through a load balancer to several API replicas, which use a cache, a sharded and replicated vector database, GPU LLM serving, and an offline re-embedding job.</desc>
+                        <defs>
+                            <marker id="ah2" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                                <path d="M0 0 L10 5 L0 10 z" style="fill: var(--line)"/>
+                            </marker>
+                        </defs>
+
+                        <!-- today -->
+                        <rect class="d-lane" x="10" y="20" width="230" height="265" rx="22"/>
+                        <text class="d-eyebrow" x="30" y="48">TODAY · ONE LAPTOP</text>
+                        <rect class="d-node" x="30" y="66" width="190" height="38" rx="10"/><text class="d-sub" x="125" y="89" text-anchor="middle">Gradio app</text>
+                        <rect class="d-node" x="30" y="120" width="190" height="38" rx="10"/><text class="d-sub" x="125" y="143" text-anchor="middle">InferencePipeline</text>
+                        <rect class="d-store" x="30" y="174" width="190" height="38" rx="19"/><text class="d-sub" x="125" y="197" text-anchor="middle">Milvus Lite file</text>
+                        <rect class="d-node" x="30" y="228" width="190" height="38" rx="10"/><text class="d-sub" x="125" y="251" text-anchor="middle">Ollama, 7B on CPU/GPU</text>
+                        <path class="d-arrow" d="M125 104 L125 118" marker-end="url(#ah2)"/>
+                        <path class="d-arrow" d="M125 158 L125 172" marker-end="url(#ah2)"/>
+                        <path class="d-arrow" d="M125 212 L125 226" marker-end="url(#ah2)"/>
+
+                        <path class="d-arrow" d="M250 152 L280 152" marker-end="url(#ah2)"/>
+
+                        <!-- scale -->
+                        <rect class="d-lane" x="290" y="20" width="560" height="265" rx="22"/>
+                        <text class="d-eyebrow" x="310" y="48">AT SCALE</text>
+
+                        <rect class="d-node" x="310" y="132" width="76" height="40" rx="10"/><text class="d-sub" x="348" y="156" text-anchor="middle">Clients</text>
+                        <rect class="d-node" x="404" y="132" width="96" height="40" rx="10"/><text class="d-sub" x="452" y="156" text-anchor="middle">Load balancer</text>
+                        <path class="d-arrow" d="M386 152 L402 152" marker-end="url(#ah2)"/>
+
+                        <rect class="d-node" x="524" y="84" width="100" height="32" rx="9"/><text class="d-sub" x="574" y="104" text-anchor="middle">API replica</text>
+                        <rect class="d-node" x="524" y="136" width="100" height="32" rx="9"/><text class="d-sub" x="574" y="156" text-anchor="middle">API replica</text>
+                        <rect class="d-node" x="524" y="188" width="100" height="32" rx="9"/><text class="d-sub" x="574" y="208" text-anchor="middle">API replica</text>
+                        <path class="d-arrow" d="M500 152 C 512 152, 510 100, 522 100" marker-end="url(#ah2)"/>
+                        <path class="d-arrow" d="M500 152 L522 152" marker-end="url(#ah2)"/>
+                        <path class="d-arrow" d="M500 152 C 512 152, 510 204, 522 204" marker-end="url(#ah2)"/>
+
+                        <rect class="d-config" x="650" y="64" width="180" height="36" rx="18"/><text class="d-sub" x="740" y="86" text-anchor="middle">Cache · query → results</text>
+                        <rect class="d-store" x="650" y="114" width="180" height="58" rx="18"/>
+                        <text class="d-sub" x="740" y="135" text-anchor="middle" style="fill: var(--text)">Vector DB</text>
+                        <text class="d-small" x="740" y="155" text-anchor="middle">shard 1 · shard 2 · replicas</text>
+                        <rect class="d-node" x="650" y="186" width="180" height="36" rx="10"/><text class="d-sub" x="740" y="208" text-anchor="middle">LLM serving on GPUs</text>
+                        <rect class="d-node" x="650" y="236" width="180" height="36" rx="10" style="stroke-dasharray: 4 3"/><text class="d-sub" x="740" y="258" text-anchor="middle">Offline re-embed job</text>
+                        <path class="d-arrow" d="M624 140 L648 140" marker-end="url(#ah2)"/>
+                        <path class="d-arrow" d="M624 100 L648 86" marker-end="url(#ah2)"/>
+                        <path class="d-arrow" d="M624 204 L648 204" marker-end="url(#ah2)"/>
+                        <path class="d-arrow dash" d="M840 254 C 856 240, 856 160, 832 150" marker-end="url(#ah2)"/>
+
+                        <!-- pins -->
+                        <g class="pin" data-issue="1" tabindex="0" role="button" aria-label="Issue 1"><circle cx="650" cy="116" r="11"/><text x="650" y="116">1</text></g>
+                        <g class="pin" data-issue="2" tabindex="0" role="button" aria-label="Issue 2"><circle cx="830" cy="116" r="11"/><text x="830" y="116">2</text></g>
+                        <g class="pin" data-issue="3" tabindex="0" role="button" aria-label="Issue 3"><circle cx="650" cy="238" r="11"/><text x="650" y="238">3</text></g>
+                        <g class="pin" data-issue="4" tabindex="0" role="button" aria-label="Issue 4"><circle cx="830" cy="66" r="11"/><text x="830" y="66">4</text></g>
+                        <g class="pin" data-issue="5" tabindex="0" role="button" aria-label="Issue 5"><circle cx="218" cy="176" r="11"/><text x="218" y="176">5</text></g>
+                        <g class="pin" data-issue="6" tabindex="0" role="button" aria-label="Issue 6"><circle cx="830" cy="188" r="11"/><text x="830" y="188">6</text></g>
+                    </svg>
+                    </div>
+                </figure>
+
+                <ol class="tips" id="issues">
+                    <li data-n="1"><b>Exact search stops being free</b>Brute force compares the query with every vector, O(N·D) per query. At 873 rows that's 0.3 ms; at millions it isn't. You need IVF or HNSW, and recall becomes a trade-off you have to measure, unlike in my sweep.</li>
+                    <li data-n="2"><b>Shards make every search fan out</b>Split the vectors across machines and each query has to hit every shard and merge the results. The slowest shard sets your latency.</li>
+                    <li data-n="3"><b>A new model means re-embedding everything</b>Every vector depends on the model version (tip 6). A new fine-tune becomes a batch job over the whole corpus, plus a switch-over without downtime. Versioned storage like Lance helps here.</li>
+                    <li data-n="4"><b>Cache the repeat queries</b>A cache keyed on <code>hash(query + model + top_k)</code> skips the encoder and the search for common queries. The hard part is clearing it when the index changes.</li>
+                    <li data-n="5"><b>One file is one point of failure</b>Milvus Lite is a single local file. At scale you want replicas and backups, and the metadata (names, muscles, images) in a database that replicates.</li>
+                    <li data-n="6"><b>The LLM is the slow part</b>A 7B model on a laptop is fine for one person. Many users means GPU serving, batching and timeouts, and most of the latency budget goes here, not to search.</li>
+                </ol>
+
+                <p style="margin-top: 1.5rem;">
+                    The eval set also stops being enough. Queries generated from templates can't test multi-step questions or real phrasing. Next I want to try these ideas on public benchmarks with human relevance labels: <strong><a href="https://github.com/beir-cellar/beir" target="_blank" rel="noopener">BEIR</a></strong> for hybrid search and reranking, and <strong><a href="https://hotpotqa.github.io/" target="_blank" rel="noopener">HotpotQA</a></strong> for questions that need more than one retrieval step.
+                </p>
+            </section>
+
+            <!-- ============ 08 NEXT ============ -->
+            <section class="section">
+                <div class="section-eyebrow">08 · Next</div>
+                <h2>Where it goes from here</h2>
+                <ul>
+                    <li><strong>A reranker.</strong> A small cross-encoder that re-scores the hybrid top-k before it reaches the LLM.</li>
+                    <li><strong>Newer embedders.</strong> <code>all-MiniLM-L6-v2</code> is fast but old. BGE, E5 and Nomic Embed go through the same benchmark script.</li>
+                    <li><strong>Search as a tool.</strong> Let the LLM decide when and what to search, through Ollama tool calling, instead of always retrieving once. That's the first step towards agentic retrieval.</li>
+                    <li><strong>Images as queries.</strong> Pose estimation on a photo, then find the exercise. This is where CLIP comes back.</li>
+                </ul>
+
+                <h3>Resources I learned from</h3>
+                <ul>
+                    <li><a href="https://www.hopsworks.ai/post/mlops-to-ml-systems-with-fti-pipelines" target="_blank" rel="noopener">From MLOps to ML Systems with Feature/Training/Inference Pipelines</a> (Hopsworks): the FTI architecture this project follows.</li>
+                    <li><a href="https://medium.com/decodingai/an-end-to-end-framework-for-production-ready-llm-systems-by-building-your-llm-twin-2cc6bb01141f" target="_blank" rel="noopener">An End-to-End Framework for Production-Ready LLM Systems</a> (Decoding AI, the "LLM Twin" course): the project idea and structure.</li>
+                    <li><a href="https://milvus.io/docs/embeddings.md#Embedding-Overview" target="_blank" rel="noopener">Milvus: Embedding overview</a>: how text and images end up in one vector space.</li>
+                    <li><a href="https://towardsdatascience.com/multimodal-embeddings-an-introduction-5dc36975966f/" target="_blank" rel="noopener">Multimodal Embeddings: An Introduction</a> (Towards Data Science) and <a href="https://bhavishyapandit9.substack.com/p/building-multimodal-embeddings-a" target="_blank" rel="noopener">Building Multimodal Embeddings</a> (Bhavishya Pandit).</li>
+                    <li><a href="https://huggingface.co/learn/cookbook/en/faiss_with_hf_datasets_and_clip" target="_blank" rel="noopener">Hugging Face cookbook: FAISS with datasets and CLIP</a>: image and text search with CLIP.</li>
+                    <li><a href="https://docs.langchain.com/oss/python/integrations/vectorstores" target="_blank" rel="noopener">LangChain vector store integrations</a>: the overview I used to compare vector databases.</li>
+                    <li><a href="https://plg.uwaterloo.ca/~gvcormac/cormacksigir09-rrf.pdf" target="_blank" rel="noopener">Reciprocal Rank Fusion</a> (Cormack, Clarke &amp; Büttcher, SIGIR 2009): the original RRF paper, where k = 60 comes from.</li>
+                    <li><a href="https://github.com/donnemartin/system-design-primer" target="_blank" rel="noopener">System Design Primer</a>: scaling, caching, replication and load balancing for section 07.</li>
+                    <li><a href="https://github.com/wrkout/exercises.json" target="_blank" rel="noopener">exercises.json</a>: the open exercise dataset.</li>
+                </ul>
+
+                <p class="cta">
+                    <a href="https://github.com/ixsanpe/fitness-ai-assistant" target="_blank" rel="noopener">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
+                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                        </svg>
+                        Code, eval harness and notes on GitHub
+                    </a>
+                </p>
+            </section>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; <span id="currentYear"></span> Ixeia Sánchez Périz. All rights reserved.</p>
+        <p><a href="../index.html">← Back to Portfolio</a></p>
+    </footer>
+
+    <script>
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        // Dark mode toggle
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const sunIcon = document.querySelector('.sun-icon');
+        const moonIcon = document.querySelector('.moon-icon');
+        const html = document.documentElement;
+
+        let currentTheme = 'dark';
+        try { currentTheme = localStorage.getItem('theme') || 'dark'; } catch (e) {}
+        html.setAttribute('data-theme', currentTheme);
+        updateIcons(currentTheme);
+
+        darkModeToggle.addEventListener('click', () => {
+            const next = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+            html.setAttribute('data-theme', next);
+            try { localStorage.setItem('theme', next); } catch (e) {}
+            updateIcons(next);
+        });
+
+        function updateIcons(theme) {
+            sunIcon.style.display = theme === 'dark' ? 'none' : 'block';
+            moonIcon.style.display = theme === 'dark' ? 'block' : 'none';
+        }
+
+        // Diagram pins <-> tip cards
+        function linkPins(attr, listId) {
+            const pins = document.querySelectorAll('.pin[' + attr + ']');
+            const items = document.querySelectorAll('#' + listId + ' li');
+            const set = (n) => {
+                pins.forEach(p => p.classList.toggle('on', p.getAttribute(attr) === n));
+                items.forEach(li => li.classList.toggle('on', li.dataset.n === n));
+            };
+            pins.forEach(p => {
+                const n = p.getAttribute(attr);
+                p.addEventListener('mouseenter', () => set(n));
+                p.addEventListener('focus', () => set(n));
+                p.addEventListener('click', () => {
+                    set(n);
+                    const li = document.querySelector('#' + listId + ' li[data-n="' + n + '"]');
+                    if (li && window.matchMedia('(max-width: 768px)').matches) {
+                        li.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                });
+                p.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); p.dispatchEvent(new Event('click')); } });
+            });
+            items.forEach(li => li.addEventListener('mouseenter', () => set(li.dataset.n)));
+        }
+        linkPins('data-tip', 'tips');
+        linkPins('data-issue', 'issues');
+    </script>
+</body>
+</html>

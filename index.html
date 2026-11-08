@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="system.css">
     <style>
         html, body { overflow-x: clip; }
+        html { scroll-padding-top: 5rem; }
 
         /* ---------- Nav ---------- */
         nav ul {
@@ -736,8 +737,8 @@
                 <ul>
                     <li><a href="#about">About</a></li>
                     <li><a href="#experience">Experience</a></li>
-                    <li><a href="#work">Portfolio</a></li>
-                    <li><a href="#recognition-stage">Awards</a></li>
+                    <li><a href="#portfolio">Portfolio</a></li>
+                    <li><a href="#recognition">Recognition</a></li>
                     <li><a href="#contact">Contact</a></li>
                 </ul>
                 <button id="darkModeToggle" class="dark-mode-toggle" aria-label="Toggle dark mode">
@@ -769,7 +770,7 @@
         <div class="portrait-wrap">
             <span class="blob back"></span>
             <span class="blob sand"></span>
-            <img src="assets/profile_cafe.jpg" alt="Illustrated portrait of Ixeia Sánchez Périz in a wooden café" class="portrait">
+            <img src="assets/profile_desk.jpg" alt="Ixeia Sánchez Périz at her desk with data pipeline diagrams in the background" class="portrait">
             <svg class="botanical" data-kind="fern" data-seed="3" data-opts='{"length":340,"leaves":11,"leafLen":80,"bend":0.3,"veins":3}' aria-hidden="true"></svg>
         </div>
         <svg class="hero-ridge botanical" data-kind="ridge" data-seed="11" data-opts='{"width":1200,"height":80}' data-stroke="1" preserveAspectRatio="none" aria-hidden="true"></svg>
@@ -885,7 +886,7 @@
         </section>
 
         <!-- ===== Portfolio (interactive system of projects & talks) ===== -->
-        <header class="stage" id="work">
+        <header class="stage" id="portfolio">
             <span class="pin marker"></span>
             <p class="eyebrow">03</p>
             <h2>Portfolio</h2>
@@ -908,13 +909,13 @@
         </section>
 
         <!-- ===== Recognition ===== -->
-        <header class="stage" id="recognition-stage">
+        <header class="stage" id="recognition">
             <span class="pin marker"></span>
             <p class="eyebrow">04</p>
             <h2>Recognition</h2>
         </header>
 
-        <div class="waypoint left" id="recognition">
+        <div class="waypoint left">
             <span class="pin marker">03</span>
             <article class="card">
                 <ul class="log">
@@ -955,8 +956,8 @@
             <g class="rm-stop" data-target="top" tabindex="0" role="listitem" aria-label="Intro"><circle cx="28" cy="124" r="4"/><text x="28" y="141" text-anchor="middle">Intro</text></g>
             <g class="rm-stop" data-target="about" tabindex="0" role="listitem" aria-label="About"><circle cx="62" cy="96" r="4"/><text x="58" y="86" text-anchor="middle">About</text></g>
             <g class="rm-stop" data-target="experience" tabindex="0" role="listitem" aria-label="Experience"><circle cx="106" cy="110" r="4"/><text x="106" y="127" text-anchor="middle">Experience</text></g>
-            <g class="rm-stop" data-target="work" tabindex="0" role="listitem" aria-label="Portfolio"><circle cx="138" cy="80" r="4"/><text x="128" y="72" text-anchor="end">Portfolio</text></g>
-            <g class="rm-stop" data-target="recognition-stage" tabindex="0" role="listitem" aria-label="Awards"><circle cx="166" cy="58" r="4"/><text x="174" y="66" text-anchor="start">Awards</text></g>
+            <g class="rm-stop" data-target="portfolio" tabindex="0" role="listitem" aria-label="Portfolio"><circle cx="138" cy="80" r="4"/><text x="128" y="72" text-anchor="end">Portfolio</text></g>
+            <g class="rm-stop" data-target="recognition" tabindex="0" role="listitem" aria-label="Recognition"><circle cx="166" cy="58" r="4"/><text x="172" y="70" text-anchor="start">Recognition</text></g>
             <g class="rm-stop" data-target="contact" tabindex="0" role="listitem" aria-label="Contact"><circle cx="194" cy="26" r="4"/><text x="180" y="14" text-anchor="end">Contact</text></g>
             <circle class="rm-me-ring" id="rmRing" cx="28" cy="124" r="4"/>
             <circle class="rm-me" id="rmMe" cx="28" cy="124" r="3"/>
@@ -1138,6 +1139,7 @@
             function go(g) {
                 const t = document.getElementById(g.dataset.target);
                 if (t) t.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' });
+                history.replaceState(null, '', '#' + g.dataset.target);
                 if (window.innerWidth <= 860) setOpen(false);
             }
             stopsEl.forEach(g => {

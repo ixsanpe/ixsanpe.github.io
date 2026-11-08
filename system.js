@@ -326,4 +326,21 @@
     Object.assign(cam, target);
     apply();
     if (!reduced) requestAnimationFrame(loop);
+
+    // ---------------------------------------------------------------- deep links
+    // #sailor, #talks, … open that part; old anchors (#work, #recognition-stage, #awards) still resolve.
+    const ALIASES = { work: 'portfolio', system: 'portfolio', 'recognition-stage': 'recognition', awards: 'recognition' };
+    function fromHash() {
+        const h = decodeURIComponent(location.hash.slice(1));
+        if (!h) return;
+        let dest = ALIASES[h];
+        if (PARTS[h] && h !== 'overview') { select(h); dest = 'portfolio'; }
+        if (!dest) return;
+        history.replaceState(null, '', '#' + dest);
+        const el = document.getElementById(dest);
+        if (el) el.scrollIntoView({ block: 'start', behavior: 'auto' });
+    }
+    window.addEventListener('hashchange', fromHash);
+    fromHash();
+    window.addEventListener('load', fromHash, { once: true });
 })();

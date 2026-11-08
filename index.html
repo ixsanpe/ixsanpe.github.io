@@ -115,7 +115,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            object-position: center 15%;
+            object-position: center 62%;
             border-radius: var(--blob-c);
         }
 
@@ -505,6 +505,77 @@
         .contact-list .label { font-size: 1.3rem; font-weight: 500; letter-spacing: -0.02em; }
         .contact-list .meta { font-size: 0.85rem; color: var(--text-subtle); font-weight: 300; }
 
+        /* ---------- Route map index ---------- */
+        .route-map {
+            position: fixed;
+            right: 1.25rem;
+            bottom: 1.25rem;
+            z-index: 950;
+            width: 236px;
+            padding: 0.85rem 0.85rem 0.6rem;
+            background: color-mix(in srgb, var(--surface) 92%, transparent);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 16px 40px -20px rgba(31, 45, 36, 0.35);
+            transition: transform 0.5s var(--ease), opacity 0.5s var(--ease);
+        }
+
+        .route-map-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 0.2rem;
+        }
+
+        .route-map-head .eyebrow { margin: 0; }
+        .route-map-head span:last-child { font-size: 0.72rem; color: var(--text-subtle); font-variant-numeric: tabular-nums; }
+
+        .route-map svg { display: block; width: 100%; height: auto; overflow: visible; }
+        .route-map .rm-land { fill: var(--shape-sage-soft); }
+        .route-map .rm-contour { fill: none; stroke: var(--shape-sage); stroke-width: 1; }
+        .route-map .rm-path { fill: none; stroke: var(--line); stroke-opacity: 0.35; stroke-width: 1.5; stroke-dasharray: 2 4; stroke-linecap: round; }
+        .route-map .rm-walked { fill: none; stroke: var(--line); stroke-width: 2; stroke-linecap: round; }
+        .route-map .rm-me { fill: var(--line); }
+        .route-map .rm-me-ring { fill: none; stroke: var(--line); animation: rmring 1.8s var(--ease) infinite; transform-box: fill-box; transform-origin: center; }
+        @keyframes rmring { from { opacity: 0.6; transform: scale(1); } to { opacity: 0; transform: scale(2.6); } }
+
+        .route-map .rm-stop { cursor: pointer; }
+        .route-map .rm-stop circle { fill: var(--surface); stroke: var(--text-subtle); stroke-width: 1.5; transition: fill 0.3s, stroke 0.3s, r 0.3s; }
+        .route-map .rm-stop text { font-family: var(--font-body); font-size: 9.5px; font-weight: 500; fill: var(--text-muted); transition: fill 0.3s; }
+        .route-map .rm-stop.done circle { fill: var(--shape-sand); stroke: var(--line); }
+        .route-map .rm-stop.current circle { fill: var(--line); stroke: var(--line); r: 5.5; }
+        .route-map .rm-stop.current text { fill: var(--text); }
+        .route-map .rm-stop:hover text, .route-map .rm-stop:focus text { fill: var(--accent); }
+        .route-map .rm-stop:focus { outline: none; }
+        .route-map .rm-stop:focus-visible circle { stroke: var(--accent); stroke-width: 2.5; }
+
+        .route-map-toggle { display: none; }
+
+        @media (max-width: 860px) {
+            .route-map { right: 0.75rem; bottom: 0.75rem; width: 220px; transform-origin: bottom right; }
+            .route-map:not(.open) { transform: scale(0.2); opacity: 0; pointer-events: none; }
+            .route-map-toggle {
+                display: flex;
+                position: fixed;
+                right: 0.9rem;
+                bottom: 0.9rem;
+                z-index: 960;
+                width: 46px;
+                height: 46px;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+                border: 1px solid var(--border);
+                background: var(--surface);
+                color: var(--accent);
+                box-shadow: 0 10px 30px -12px rgba(31, 45, 36, 0.4);
+                cursor: pointer;
+            }
+            .route-map.open + .route-map-toggle { bottom: calc(0.9rem + 200px); }
+        }
+
         /* ---------- Responsive ---------- */
         @media (max-width: 1100px) {
             .trail > .blob, .trail > .botanical { display: none; }
@@ -581,7 +652,7 @@
         <div class="portrait-wrap">
             <span class="blob back"></span>
             <span class="blob sand"></span>
-            <img src="assets/profile_small.jpg" alt="Ixeia Sánchez Périz" class="portrait">
+            <img src="assets/profile_illustrated.jpg" alt="Illustrated portrait of Ixeia Sánchez Périz on a green hillside above the sea" class="portrait">
             <svg class="botanical" data-kind="fern" data-seed="3" data-opts='{"length":340,"leaves":11,"leafLen":80,"bend":0.3,"veins":3}' aria-hidden="true"></svg>
         </div>
         <svg class="hero-ridge botanical" data-kind="ridge" data-seed="11" data-opts='{"width":1200,"height":80}' data-stroke="1" preserveAspectRatio="none" aria-hidden="true"></svg>
@@ -753,9 +824,34 @@
         </section>
     </main>
 
+    <!-- Route map index -->
+    <aside class="route-map" id="routeMap" aria-label="Page index">
+        <div class="route-map-head"><span class="eyebrow">Route</span><span id="rmPct">0%</span></div>
+        <svg viewBox="0 0 220 150" role="list">
+            <path class="rm-land" d="M12 132 C4 96 22 58 58 44 C88 32 104 10 146 8 C190 6 214 30 212 66 C210 104 186 140 132 144 C84 148 22 150 12 132 Z"/>
+            <ellipse class="rm-contour" cx="186" cy="34" rx="16" ry="11"/>
+            <ellipse class="rm-contour" cx="180" cy="42" rx="32" ry="22"/>
+            <ellipse class="rm-contour" cx="170" cy="54" rx="52" ry="36"/>
+            <path class="rm-contour" d="M24 128 C60 112 100 126 150 108 C176 98 196 104 206 96"/>
+            <path class="rm-path" id="rmPath" d="M28 124 C46 114 58 96 76 92 S110 114 128 106 S150 72 160 62 S184 36 194 26"/>
+            <path class="rm-walked" id="rmWalked" d="M28 124 C46 114 58 96 76 92 S110 114 128 106 S150 72 160 62 S184 36 194 26"/>
+            <path d="M188 22 L194 12 L200 22 Z" fill="var(--line)" opacity="0.8"/>
+            <g class="rm-stop" data-target="top" tabindex="0" role="listitem" aria-label="Intro"><circle cx="28" cy="124" r="4"/><text x="28" y="141" text-anchor="middle">Intro</text></g>
+            <g class="rm-stop" data-target="about" tabindex="0" role="listitem" aria-label="About"><circle cx="76" cy="92" r="4"/><text x="76" y="81" text-anchor="middle">About</text></g>
+            <g class="rm-stop" data-target="work" tabindex="0" role="listitem" aria-label="Projects"><circle cx="128" cy="106" r="4"/><text x="128" y="123" text-anchor="middle">Projects</text></g>
+            <g class="rm-stop" data-target="talks" tabindex="0" role="listitem" aria-label="Talks and recognition"><circle cx="160" cy="62" r="4"/><text x="146" y="58" text-anchor="end">Talks</text></g>
+            <g class="rm-stop" data-target="contact" tabindex="0" role="listitem" aria-label="Contact"><circle cx="194" cy="26" r="4"/><text x="180" y="14" text-anchor="end">Contact</text></g>
+            <circle class="rm-me-ring" id="rmRing" cx="28" cy="124" r="4"/>
+            <circle class="rm-me" id="rmMe" cx="28" cy="124" r="3"/>
+        </svg>
+    </aside>
+    <button class="route-map-toggle" id="routeMapToggle" type="button" aria-label="Show page map" aria-expanded="false">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2z"/><path d="M9 4v14M15 6v14"/></svg>
+    </button>
+
     <footer>
-        <p>&copy; <span id="currentYear"></span> Ixeia Sánchez Périz · Built with GitHub Copilot &amp; Claude</p>
-        <p><a href="design-system.html">Design system</a> · Last updated <span id="lastUpdated"></span></p>
+        <p>&copy; <span id="currentYear"></span> Ixeia Sánchez Périz</p>
+        <p>Last updated <span id="lastUpdated"></span></p>
     </footer>
 
     <script src="botanicals.js"></script>
@@ -899,6 +995,75 @@
             }, { passive: true });
             parallax();
         }
+        // ---------- Route map index ----------
+        (function () {
+            const map = document.getElementById('routeMap');
+            const path = document.getElementById('rmPath');
+            const walked = document.getElementById('rmWalked');
+            const me = document.getElementById('rmMe'), ring = document.getElementById('rmRing');
+            const stopsEl = [...map.querySelectorAll('.rm-stop')];
+            const len = path.getTotalLength();
+            walked.style.strokeDasharray = len;
+
+            // length along the route of each stop
+            const stopLen = stopsEl.map(g => {
+                const c = g.querySelector('circle'), cx = +c.getAttribute('cx'), cy = +c.getAttribute('cy');
+                let best = 0, bd = Infinity;
+                for (let l = 0; l <= len; l += 1) {
+                    const p = path.getPointAtLength(l), d = Math.hypot(p.x - cx, p.y - cy);
+                    if (d < bd) { bd = d; best = l; }
+                }
+                return best;
+            });
+            const sections = stopsEl.map(g => document.getElementById(g.dataset.target));
+
+            function go(g) {
+                const t = document.getElementById(g.dataset.target);
+                if (t) t.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' });
+                if (window.innerWidth <= 860) setOpen(false);
+            }
+            stopsEl.forEach(g => {
+                g.addEventListener('click', () => go(g));
+                g.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(g); } });
+            });
+
+            function update() {
+                const y = window.scrollY + window.innerHeight * 0.4;
+                const tops = sections.map(s => s.getBoundingClientRect().top + window.scrollY);
+                const end = document.documentElement.scrollHeight - window.innerHeight * 0.6;
+                let i = 0;
+                while (i < tops.length - 1 && y >= tops[i + 1]) i++;
+                let l;
+                if (i >= tops.length - 1 || window.scrollY >= document.documentElement.scrollHeight - window.innerHeight - 4) {
+                    i = tops.length - 1; l = stopLen[i];
+                } else {
+                    const f = Math.max(0, Math.min(1, (y - tops[i]) / (tops[i + 1] - tops[i])));
+                    l = stopLen[i] + (stopLen[i + 1] - stopLen[i]) * f;
+                }
+                const p = path.getPointAtLength(l);
+                [me, ring].forEach(c => { c.setAttribute('cx', p.x); c.setAttribute('cy', p.y); });
+                walked.style.strokeDashoffset = len - l;
+                stopsEl.forEach((g, k) => { g.classList.toggle('current', k === i); g.classList.toggle('done', k < i); });
+                document.getElementById('rmPct').textContent = Math.round(l / len * 100) + '%';
+            }
+
+            let tick = false;
+            window.addEventListener('scroll', () => {
+                if (!tick) { requestAnimationFrame(() => { update(); tick = false; }); tick = true; }
+            }, { passive: true });
+            window.addEventListener('resize', update);
+            window.addEventListener('load', update);
+            update();
+
+            // mobile: collapsible
+            const toggle = document.getElementById('routeMapToggle');
+            function setOpen(o) {
+                map.classList.toggle('open', o);
+                toggle.setAttribute('aria-expanded', o);
+                toggle.setAttribute('aria-label', o ? 'Hide page map' : 'Show page map');
+            }
+            toggle.addEventListener('click', () => setOpen(!map.classList.contains('open')));
+        })();
     </script>
 </body>
 </html>

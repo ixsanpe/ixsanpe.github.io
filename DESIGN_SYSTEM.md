@@ -1,11 +1,16 @@
-# Design System — "Alpine Botanical" (v2.1)
+# Design System — "Alpine Botanical" (v2.2)
 
 The portfolio is a quiet walk up a mountain. A single fine line draws itself as you scroll and
-links every section, from the intro to contact. The look is editorial and calm: cream paper, sage & sand
-organic shapes, fine burgundy line-art of alpine plants, and a neutral sans-serif (Inter).
+links every section, from the intro to contact. The look is editorial and calm: deep forest night
+(default) or cream paper, sage & sand organic shapes, fine line-art of alpine plants, and a neutral
+sans-serif (Inter).
 
-Tokens live in `style.css`, the line art in `botanicals.js`, the live style
-guide in `design-system.html`.
+Tokens live in `style.css`, the line art in `botanicals.js`, the interactive
+portfolio in `system.css` / `system.js`.
+
+**Page order:** Hero → 01 About → 02 Experience (CV timeline) → 03 Portfolio
+(interactive 3D system) → 04 Recognition → 05 Get in touch. A floating route map
+(bottom-right) indexes these stops.
 
 > History: v1 "Summer Trail" (cartoon landscape) felt too playful; v3 "Topo"
 > (animated contour map, mono type) felt too long and busy. v2.1 keeps the
@@ -44,14 +49,14 @@ existing subpages keep working.
 
 ## 1. Principles
 
-1. **Paper, not screen.** Warm cream backgrounds, no drop shadows, no gradients.
+1. **Calm surfaces.** Dark mode is the default (more professional); light mode is warm cream. Soft shadows only on hover.
 2. **One line.** The trail is the only strong line on the page; everything else is soft shape.
 3. **Organic, not cute.** Blobs and botanicals are decoration in the margins, never behind body text.
 4. **The hike is implied.** No hiking copy; the line, pins and plants carry the theme.
 
 ## 2. Colour
 
-| Token | Day | Night | Use |
+| Token | Day | Night (default) | Use |
 |---|---|---|---|
 | `--bg` | cream-100 `#f1ece4` | `#161d19` | page |
 | `--surface` | cream-50 `#f8f5ef` | `#1f2923` | cards |
@@ -98,6 +103,9 @@ Primitives: `--cream-*`, `--sage-*`, `--sand-*`, `--forest-*`, `--wine-*`.
 | `.contact-list` | Large rows with meta on the right ("Get in touch"). |
 | `.chip` / `.chip.live` | Small status pill; `live` pulses (work in progress). |
 | `.log` | Year + one-line list (recognition). |
+| `.cv` / `.timeline` / `.cv-list` | Experience section: dated role timeline (left), education + skills (right); rows slide and highlight on hover. |
+| `.route-map` | Floating mini-map index of the page stops; click to jump, dot shows position; appears after the hero on desktop, collapses to a button on mobile. |
+| `.c-icon` | Icon blob in the contact rows. |
 
 ## 6. The trail
 
@@ -106,8 +114,7 @@ them: vertical S-curves when pins are aligned, wide horizontal swings when they
 alternate sides (like a hand-drawn journey line). A faint dotted copy shows the
 route ahead; the solid line and its tip follow the point 62% down the viewport.
 
-**Adding a project:** copy a `.waypoint` in the Projects stage, alternate
-`left`/`right`, renumber the pins. The trail redraws itself.
+Projects are no longer waypoints: they live in the interactive portfolio (§8).
 
 ## 7. Responsive
 
@@ -119,8 +126,8 @@ route ahead; the solid line and its tip follow the point 62% down the viewport.
 `system.css` + `system.js` render the projects as a small 3D "clay" system,
 following the hand-drawn guide: **Unstructured data (e.g. law docs) ⊂ End-to-end RAG + MLOps ⊂
 Systems: LLM training at scale + research (Sailor)**, with **Ray** plugged in
-for scale, all flowing into **Solutions** 
-guide others: talks).
+for scale, all flowing into **Solutions** (personal: fitness RAG, personal
+assistant / second brain · guide others: talks).
 
 - Pure CSS 3D (`preserve-3d`), isometric camera (`rotateX 57° · rotateZ 40°`), clay palette classes `.c-sage/.c-sand/.c-cream/.c-wine/.c-forest`.
 - Click a block or legend chip → camera glides to it, others desaturate, panel shows details. "Start the tour" steps through parts in data-flow order.

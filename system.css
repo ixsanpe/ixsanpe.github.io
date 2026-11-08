@@ -313,6 +313,7 @@
 .sys-btn.primary:hover { background: var(--wine-500); color: #fff; }
 
 .sys-btn[disabled] { opacity: 0.4; pointer-events: none; }
+.sys-btn[hidden] { display: none; }
 
 .sys-step {
     margin-left: auto;

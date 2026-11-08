@@ -264,7 +264,7 @@
         }
         renderPanel(id);
         stepEl.textContent = `${step + 1} / ${TOUR.length}`;
-        prevBtn.disabled = step <= 0;
+        prevBtn.hidden = step <= 0;
         nextBtn.textContent = step === TOUR.length - 1 ? 'Back to overview' : (step === 0 ? 'Start the tour' : 'Next');
         if (reduced) Object.assign(cam, target);
     }

@@ -46,7 +46,7 @@
             max-width: 1200px;
             margin: 0 auto;
             min-height: max(600px, min(92vh, 820px));
-            padding: 7.5rem 2rem 5rem;
+            padding: 7.5rem 2rem 8.5rem;
             display: grid;
             grid-template-columns: 1.15fr 0.85fr;
             align-items: center;
@@ -133,8 +133,8 @@
             position: absolute;
             left: 0;
             right: 0;
-            bottom: 1rem;
-            height: 80px;
+            bottom: 1.25rem;
+            height: 64px;
             width: 100%;
             color: var(--line);
             opacity: 0.5;
@@ -510,7 +510,7 @@
         }
 
         .contact-list a:hover { padding-left: 1.25rem; color: var(--accent); }
-        .contact-list .label { font-size: 1.3rem; font-weight: 500; letter-spacing: -0.02em; }
+        .contact-list .c-label { font-size: 1.3rem; font-weight: 500; letter-spacing: -0.02em; }
         .contact-list .meta { font-size: 0.85rem; color: var(--text-subtle); font-weight: 300; }
 
         /* ---------- Experience (CV) ---------- */
@@ -720,6 +720,10 @@
 
         .route-map-toggle { display: none; }
 
+        @media (min-width: 861px) {
+            .route-map:not(.show) { opacity: 0; transform: translateY(16px); pointer-events: none; }
+        }
+
         @media (max-width: 860px) {
             .route-map { right: 0.75rem; bottom: 0.75rem; width: 220px; transform-origin: bottom right; }
             .route-map:not(.open) { transform: scale(0.2); opacity: 0; pointer-events: none; }
@@ -753,7 +757,7 @@
 
             .hero {
                 grid-template-columns: 1fr;
-                padding: 6.5rem 1.25rem 5rem;
+                padding: 6.5rem 1.25rem 7rem;
                 gap: 2.5rem;
                 min-height: 0;
             }
@@ -883,7 +887,7 @@
                 <h4>Experience</h4>
                 <ol class="timeline">
                     <li>
-                        <div class="when">Present</div>
+                        <div class="when">Jun 2024 –<br>Present</div>
                         <div class="what">
                             <h3>Senior Software Engineer, Data &amp; AI Systems</h3>
                             <p class="org">SWISS International Air Lines · Zürich</p>
@@ -895,7 +899,7 @@
                         </div>
                     </li>
                     <li>
-                        <div class="when">2024</div>
+                        <div class="when">Oct 2023 –<br>May 2024</div>
                         <div class="what">
                             <h3>Researcher, LLM Systems at Scale</h3>
                             <p class="org">ETH Zürich</p>
@@ -906,12 +910,12 @@
                         </div>
                     </li>
                     <li>
-                        <div class="when">Mar – Aug<br>2023</div>
+                        <div class="when">Mar 2023 –<br>Aug 2023</div>
                         <div class="what">
                             <h3>Junior Machine Learning Engineer</h3>
                             <p class="org">Visium · AI consulting start-up · Zürich</p>
                             <ul>
-                                <li>Automated model deployment: built data pipelines and deployed and orchestrated ML models for clients on GCP (PySpark, Databricks, BigQuery, Cloud Functions), with testing and monitoring in production, cutting processing costs by 35%</li>
+                                <li>Automated model deployment: built data pipelines and deployed and orchestrated ML models for clients on GCP</li>
                             </ul>
                         </div>
                     </li>
@@ -922,7 +926,7 @@
                             <p class="org">Corify Care · Medtech start-up · Valencia</p>
                             <ul>
                                 <li>Real-time streaming ML classification of ECG signals in a medical device</li>
-                                <li>Cost-effectiveness study for a novel medical device, published at ISPOR</li>
+                                <li>Cost-effectiveness study for a novel medical device — <a href="https://www.valueinhealthjournal.com/article/S1098-3015(21)02292-0/pdf" target="_blank" rel="noopener">published in ISPOR Journal, 2022 ↗</a></li>
                             </ul>
                         </div>
                     </li>
@@ -931,8 +935,8 @@
             <aside class="cv-side">
                 <h4>Education</h4>
                 <ul class="cv-list">
-                    <li><strong>MSc Data Science</strong><span>ETH Zürich</span></li>
-                    <li><strong>Double BSc Telecommunication Engineering &amp; Business Administration</strong><span>UPV Valencia · 1st in class</span></li>
+                    <li><strong>MSc Data Science</strong><span>ETH Zürich · Sep 2021 – May 2024</span></li>
+                    <li><strong>Double BSc Telecommunication Engineering &amp; Business Administration</strong><span>UPV Valencia · Sep 2016 – Jul 2021 · 1st in class</span></li>
                 </ul>
                 <h4>Skills</h4>
                 <div class="tech-tags">
@@ -990,9 +994,9 @@
             <p class="eyebrow">05</p>
             <h2>Get in touch</h2>
             <ul class="contact-list">
-                <li><a href="mailto:ixeiasp98@gmail.com"><span class="label">Email</span><span class="meta">ixeiasp98@gmail.com</span></a></li>
-                <li><a href="https://www.linkedin.com/in/ixeia-s-p/" target="_blank" rel="noopener"><span class="label">LinkedIn</span><span class="meta">ixeia-s-p ↗</span></a></li>
-                <li><a href="https://github.com/ixsanpe" target="_blank" rel="noopener"><span class="label">GitHub</span><span class="meta">ixsanpe ↗</span></a></li>
+                <li><a href="mailto:ixeiasp98@gmail.com"><span class="c-label">Email</span><span class="meta">ixeiasp98@gmail.com</span></a></li>
+                <li><a href="https://www.linkedin.com/in/ixeia-s-p/" target="_blank" rel="noopener"><span class="c-label">LinkedIn</span><span class="meta">ixeia-s-p ↗</span></a></li>
+                <li><a href="https://github.com/ixsanpe" target="_blank" rel="noopener"><span class="c-label">GitHub</span><span class="meta">ixsanpe ↗</span></a></li>
             </ul>
         </section>
     </main>
@@ -1220,6 +1224,7 @@
                 walked.style.strokeDashoffset = len - l;
                 stopsEl.forEach((g, k) => { g.classList.toggle('current', k === i); g.classList.toggle('done', k < i); });
                 document.getElementById('rmPct').textContent = Math.round(l / len * 100) + '%';
+                map.classList.toggle('show', window.scrollY > window.innerHeight * 0.45);
             }
 
             let tick = false;

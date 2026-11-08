@@ -78,7 +78,10 @@ Primitives: `--cream-*`, `--sage-*`, `--sand-*`, `--forest-*`, `--wine-*`.
 - Radius: cards `--radius-lg` 28px, images `--radius-md` 14px, pills `--radius-pill`.
 - Blobs: `--blob-a/b/c` are organic `border-radius` values used on `.blob`, the portrait and pins.
 - Spacing: `--space-1 … --space-24` (4px base); sections breathe with 6rem stage padding.
-- Motion: `--ease` `cubic-bezier(.22,1,.36,1)`. Trail draws with scroll, cards fade up 28px, links lengthen on hover. `prefers-reduced-motion` turns it all off.
+- Motion: `--ease` `cubic-bezier(.22,1,.36,1)`.
+  - **Scroll:** the trail draws itself; cards glide in from their side (blur → sharp, slight rotation) and their content follows in a stagger; pins pop when the line reaches them; section titles tighten in; margin shapes and plants move with parallax and plants sway.
+  - **Hover:** cards lift with a soft shadow, tilt up to ~3° toward the cursor (fine pointers only) and show a sage spotlight; feature-card blobs drift; images zoom 2.5%; tags and pins nudge.
+  - `prefers-reduced-motion` turns it all off.
 
 ## 5. Components
 

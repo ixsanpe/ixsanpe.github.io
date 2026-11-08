@@ -621,6 +621,57 @@
             .timeline .what { padding-left: 0; }
         }
 
+        .timeline .org a, .timeline ul a { color: var(--accent); text-decoration: none; border-bottom: 1px solid color-mix(in srgb, var(--accent) 40%, transparent); }
+        .timeline ul a:hover { border-bottom-color: var(--accent); }
+
+        /* Experience motion: items reveal on scroll, react on hover */
+        .timeline > li .what,
+        .cv-list li {
+            border-radius: 12px;
+            transition: transform 0.45s var(--ease), background-color 0.4s;
+        }
+
+        .timeline > li .what { margin-left: -0.25rem; padding: 0.35rem 0.75rem 0.5rem 1.5rem; }
+
+        .timeline > li:hover .what {
+            transform: translateX(8px);
+            background: color-mix(in srgb, var(--shape-sage-soft) 70%, transparent);
+        }
+
+        .timeline > li:hover h3 { color: var(--accent); }
+        .timeline h3 { transition: color 0.3s; }
+
+        .timeline > li::after { transition: transform 0.4s var(--ease), background-color 0.3s; }
+        .timeline > li:hover::after { transform: scale(1.5); background: var(--line); }
+
+        .cv-list li:hover { transform: translateX(6px); }
+        .cv .tech-tag { transition: border-color 0.3s, color 0.3s, transform 0.3s var(--ease); }
+        .cv .tech-tag:hover { border-color: var(--accent) !important; color: var(--accent) !important; transform: translateY(-2px); }
+
+        .cv { transition: box-shadow 0.5s var(--ease); }
+        .cv:hover { box-shadow: 0 18px 40px -22px rgba(0, 0, 0, 0.35); }
+
+        .js .cv .timeline > li,
+        .js .cv .cv-side > * {
+            opacity: 0;
+            transform: translateY(18px);
+            transition: opacity 0.8s var(--ease), transform 0.8s var(--ease);
+        }
+
+        .js .cv.in-view .timeline > li,
+        .js .cv.in-view .cv-side > * { opacity: 1; transform: none; }
+
+        .js .cv.in-view .timeline > li:nth-child(2) { transition-delay: 0.12s; }
+        .js .cv.in-view .timeline > li:nth-child(3) { transition-delay: 0.24s; }
+        .js .cv.in-view .timeline > li:nth-child(4) { transition-delay: 0.36s; }
+        .js .cv.in-view .cv-side > *:nth-child(2) { transition-delay: 0.2s; }
+        .js .cv.in-view .cv-side > *:nth-child(3) { transition-delay: 0.3s; }
+        .js .cv.in-view .cv-side > *:nth-child(4) { transition-delay: 0.4s; }
+
+        @media (max-width: 860px) {
+            .timeline > li .what { padding-left: 0.75rem; margin-left: -0.75rem; }
+        }
+
         /* ---------- Route map index ---------- */
         .route-map {
             position: fixed;
@@ -759,7 +810,7 @@
             <p class="eyebrow">Zürich, Switzerland</p>
             <h1>Ixeia <em>Sánchez</em> Périz</h1>
             <p class="tagline">Senior SWE in Data &amp; AI Systems</p>
-            <p class="intro">Currently Senior SWE in AI at SWISS International <span style="white-space:nowrap">Air Lines <svg class="flag-ch" viewBox="0 0 32 32" role="img" aria-label="Swiss flag"><rect width="32" height="32" rx="4" fill="#da291c"/><path d="M13 6h6v7h7v6h-7v7h-6v-7H6v-6h7z" fill="#fff"/></svg>.</span> Previously research at ETH Zürich and UPV Valencia, and consulting for a start-up.</p>
+            <p class="intro">Currently Senior SWE in AI at SWISS International <span style="white-space:nowrap">Air Lines <svg class="flag-ch" viewBox="0 0 32 32" role="img" aria-label="Swiss flag"><rect width="32" height="32" rx="4" fill="#da291c"/><path d="M13 6h6v7h7v6h-7v7h-6v-7H6v-6h7z" fill="#fff"/></svg>.</span> Previously research at ETH Zürich, plus start-up experience in AI consulting and medtech.</p>
             <div class="text-links">
                 <a href="https://www.linkedin.com/in/ixeia-s-p/" target="_blank" rel="noopener">LinkedIn ↗</a>
                 <a href="https://github.com/ixsanpe" target="_blank" rel="noopener">GitHub ↗</a>
@@ -802,8 +853,8 @@
             <article class="card feature">
                 <span class="blob"></span>
                 <h3>Hi, I'm Ixeia</h3>
-                <p>I'm a Senior Software Engineer in Data &amp; AI Systems at SWISS International Air Lines, where I work on AI: agentic platforms, ML models and TB-scale data pipelines, across text, tabular, audio and video data.</p>
-                <p>Before that I did research at ETH Zürich, on distributed LLM training and fault tolerance (published at SOSP '25), and at UPV Valencia, and consulted for a start-up. Beyond work, I enjoy mentoring students, contributing to diversity &amp; inclusion initiatives, and travelling.</p>
+                <p>I'm a Senior Software Engineer in Data &amp; AI Systems at SWISS International Air Lines, where I work on AI: agentic systems, ML models and TB-scale data pipelines, across text, tabular, audio and video data.</p>
+                <p>Before that I did research at ETH Zürich on LLM systems at scale, and gained start-up experience in consulting and medtech.</p>
             </article>
         </div>
 
@@ -812,10 +863,9 @@
             <article class="card">
                 <h4>Focus</h4>
                 <ul>
-                    <li>Agentic systems &amp; AI platforms</li>
-                    <li>Data platforms &amp; TB-scale pipelines</li>
-                    <li>MLOps &amp; production ML</li>
-                    <li>Large-scale LLM training</li>
+                    <li>Agentic systems</li>
+                    <li>Data preparation &amp; evals</li>
+                    <li>AI infra &amp; production ML at scale</li>
                 </ul>
                 <p style="margin-top:1rem"><a href="#experience" class="read-more">See my experience <span aria-hidden="true">→</span></a></p>
             </article>
@@ -838,35 +888,42 @@
                             <h3>Senior Software Engineer, Data &amp; AI Systems</h3>
                             <p class="org">SWISS International Air Lines · Zürich</p>
                             <ul>
-                                <li>AI agents &amp; ML models adopted across business units</li>
+                                <li>AI agents &amp; ML systems adopted across business units</li>
                                 <li>TB-scale data pipelines with PySpark</li>
-                                <li>Cloud-native data platforms</li>
+                                <li>System design &amp; adoption</li>
                             </ul>
                         </div>
                     </li>
                     <li>
                         <div class="when">2024</div>
                         <div class="what">
-                            <h3>Research Engineer, Distributed LLM Training</h3>
-                            <p class="org">ETH Zürich · Master's thesis</p>
+                            <h3>Researcher, LLM Systems at Scale</h3>
+                            <p class="org">ETH Zürich</p>
                             <ul>
-                                <li>Sailor: elastic, fault-tolerant ML training in the cloud — 2.87× higher goodput</li>
-                                <li>Published at SOSP '25</li>
+                                <li>Sailor: elastic, fault-tolerant ML training in the cloud — <a href="https://dl.acm.org/doi/10.1145/3731569.3764839" target="_blank" rel="noopener">published at SOSP '25 ↗</a></li>
+                                <li>Cost-effective optimal resource planner</li>
                             </ul>
                         </div>
                     </li>
                     <li>
-                        <div class="when"></div>
+                        <div class="when">Mar – Aug<br>2023</div>
                         <div class="what">
-                            <h3>Consultant</h3>
-                            <p class="org">Start-up</p>
+                            <h3>Junior Machine Learning Engineer</h3>
+                            <p class="org">Visium · AI consulting start-up · Zürich</p>
+                            <ul>
+                                <li>Automated model deployment: built data pipelines and deployed and orchestrated ML models for clients on GCP (PySpark, Databricks, BigQuery, Cloud Functions), with testing and monitoring in production, cutting processing costs by 35%</li>
+                            </ul>
                         </div>
                     </li>
                     <li>
-                        <div class="when"></div>
+                        <div class="when">Jun 2020 –<br>Jul 2021</div>
                         <div class="what">
-                            <h3>Researcher</h3>
-                            <p class="org">Universidad Politécnica de Valencia</p>
+                            <h3>Data Scientist Intern</h3>
+                            <p class="org">Corify Care · Medtech start-up · Valencia</p>
+                            <ul>
+                                <li>Real-time streaming ML classification of ECG signals in a medical device</li>
+                                <li>Cost-effectiveness study for a novel medical device, published at ISPOR</li>
+                            </ul>
                         </div>
                     </li>
                 </ol>
@@ -879,7 +936,7 @@
                 </ul>
                 <h4>Skills</h4>
                 <div class="tech-tags">
-                    <span class="tech-tag">Python</span><span class="tech-tag">PySpark</span><span class="tech-tag">PyTorch</span><span class="tech-tag">DeepSpeed</span><span class="tech-tag">Ray</span><span class="tech-tag">Kubernetes</span><span class="tech-tag">GKE</span><span class="tech-tag">Docker</span><span class="tech-tag">RAG</span><span class="tech-tag">LLM agents</span><span class="tech-tag">MLOps</span>
+                    <span class="tech-tag">Python</span><span class="tech-tag">PySpark</span><span class="tech-tag">Databricks</span><span class="tech-tag">BigQuery</span><span class="tech-tag">GCP</span><span class="tech-tag">PyTorch</span><span class="tech-tag">DeepSpeed</span><span class="tech-tag">Ray</span><span class="tech-tag">Kubernetes</span><span class="tech-tag">Docker</span><span class="tech-tag">LLM agents</span><span class="tech-tag">RAG</span><span class="tech-tag">Evals</span><span class="tech-tag">MLOps</span>
                 </div>
             </aside>
         </section>
@@ -1072,7 +1129,7 @@
         const io = new IntersectionObserver(entries => {
             entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in-view'); io.unobserve(e.target); } });
         }, { rootMargin: '0px 0px -10% 0px' });
-        document.querySelectorAll('.waypoint, .stage, .summit').forEach(w => io.observe(w));
+        document.querySelectorAll('.waypoint, .stage, .summit, .cv').forEach(w => io.observe(w));
 
         const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;

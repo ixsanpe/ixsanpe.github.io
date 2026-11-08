@@ -2,7 +2,7 @@
    Structure follows the hand-drawn guide:
      data (law docs) ⊂ end-to-end RAG + MLOps ⊂ systems: LLM training at scale + research
      scale: Ray plugs in from the side; everything flows into Solutions
-     (personal: fitness, assistant · guide others: talks · learning: DSA).
+     (personal: fitness, personal assistant / second brain · guide others: talks).
    Pure CSS 3D + a small camera loop. Content lives in PARTS below. */
 (function () {
     const root = document.getElementById('system');
@@ -19,16 +19,17 @@
         },
         data: {
             eyebrow: 'Layer 1 · Data',
-            title: 'Data: legal documents',
+            title: 'Unstructured data processing',
             status: 'Part of RAG project',
-            body: `<p>The raw material: a corpus of legal documents that gets parsed, cleaned, chunked and indexed so it can be searched and reasoned over.</p>`,
-            tags: ['Parsing', 'Chunking', 'Data quality']
+            body: `<p>The raw material: messy, unstructured documents that get parsed, cleaned, chunked and indexed so they can be searched and reasoned over.</p>
+                   <p>Example: a corpus of legal documents.</p>`,
+            tags: ['Parsing', 'Chunking', 'Data preparation', 'Data quality']
         },
         rag: {
             eyebrow: 'Layer 2 · Project',
             title: 'End-to-end RAG &amp; MLOps',
             status: 'Sample project',
-            body: `<p>A complete retrieval-augmented generation system over the legal documents: ingestion, embeddings and vector search, LLM answers grounded in sources, and the MLOps around it to evaluate, deploy and monitor it.</p>`,
+            body: `<p>A complete retrieval-augmented generation system over unstructured documents (e.g. legal texts): ingestion, embeddings and vector search, LLM answers grounded in sources, and the MLOps around it to evaluate, deploy and monitor it.</p>`,
             tags: ['RAG', 'Embeddings', 'Vector search', 'LLMs', 'MLOps']
         },
         sailor: {
@@ -56,28 +57,20 @@
         },
         assistant: {
             eyebrow: 'Solutions · Personal',
-            title: 'Personal assistant',
+            title: 'Personal assistant · second brain',
             status: 'Building',
             live: true,
-            body: `<p>My own AI assistant, running on my own setup, for everyday tasks.</p>`,
-            tags: ['Agents', 'Self-hosted']
+            body: `<p>Building my own personal assistant, a second brain for my day-to-day life, running on my own setup.</p>`,
+            tags: ['Agents', 'Memory', 'Self-hosted']
         },
         talks: {
             eyebrow: 'Solutions · Guide others',
             title: 'Talks',
             body: `<div class="item"><strong>Career Tips for Fresh Graduates</strong><p>UZH Career Night · Nov 2024</p><p><a class="read-more" href="talks/uzh-career-night-2024.html">Slides &amp; notes ${ARROW}</a></p></div>
                    <div class="item"><strong>Commencement Speech, Class of 2025</strong><p>UPV Valencia · May 2025 (in Spanish)</p><p><a class="read-more" href="https://www.youtube.com/watch?v=Q9edBOO_sYo" target="_blank" rel="noopener">Watch the video ↗</a></p></div>`
-        },
-        learning: {
-            eyebrow: 'Solutions · Learning',
-            title: 'Learning: tech problems &amp; DSA',
-            status: 'Ongoing',
-            live: true,
-            body: `<p>Working through technical problems and data structures &amp; algorithms, and writing up what I learn.</p>`,
-            tags: ['DSA', 'Problem solving']
         }
     };
-    const TOUR = ['overview', 'data', 'rag', 'sailor', 'ray', 'fitness', 'assistant', 'talks', 'learning'];
+    const TOUR = ['overview', 'data', 'rag', 'sailor', 'ray', 'fitness', 'assistant', 'talks'];
 
     // ---------------------------------------------------------------- scene geometry (plane px)
     const CENTER = { x: 190, y: 300 };
@@ -96,7 +89,7 @@
               [140, 116, 58, 54, 40, 'c-sage2', 20],
               [100, 40, 36, 10, 8, 'c-cream', 20], [166, 84, 8, 32, 8, 'c-cream', 20]
           ] },
-        { id: 'data', label: 'Law docs', sub: 'data', x: 290, y: 198, w: 84, d: 112, z: 44, lz: 60, lpos: [10, 20],
+        { id: 'data', label: 'Unstructured data', sub: 'processing', x: 290, y: 198, w: 84, d: 112, z: 44, lz: 60, lpos: [10, 20],
           boxes: [
               [0, 0, 84, 112, 6, 'c-cream'], [4, -4, 84, 112, 6, 'c-cream', 7], [8, -8, 84, 112, 6, 'c-cream', 14], [12, -12, 84, 112, 6, 'c-cream', 21]
           ] },
@@ -106,14 +99,12 @@
               [22, 22, 88, 88, 70, 'c-wine', 22],
               [40, 40, 52, 52, 18, 'c-cream', 92]
           ] },
-        { id: 'fitness', label: 'Fitness RAG', sub: 'personal', x: 84, y: 500, w: 72, d: 72, z: 18, lz: 100,
+        { id: 'fitness', label: 'Fitness RAG', sub: 'personal', x: 96, y: 500, w: 72, d: 72, z: 18, lz: 100,
           boxes: [[0, 0, 72, 72, 46, 'c-sage2'], [18, 18, 36, 36, 20, 'c-cream', 46]] },
-        { id: 'assistant', label: 'Assistant', sub: 'personal', x: 186, y: 500, w: 72, d: 72, z: 18, lz: 96,
-          boxes: [[0, 0, 72, 72, 38, 'c-forest'], [14, 14, 44, 44, 14, 'c-cream', 38]] },
-        { id: 'talks', label: 'Talks', sub: 'guide others', x: 292, y: 520, w: 84, d: 40, z: 18, lz: 130,
-          boxes: [[34, 18, 16, 16, 30, 'c-sand'], [0, 22, 84, 10, 62, 'c-cream', 30]] },
-        { id: 'learning', label: 'Learning', sub: 'DSA', x: 398, y: 500, w: 64, d: 64, z: 18, lz: 92,
-          boxes: [[0, 0, 64, 64, 14, 'c-cream'], [6, 6, 52, 52, 14, 'c-sand', 14], [12, 12, 40, 40, 14, 'c-cream', 28]] }
+        { id: 'assistant', label: 'Second brain', sub: 'personal', x: 214, y: 494, w: 84, d: 84, z: 18, lz: 110,
+          boxes: [[0, 0, 84, 84, 34, 'c-forest'], [14, 14, 56, 56, 20, 'c-cream', 34], [28, 28, 28, 28, 18, 'c-wine', 54]] },
+        { id: 'talks', label: 'Talks', sub: 'guide others', x: 350, y: 520, w: 84, d: 40, z: 18, lz: 130,
+          boxes: [[34, 18, 16, 16, 30, 'c-sand'], [0, 22, 84, 10, 62, 'c-cream', 30]] }
     ];
     const BASES = [
         { x: 0, y: 0, w: 520, d: 400, h: 24, cls: 'c-sage', label: 'Systems · LLM training at scale + research', lx: 400, ly: 70 },

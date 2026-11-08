@@ -119,7 +119,7 @@ route ahead; the solid line and its tip follow the point 62% down the viewport.
 `system.css` + `system.js` render the projects as a small 3D "clay" system,
 following the hand-drawn guide: **Data (law docs) ⊂ End-to-end RAG + MLOps ⊂
 Systems: LLM training at scale + research (Sailor)**, with **Ray** plugged in
-for scale, all flowing into **Solutions** (personal: fitness RAG, assistant ·
+for scale, all flowing into **Solutions** 
 guide others: talks · learning: DSA).
 
 - Pure CSS 3D (`preserve-3d`), isometric camera (`rotateX 57° · rotateZ 40°`), clay palette classes `.c-sage/.c-sand/.c-cream/.c-wine/.c-forest`.

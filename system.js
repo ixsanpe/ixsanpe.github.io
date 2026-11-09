@@ -18,7 +18,7 @@
         data: {
             eyebrow: 'Data',
             title: 'Unstructured data processing',
-            body: `<p>#TODO</p>`
+            body: `<p>Where every AI system starts: turning raw, unstructured text into clean, structured data that retrieval and models can use. Parsing, chunking and data quality come before any embedding.</p>`
         },
         rag: {
             eyebrow: 'Systems',
@@ -41,7 +41,7 @@
             title: 'Ray Data &amp; distributed GPU training',
             status: 'Learning',
             live: true,
-            body: `<p>#TODO</p>`
+            body: `<p>The layer that scales the systems out: distributed data processing with Ray Data and multi-GPU training with Ray Train. I'm learning it hands-on, with notes to come.</p>`
         },
         fitness: {
             eyebrow: 'Solutions',
@@ -62,21 +62,21 @@
             title: 'Learning by building',
             status: 'Ongoing',
             live: true,
-            body: `<p>#TODO</p>`
+            body: `<p>Ongoing projects where I learn by building: hands-on tools I use every day, built in the open as they take shape.</p>`
         },
         brain: {
             eyebrow: 'Me · Learning',
             title: 'Second brain',
             status: 'Ongoing build',
             live: true,
-            body: `<p>#TODO</p>`
+            body: `<p>A second brain: using AI to capture, organise and find my notes and knowledge.</p>`
         },
         harness: {
             eyebrow: 'Me · Learning',
             title: 'Coding harness',
             status: 'Ongoing build',
             live: true,
-            body: `<p>#TODO</p>`
+            body: `<p>My AI development setup: the agents, tools and workflows I use to write, test and ship code with AI.</p>`
         }
     };
     // order of the index under the graph (Ixeia's node stays in the graph only)

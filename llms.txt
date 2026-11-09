@@ -41,4 +41,4 @@ Skills: Python, PySpark, Databricks, BigQuery, GCP, PyTorch, DeepSpeed, Ray, Kub
 ## Optional
 
 - How the portfolio is organised: the homepage draws the projects as one AI system. Unstructured data feeds the systems (RAG + MLOps; Sailor for LLM training), which run on infrastructure (Ray, GPUs, cloud) and power a solution (Fitness RAG). Underneath is Ixeia: building the systems, giving talks and learning through ongoing projects.
-- In progress: unstructured data processing; Ray Data & distributed GPU training; a second brain (AI for organising notes and knowledge); a coding harness (AI development setup).
+- In progress: unstructured data processing (turning raw text into clean, structured data: parsing, chunking, data quality); Ray Data & distributed GPU training (learning hands-on); a second brain (AI to capture, organise and find notes); a coding harness (agents, tools and workflows for building software with AI).

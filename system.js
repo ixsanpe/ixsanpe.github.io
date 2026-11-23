@@ -77,10 +77,19 @@
             status: 'Ongoing build',
             live: true,
             body: `<p>My AI development setup: the agents, tools and workflows I use to write, test and ship code with AI.</p>`
+        },
+        robot: {
+            eyebrow: 'Solutions',
+            title: 'A world model for my robot vacuum',
+            status: 'Ongoing build',
+            live: true,
+            body: `<p>A model that predicts what my robot vacuum's camera will see next, given the action it takes. A frozen DINOv2 encoder and a small transformer, trained on my own recordings. Now I'm testing planning with it on the real robot.</p>`,
+            tags: ['World models', 'PyTorch', 'DINOv2', 'Robotics'],
+            links: [['projects/robot-world-model.html', `Case study ${ARROW}`], ['https://github.com/ixsanpe/systems-lab/tree/main/04-world-models', 'Code ↗', true]]
         }
     };
     // order of the index under the graph (Ixeia's node stays in the graph only)
-    const PARTS_ORDER = ['overview', 'data', 'rag', 'sailor', 'ray', 'fitness', 'talks', 'brain', 'harness'];
+    const PARTS_ORDER = ['overview', 'data', 'rag', 'sailor', 'ray', 'fitness', 'robot', 'talks', 'brain', 'harness'];
 
     // ---------------------------------------------------------------- graph
     const NS = 'http://www.w3.org/2000/svg';
@@ -95,7 +104,8 @@
         me:      { label: 'Ixeia',             sub: 'me',              group: 'me',    photo: 'assets/profile_train.jpg', r: 42, still: true },
         talks:   { label: 'Talks',             sub: 'guide others',    group: 'me',    icon: 'mic' },
         brain:   { label: 'Second brain',      sub: 'AI organisation', group: 'learn', icon: 'brain', ongoing: true },
-        harness: { label: 'Coding harness',    sub: 'AI dev setup',    group: 'learn', icon: 'terminal', ongoing: true }
+        harness: { label: 'Coding harness',    sub: 'AI dev setup',    group: 'learn', icon: 'terminal', ongoing: true },
+        robot:   { label: 'World model',       sub: 'robot vacuum',    group: 'sol',   icon: 'robot', ongoing: true }
     };
     // [from, to, style]; `to` may be '@group' to point at a group's edge
     const EDGES = [
@@ -107,8 +117,8 @@
             vb: [760, 613],
             groups: { data: [20, 30, 150, 348], sys: [200, 30, 340, 185], infra: [200, 228, 340, 150], sol: [570, 30, 170, 348],
                       me: [20, 413, 720, 180], learn: [370, 425, 355, 158] },
-            pos: { data: [95, 210], sailor: [285, 112], rag: [455, 112], ray: [370, 300], fitness: [655, 204],
-                   talks: [110, 506], me: [250, 502], brain: [470, 508], harness: [628, 508],
+            pos: { data: [95, 210], sailor: [285, 112], rag: [455, 112], ray: [370, 300], fitness: [655, 128],
+                   talks: [110, 506], me: [250, 502], brain: [470, 508], harness: [628, 508], robot: [655, 282],
                    '@sys': [200, 122], '@infra': [250, 380], '@learn': [370, 502] }
         },
         narrow: {
@@ -116,8 +126,8 @@
             groups: { data: [16, 20, 368, 170], sys: [16, 220, 368, 190], infra: [16, 425, 368, 190], sol: [16, 645, 368, 160],
                       me: [16, 835, 368, 505], learn: [32, 1145, 336, 180] },
             pos: { data: [200, 95], sailor: [110, 305], rag: [290, 305], ray: [110, 510], fitness: [285, 720],
-                   me: [200, 915], talks: [90, 1065], brain: [115, 1237], harness: [285, 1237],
-                   '@sys': [200, 218], '@infra': [70, 617], '@learn': [285, 1145] }
+                   me: [200, 915], talks: [90, 1065], brain: [115, 1237], harness: [285, 1237], robot: [110, 720],
+                   '@sys': [200, 218], '@infra': [200, 617], '@learn': [285, 1145] }
         }
     };
     const ICONS = {
@@ -135,6 +145,7 @@
         dumbbell: '<path d="M-9 0H9"/><rect x="-15" y="-9" width="6" height="18" rx="1.5"/><rect x="9" y="-9" width="6" height="18" rx="1.5"/><path d="M-18 -4V4M18 -4V4"/>',
         mic: '<rect x="-4" y="-16" width="8" height="16" rx="4"/><path d="M-9 -4Q-9 6 0 6Q9 6 9 -4"/><path d="M0 6V13M-6 13H6"/><path d="M13 -12Q16 -8 13 -4"/>',
         book: '<path d="M0 -8Q-8 -13 -17 -10V10Q-8 7 0 12Q8 7 17 10V-10Q8 -13 0 -8V12"/><path d="M5 -14L7 -18M10 -12L14 -15"/>',
+        robot: '<circle r="16"/><path d="M-11 -7A13 13 0 0 1 11 -7"/><circle cx="0" cy="-9" r="2.2" class="ink-fill"/><path d="M-7 6H7M-4 10H4"/>',
         chat: '<path d="M-16 -12H16V7H-3L-9 13V7H-16Z"/><circle cx="-7" cy="-2" r="1.6" class="ink-fill"/><circle cx="0" cy="-2" r="1.6" class="ink-fill"/><circle cx="7" cy="-2" r="1.6" class="ink-fill"/>'
     };
 

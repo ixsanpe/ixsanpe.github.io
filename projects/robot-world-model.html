@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A world model for my robot vacuum - Ixeia Sánchez Périz</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23ffffff'/><path d='M20 85 L30 70 Q35 65 40 68 L45 72 Q50 75 55 70 L60 62 Q65 55 70 60 L78 68 Q82 72 85 68 L85 85 Z' fill='%2395c9c9' stroke='%232d3748' stroke-width='2'/><path d='M25 75 L32 65 Q37 58 42 62 L50 70 Q55 74 60 68 L68 58 Q72 53 77 58 L82 65 L82 85 L25 85 Z' fill='%23b8a8d8' opacity='0.7' stroke='%232d3748' stroke-width='2'/><path d='M35 50 L45 30 L50 35 L55 28 L65 45 L70 38 L80 55' fill='none' stroke='%237b9ab8' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/><ellipse cx='18' cy='25' rx='8' ry='5' fill='%23e8a89a' opacity='0.8'/><ellipse cx='25' cy='18' rx='7' ry='4' fill='%23e8a89a' opacity='0.6'/></svg>">
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 6rem 2rem 4rem;
+        }
+
+        .project-header {
+            margin-bottom: 3rem;
+        }
+
+        footer {
+            margin-top: 4rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-dark);
+        }
+
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .tech-tag {
+            padding: 0.4rem 1rem;
+            background-color: var(--bg-light);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 0.875rem;
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        .project-content {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .project-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        .project-content h2 {
+            font-size: 1.75rem;
+            margin: 2.5rem 0 1rem;
+            color: var(--text-dark);
+        }
+
+        .project-content h3 {
+            font-size: 1.35rem;
+            margin: 2rem 0 1rem;
+            color: var(--text-dark);
+        }
+
+        .project-content ul {
+            margin: 1.5rem 0 1.5rem 2rem;
+            list-style: none;
+        }
+
+        .project-content ul li {
+            margin-bottom: 1rem;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .project-content ul li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .project-content strong {
+            color: var(--text-dark);
+        }
+
+        .highlight-box {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background-color: var(--bg-light);
+            border-left: 4px solid var(--primary-color);
+            border-radius: 8px;
+        }
+
+        .highlight-box h3 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+
+        .project-content a {
+            color: var(--link);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .project-content a:hover {
+            text-decoration: underline;
+            color: var(--link-hover);
+        }
+
+        [data-theme="dark"] .project-content a {
+            color: var(--link);
+        }
+
+        [data-theme="dark"] .project-content a:hover {
+            color: var(--link-hover);
+        }
+
+
+        @media (max-width: 768px) {
+            nav {
+                position: sticky;
+            }
+
+            .container {
+                padding-top: 2rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .project-content {
+                font-size: 1rem;
+            }
+        }
+        .setup { margin: 1.5rem 0 2.5rem; }
+        .setup svg { width: 100%; height: auto; display: block; font-family: var(--font-body); }
+        .setup-narrow { display: none !important; max-width: 380px; margin: 0 auto; }
+        @media (max-width: 600px) { .setup-wide { display: none !important; } .setup-narrow { display: block !important; } }
+        .setup .box { fill: var(--surface); stroke: var(--border); stroke-width: 1.5; }
+        .setup .step { fill: var(--bg-sunken); stroke: var(--border); stroke-width: 1.5; }
+        .setup .step.accent { stroke: var(--accent); stroke-width: 2; }
+        .setup .ic { fill: none; stroke: var(--text); stroke-width: 2; }
+        .setup .dot { fill: var(--accent); }
+        .setup .ln { fill: none; stroke: var(--text-muted); stroke-width: 1.8; }
+        .setup .ah { fill: none; stroke: var(--text-muted); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+        .setup text:not([text-anchor]) { text-anchor: middle; }
+        .setup .h { font-size: 17px; font-weight: 600; fill: var(--text); }
+        .setup .m { font-size: 15px; font-weight: 500; fill: var(--text); }
+        .setup .s { font-size: 14px; fill: var(--text-muted); }
+        .setup .l { font-size: 13px; fill: var(--text-muted); }
+        .setup .n { font-size: 13px; fill: var(--text-subtle); font-style: italic; }
+    </style>
+</head>
+<body class="subpage">
+    <nav>
+        <div class="container">
+            <a href="../index.html" class="logo">Ixeia Sánchez Périz</a>
+            <div style="display: flex; align-items: center; gap: 2rem;">
+                <a href="../index.html#portfolio" class="back-link">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                    Back to Home
+                </a>
+                <button id="darkModeToggle" class="dark-mode-toggle" aria-label="Toggle dark mode">
+                    <svg class="sun-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="4" fill="currentColor"/>
+                        <path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32l1.41-1.41" fill="none"/>
+                    </svg>
+                    <svg class="moon-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" style="display: none;">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="project-header">
+            <div class="post-date">Personal project • 2026 • in progress</div>
+            <h1>A world model for my robot vacuum</h1>
+            <div class="tech-tags">
+                <span class="tech-tag">PyTorch</span>
+                <span class="tech-tag">DINOv2</span>
+                <span class="tech-tag">World models</span>
+                <span class="tech-tag">Robotics</span>
+            </div>
+        </div>
+
+        <div class="project-content">
+            <p>
+                I wanted to learn how world models work by building one on real hardware: my robot vacuum.
+                A world model predicts what the robot will see next, given what it sees now and the action it takes.
+                With that, the robot can try actions in its head before doing them.
+            </p>
+
+            <div style="margin: 2rem 0;">
+                <img src="../assets/robot-world-model-trajectory.jpg" alt="Left: the path the robot drove during a two-minute recording, with three numbered points. Right: the robot's camera view at each of those points: a desk by a window, the same desk up close, and a white wardrobe." style="width: 100%; border-radius: 8px;">
+                <p style="font-size: 0.875rem; color: var(--text-light); margin-top: 0.5rem; text-align: center; font-style: italic;">One of the recorded drives: the path and three frames from the robot's camera.</p>
+            </div>
+
+            <h2>The setup</h2>
+            <figure class="setup">
+                <svg class="setup-wide" viewBox="0 0 820 300" role="img" aria-labelledby="setup-title">
+                    <title id="setup-title">The robot sends camera frames through the ECOVACS cloud to my laptop. On the laptop, a DINOv2 encoder, the world model and a planner choose the next action, which goes back through the cloud to the robot's wheels every half second.</title>
+                    <defs><marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1L9 5L1 9" class="ah"/></marker></defs>
+                    <rect class="box" x="20" y="70" width="170" height="170" rx="16"/>
+                    <text class="h" x="105" y="104">Robot vacuum</text>
+                    <circle class="ic" cx="105" cy="160" r="30"/><path class="ic" d="M84 147A24 24 0 0 1 126 147"/><circle class="dot" cx="105" cy="143" r="3.5"/>
+                    <text class="s" x="105" y="218">camera · wheels</text>
+
+                    <rect class="box" x="300" y="70" width="200" height="170" rx="16"/>
+                    <text class="h" x="400" y="104">ECOVACS cloud</text>
+                    <text class="s" x="400" y="150">video (WebRTC)</text>
+                    <text class="s" x="400" y="196">commands (MQTT)</text>
+
+                    <rect class="box" x="610" y="20" width="190" height="260" rx="16"/>
+                    <text class="h" x="705" y="52">My laptop</text>
+                    <rect class="step" x="630" y="72" width="150" height="44" rx="10"/><text class="m" x="705" y="99">DINOv2 encoder</text>
+                    <rect class="step accent" x="630" y="140" width="150" height="44" rx="10"/><text class="m" x="705" y="167">World model</text>
+                    <rect class="step" x="630" y="208" width="150" height="44" rx="10"/><text class="m" x="705" y="235">Planner</text>
+                    <path class="ln" d="M705 116V138" marker-end="url(#arr)"/><path class="ln" d="M705 184V206" marker-end="url(#arr)"/>
+
+                    <path class="ln" d="M190 140H298" marker-end="url(#arr)"/><text class="l" x="244" y="130">frames</text>
+                    <path class="ln" d="M500 140C560 140 570 94 628 94" marker-end="url(#arr)"/><text class="l" x="555" y="104">frames</text>
+                    <path class="ln" d="M628 230C570 230 560 186 502 186" marker-end="url(#arr)"/><text class="l" x="555" y="226">action</text>
+                    <path class="ln" d="M298 186H192" marker-end="url(#arr)"/><text class="l" x="244" y="176">move</text>
+                    <text class="n" x="400" y="272">one loop every 0.5 s · the video arrives ~0.4 s late</text>
+                </svg>
+                <svg class="setup-narrow" viewBox="0 0 360 640" role="img" aria-labelledby="setup-title-n">
+                    <title id="setup-title-n">The robot sends camera frames through the ECOVACS cloud to my laptop. On the laptop, a DINOv2 encoder, the world model and a planner choose the next action, which goes back through the cloud to the robot's wheels every half second.</title>
+                    <defs><marker id="arr-n" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1L9 5L1 9" class="ah"/></marker></defs>
+                    <rect class="box" x="70" y="10" width="220" height="110" rx="16"/>
+                    <text class="h" x="180" y="40">Robot vacuum</text>
+                    <circle class="ic" cx="135" cy="80" r="24"/><path class="ic" d="M118 70A19 19 0 0 1 152 70"/><circle class="dot" cx="135" cy="66" r="3"/>
+                    <text class="s" x="215" y="85">camera</text><text class="s" x="215" y="105">wheels</text>
+
+                    <rect class="box" x="70" y="190" width="220" height="100" rx="16"/>
+                    <text class="h" x="180" y="222">ECOVACS cloud</text>
+                    <text class="s" x="180" y="250">video (WebRTC)</text>
+                    <text class="s" x="180" y="274">commands (MQTT)</text>
+
+                    <rect class="box" x="40" y="360" width="280" height="250" rx="16"/>
+                    <text class="h" x="180" y="392">My laptop</text>
+                    <rect class="step" x="80" y="410" width="200" height="42" rx="10"/><text class="m" x="180" y="436">DINOv2 encoder</text>
+                    <rect class="step accent" x="80" y="478" width="200" height="42" rx="10"/><text class="m" x="180" y="504">World model</text>
+                    <rect class="step" x="80" y="546" width="200" height="42" rx="10"/><text class="m" x="180" y="572">Planner</text>
+                    <path class="ln" d="M180 452V476" marker-end="url(#arr-n)"/><path class="ln" d="M180 520V544" marker-end="url(#arr-n)"/>
+
+                    <path class="ln" d="M120 120V188" marker-end="url(#arr-n)"/><text class="l" x="112" y="160" text-anchor="end">frames</text>
+                    <path class="ln" d="M120 290V408" marker-end="url(#arr-n)"/><text class="l" x="112" y="335" text-anchor="end">frames</text>
+                    <path class="ln" d="M282 567H322V240H294" marker-end="url(#arr-n)"/><text class="l" x="314" y="335" text-anchor="end">action</text>
+                    <path class="ln" d="M240 190V122" marker-end="url(#arr-n)"/><text class="l" x="248" y="160" text-anchor="start">move</text>
+                    <text class="n" x="180" y="632">one loop every 0.5 s</text>
+                </svg>
+            </figure>
+
+            <h2>How it works</h2>
+            <ul>
+                <li><strong>Control and camera.</strong> The vacuum has no public API for driving, so I found the move command in the app's traffic and sent it with the open-source <a href="https://github.com/DeebotUniverse/client.py" target="_blank" rel="noopener">deebot-client</a>. I also read the camera's video stream (WebRTC) in Python.</li>
+                <li><strong>Data.</strong> I drove it around with random commands and recorded a one-hour cleaning run: a camera frame, the action and the robot's position, twice per second, about 1.1 hours in total.</li>
+                <li><strong>Model.</strong> A frozen DINOv2 encoder turns each frame into features. A small transformer learns to predict the next frame's features from the last few frames and the action.</li>
+                <li><strong>Planning.</strong> To reach a goal image, the robot imagines every short sequence of actions with the model, takes the first step of the best one, and plans again half a second later.</li>
+            </ul>
+
+            <h2>Where it stands</h2>
+            <ul>
+                <li><strong>Prediction.</strong> The model predicts better than the simplest guess, "nothing changes", at every horizon up to 4 seconds (9–16% less error up to 2 seconds), and its predictions depend on the action: from them, the action the robot really took can be picked out 79–82% of the time.</li>
+                <li><strong>Planning on recordings.</strong> With the real frame 1 second later as the goal, the actions the robot really took usually rank first of the 16 possible plans. When the robot really turned, the planner turns the same way 81–88% of the time.</li>
+            </ul>
+
+            <div style="margin: 2rem 0;">
+                <img src="../assets/robot-world-model-results.png" alt="Four charts on held-out recordings. A: the model's prediction error is below the copy-last-frame baseline at every horizon up to 4 seconds. B: the gain is largest for turns. C: a matrix showing the model picks out the true action 79 percent of the time. D: a sweep over the video delay that confirmed 0.42 seconds." style="width: 100%; border-radius: 8px;">
+                <p style="font-size: 0.875rem; color: var(--text-light); margin-top: 0.5rem; text-align: center; font-style: italic;">Model results on held-out recordings (the last 20% in time).</p>
+            </div>
+
+            <h2>On the robot</h2>
+            <p>
+                For the live test, the robot takes a goal photo, gets turned away, and has to find that view again using only its camera and the model.
+                This is the run that worked: turned 80° away, it turned back, went past the goal, came back and stopped 6° from it by itself.
+            </p>
+
+            <div style="margin: 2rem 0;">
+                <img src="../assets/robot-world-model-live.jpg" alt="Three camera views from the live run: the goal view of a living room, the view after the robot was turned 80 degrees away facing a window, and the view where the planner stopped, nearly the same as the goal. Below, a chart of the robot's heading relative to the goal over 6.5 seconds: it turns left past the goal to about 70 degrees, then turns right and settles near zero, with the chosen actions shown as coloured bars." style="width: 100%; border-radius: 8px;">
+                <p style="font-size: 0.875rem; color: var(--text-light); margin-top: 0.5rem; text-align: center; font-style: italic;">A live run on the robot. The heading comes from the robot's own position and is only used for this chart; the model never sees it.</p>
+            </div>
+
+            <p>
+                So far it works in 1 of 10 tries. In most of the others the robot didn't move: the goal only looks close once it is within about 20°,
+                and my recordings barely show the robot starting from standstill. Recording drives that start and stop is the next step.
+            </p>
+
+            <p style="text-align: center; margin: 2rem 0;">
+                <a href="https://github.com/ixsanpe/systems-lab/tree/main/04-world-models" target="_blank" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%); color: white; text-decoration: none; border-radius: 8px; font-weight: 600;">
+                    Code on GitHub
+                </a>
+            </p>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; <span id="currentYear"></span> Ixeia Sánchez Périz. All rights reserved.</p>
+        <p><a href="../index.html#portfolio">← Back to Portfolio</a></p>
+    </footer>
+
+    <script>
+        // Set current year
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        // Dark mode toggle functionality
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const sunIcon = document.querySelector('.sun-icon');
+        const moonIcon = document.querySelector('.moon-icon');
+        const html = document.documentElement;
+
+        // Check for saved theme preference or default to light mode
+        const currentTheme = localStorage.getItem('theme') || 'dark';
+        html.setAttribute('data-theme', currentTheme);
+        updateIcons(currentTheme);
+
+        darkModeToggle.addEventListener('click', () => {
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateIcons(newTheme);
+        });
+
+        function updateIcons(theme) {
+            if (theme === 'dark') {
+                sunIcon.style.display = 'none';
+                moonIcon.style.display = 'block';
+            } else {
+                sunIcon.style.display = 'block';
+                moonIcon.style.display = 'none';
+            }
+        }
+
+    </script>
+</body>
+</html>

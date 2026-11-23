@@ -1024,7 +1024,7 @@
                 <article>
                     <p class="eyebrow">Overview</p>
                     <h3>How my work fits together</h3>
-                    <p>I work across the whole AI stack, from data to infrastructure to the products people use, so my projects are drawn as one AI system: unstructured data feeds the systems (RAG + MLOps, and Sailor for LLM training), which run on infrastructure (Ray, GPUs and cloud) and power a solution (Fitness RAG). Underneath is me: I build the systems, give talks, and keep learning through ongoing projects.</p>
+                    <p>I work across the whole AI stack, from data to infrastructure to the products people use, so my projects are drawn as one AI system: unstructured data feeds the systems (RAG + MLOps, and Sailor for LLM training), which run on infrastructure (Ray, GPUs and cloud) and power solutions (Fitness RAG and a world model for my robot vacuum). Underneath is me: I build the systems, give talks, and keep learning through ongoing projects.</p>
                 </article>
                 <article>
                     <p class="eyebrow">Research · SOSP '25</p>
@@ -1039,6 +1039,13 @@
                     <p>A retrieval system over 873 exercises: hybrid BM25 + dense retrieval fused with RRF, contrastive fine-tuning of the embedder (Recall@10 0.36 → 0.81), MLflow tracking, Milvus Lite and a local LLM for grounded answers, all measured with a 69-query labelled eval set.</p>
                     <p class="tags">RAG · Hybrid search · Embeddings · MLflow · Ollama</p>
                     <p class="card-links"><a class="read-more" href="projects/fitness-rag.html">Case study →</a> <a class="read-more" href="https://github.com/ixsanpe/fitness-ai-assistant">Code ↗</a></p>
+                </article>
+                <article>
+                    <p class="eyebrow">Side project · 2026 · in progress</p>
+                    <h3>A world model for my robot vacuum</h3>
+                    <p>A model that predicts what my robot vacuum's camera will see next, given the action it takes. A frozen DINOv2 encoder and a small transformer, trained on my own recordings. Now I'm testing planning with it on the real robot.</p>
+                    <p class="tags">World models · PyTorch · DINOv2 · Robotics</p>
+                    <p class="card-links"><a class="read-more" href="projects/robot-world-model.html">Case study →</a> <a class="read-more" href="https://github.com/ixsanpe/systems-lab/tree/main/04-world-models">Code ↗</a></p>
                 </article>
                 <article>
                     <p class="eyebrow">Talks</p>
